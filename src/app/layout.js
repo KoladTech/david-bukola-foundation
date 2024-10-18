@@ -1,5 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
+import Link from "next/link";
+import { FaFacebook } from "react-icons/fa";
+import { FaTwitterSquare } from "react-icons/fa";
+import { FaSquareInstagram } from "react-icons/fa6";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,6 +28,101 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
+        {/* Default Footer Section */}
+        <footer className="bg-gray-900 text-gray-200 py-8">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-start  md:space-x-12">
+
+              {/* Left Section */}
+              <div className="mb-8 md:mb-0 flex flex-col items-start">
+                <img src="/path-to-logo/logo.png" alt="Logo" className="mb-4" />
+                <div className="flex space-x-4 mb-4">
+                  <a
+                    href="https://instagram.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-200 hover:text-white transition-colors"
+                  >
+                    <FaSquareInstagram className="w-6 h-6" />
+                  </a>
+                  <a
+                    href="https://facebook.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-200 hover:text-white transition-colors"
+                  >
+                    <FaFacebook className="w-6 h-6" />
+                  </a>
+                  <a
+                    href="https://X.com"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-200 hover:text-white transition-colors"
+                  >
+                    <FaTwitterSquare className="w-6 h-6" />
+                  </a>
+                </div>
+                <a
+                  href="mailto:davidbukolafoundation@gmail.com"
+                  className="text-gray-200 hover:text-white transition-colors"
+                >
+                  davidbukolafoundation@gmail.com
+                </a>
+              </div>
+
+              {/* Right Section */}
+              <div className="flex flex-col space-y-8 md:text-right md:flex-grow">
+                
+                {/* First Row - Navigation Links */}
+                <nav className="flex flex-wrap gap-6 md:justify-end">
+                  <Link
+                    href="/home"
+                    className="text-gray-200 hover:text-white transition-colors"
+                  >
+                    Home
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="text-gray-200 hover:text-white transition-colors"
+                  >
+                    About
+                  </Link>
+                  <Link
+                    href="/services"
+                    className="text-gray-200 hover:text-white transition-colors"
+                  >
+                    Services
+                  </Link>
+                  <Link
+                    href="/contact"
+                    className="text-gray-200 hover:text-white transition-colors"
+                  >
+                    Contact
+                  </Link>
+                  <Link
+                    href="/support"
+                    className="text-gray-200 hover:text-white transition-colors"
+                  >
+                    Support
+                  </Link>
+                </nav>
+
+                {/* Second Row - Copyright Text */}
+                <div>
+                  <p>© 2024 Your Company. All rights reserved.</p>
+                </div>
+
+                {/* Third Row - Developer and Designer Info */}
+                <div>
+                  <p>
+                    Designed by Abimbola | Developed by Ibrahim Adeshina &
+                    Kayode Kolawole
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
       </body>
     </html>
   );
