@@ -12,7 +12,7 @@ module.exports = {
         foreground: "var(--foreground)",
       },
       screens: {
-        "md-lg": { min: "768px", max: "1023px" }, // Custom range between md and lg
+        "md-lg": { min: "767px", max: "1024px" }, // Custom range between md and lg
       },
     },
   },
