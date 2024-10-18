@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Link from "next/link";
 import Image from "next/image";
+import UnderConstruction from "@/components/UnderConstruction";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -105,6 +106,7 @@ export default function RootLayout({ children }) {
             </button>
           </div>
         </header>
+        <UnderConstruction />
         {isMenuOpen && (
           <div
             className={`fixed inset-0 bg-white z-50 md:hidden transition-transform duration-300 ease-in-out ${
