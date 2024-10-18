@@ -1,3 +1,29 @@
-/* @tailwind base;
+@tailwind base;
 @tailwind components;
-@tailwind utilities; */
+@tailwind utilities;
+
+html, body {
+    height: 100%; /* Make sure the html and body elements take the full height */
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* This makes the main content take up the remaining space */
+/* #page-content {
+    flex: 1; 
+} */
+
+footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%; /* Make the footer span the entire width */
+        background-color: #1a1a1a;
+        color: white;
+        padding: 20px;
+        z-index: 1000; /* Ensure it's above other content */
+}
