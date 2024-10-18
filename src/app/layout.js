@@ -74,10 +74,10 @@ export default function RootLayout({ children }) {
                 About Us
               </Link>
               <Link
-                href="/achievement"
+                href="/achievements"
                 className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
               >
-                Achievement
+                Achievements
               </Link>
               <Link
                 href="/projects"
@@ -134,11 +134,11 @@ export default function RootLayout({ children }) {
                   About Us
                 </Link>
                 <Link
-                  href="/achievement"
+                  href="/achievements"
                   className="text-gray-600 hover:text-gray-900 text-2xl"
                   onClick={toggleMenu}
                 >
-                  Achievement
+                  Achievements
                 </Link>
                 <Link
                   href="/projects"
