@@ -11,6 +11,9 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      screens: {
+        "md-lg": { min: "768px", max: "1023px" }, // Custom range between md and lg
+      },
     },
   },
   plugins: [],
