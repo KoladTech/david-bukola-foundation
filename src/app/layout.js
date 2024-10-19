@@ -29,9 +29,9 @@ export default function RootLayout({ children }) {
       >
         {children}
         {/* Default Footer Section */}
-        <footer className="bg-gray-900 text-gray-200 py-8">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row md:justify-between md:items-start  md:space-x-12">
+        <footer className="bg-white text-gray-600 rounded-3xl py-8 border-4 border-gray-800">
+          <div className="container justify-center items-center mx-auto px-4">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-start md:space-x-24">
 
               {/* Left Section */}
               <div className="mb-8 md:mb-0 flex flex-col items-start">
@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
                     href="https://instagram.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    className="hover:text-black transition-colors"
                   >
                     <FaSquareInstagram className="w-6 h-6" />
                   </a>
@@ -49,7 +49,7 @@ export default function RootLayout({ children }) {
                     href="https://facebook.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    className="hover:text-black transition-colors"
                   >
                     <FaFacebook className="w-6 h-6" />
                   </a>
@@ -57,53 +57,53 @@ export default function RootLayout({ children }) {
                     href="https://X.com"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    className="hover:text-black transition-colors"
                   >
                     <FaTwitterSquare className="w-6 h-6" />
                   </a>
                 </div>
                 <a
                   href="mailto:davidbukolafoundation@gmail.com"
-                  className="text-gray-200 hover:text-white transition-colors"
+                  className="text-black transition-colors"
                 >
                   davidbukolafoundation@gmail.com
                 </a>
               </div>
 
               {/* Right Section */}
-              <div className="flex flex-col space-y-8 md:text-right md:flex-grow">
+              <div className="flex flex-col space-y-8 md:text-left md:flex-grow">
                 
                 {/* First Row - Navigation Links */}
-                <nav className="flex flex-wrap gap-6 md:justify-end">
+                <nav className="flex flex-col md:flex-row gap-12 md:justify-start">
                   <Link
                     href="/home"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    className="text-black transition-colors"
                   >
                     Home
                   </Link>
                   <Link
-                    href="/about"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    href="/About Us"
+                    className="text-black transition-colors"
                   >
-                    About
+                    About Us
                   </Link>
                   <Link
-                    href="/services"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    href="/Achievements"
+                    className="text-black transition-colors"
                   >
-                    Services
+                    Achievements
                   </Link>
                   <Link
-                    href="/contact"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    href="/Projects"
+                    className="text-black transition-colors"
                   >
-                    Contact
+                    Projects
                   </Link>
                   <Link
-                    href="/support"
-                    className="text-gray-200 hover:text-white transition-colors"
+                    href="/Donate"
+                    className="text-black transition-colors"
                   >
-                    Support
+                    Donate
                   </Link>
                 </nav>
 
