@@ -29,9 +29,9 @@ export default function RootLayout({ children }) {
       >
         {children}
         {/* Default Footer Section */}
-        <footer className="bg-white text-gray-600 rounded-3xl py-8 border-4 border-gray-800">
-          <div className="container justify-center items-center mx-auto px-4">
-            <div className="flex flex-col md:flex-row md:justify-between md:items-start md:space-x-24">
+        <footer className="bg-white text-gray-600 mx-auto rounded-t-3xl py-8 border-t-8 border-r-4 border-l-4 border-gray-600 w-4/5">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row md:justify-between md:items-start md:space-x-8">
 
               {/* Left Section */}
               <div className="mb-8 md:mb-0 flex flex-col items-start">
@@ -74,16 +74,16 @@ export default function RootLayout({ children }) {
               <div className="flex flex-col space-y-8 md:text-left md:flex-grow">
                 
                 {/* First Row - Navigation Links */}
-                <nav className="flex flex-col md:flex-row gap-12 md:justify-start">
+                <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start">
                   <Link
                     href="/home"
-                    className="text-black transition-colors"
+                    className="text-black hover:text-gray-700 transition-colors"
                   >
                     Home
                   </Link>
                   <Link
                     href="/About Us"
-                    className="text-black transition-colors"
+                    className="text-black hover:text-gray-700 transition-colors"
                   >
                     About Us
                   </Link>
