@@ -1,9 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import Link from "next/link";
-import { FaFacebook } from "react-icons/fa";
-import { FaTwitterSquare } from "react-icons/fa";
-import { FaSquareInstagram } from "react-icons/fa6";
+import { RiFacebookBoxFill } from "react-icons/ri";
+import { RiTwitterXLine } from "react-icons/ri";
+import { GrDocumentVerified, GrInstagram } from "react-icons/gr";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,100 +29,108 @@ export default function RootLayout({ children }) {
       >
         {children}
         {/* Default Footer Section */}
-        <footer className="bg-white text-gray-600 mx-auto rounded-t-3xl py-8 border-t-8 border-r-4 border-l-4 border-gray-600 w-4/5">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row md:justify-between md:items-start md:space-x-8">
+        <div className="relative mt-auto">
+          <div className="absolute bottom-0 left-0 right-0 h-[calc(100%+2rem)] bg-cover bg-center" style={{ backgroundImage: "url(/figma-footer-image.jpeg)" }}>
+            <div className="absolute inset-0 bg-black opacity-50"></div>
+          </div>
+          <div className="relative z-10 container mx-auto px-4 md:px-2">
+          <footer className="bg-white text-gray-600 rounded-t-3xl py-8 lg:mx-12 md:mx-2">
+            <div className="container mx-auto px-12">
+              <div className="flex flex-col md:flex-row md:justify-between md:items-start md:space-x-8">
 
-              {/* Left Section */}
-              <div className="mb-8 md:mb-0 flex flex-col items-start">
-                <img src="/path-to-logo/logo.png" alt="Logo" className="mb-4" />
-                <div className="flex space-x-4 mb-4">
+                {/* Left Section */}
+                <div className="mb-8 md:mb-0 flex flex-col items-start">
+                  <img src="/symbol.svg" alt="Logo" className="mb-4" />
+                  <div className="flex space-x-4 mb-4">
+                    <a
+                      href="https://instagram.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-black transition-colors"  
+                    >
+                      <GrInstagram className="w-6 h-6" />
+                    </a>
+                    <a
+                      href="https://facebook.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-black transition-colors"
+                    >
+                      <RiFacebookBoxFill className="w-6 h-6"/>
+
+                    </a>
+                    <a
+                      href="https://X.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-black transition-colors"
+                    >
+                      <RiTwitterXLine className="w-6 h-6" />
+                    </a>
+                  </div>
                   <a
-                    href="https://instagram.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-black transition-colors"
+                    href="mailto:davidbukolafoundation@gmail.com"
+                    className="text-black transition-colors"
                   >
-                    <FaSquareInstagram className="w-6 h-6" />
-                  </a>
-                  <a
-                    href="https://facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-black transition-colors"
-                  >
-                    <FaFacebook className="w-6 h-6" />
-                  </a>
-                  <a
-                    href="https://X.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:text-black transition-colors"
-                  >
-                    <FaTwitterSquare className="w-6 h-6" />
+                    davidbukolafoundation@gmail.com
                   </a>
                 </div>
-                <a
-                  href="mailto:davidbukolafoundation@gmail.com"
-                  className="text-black transition-colors"
-                >
-                  davidbukolafoundation@gmail.com
-                </a>
-              </div>
 
-              {/* Right Section */}
-              <div className="flex flex-col space-y-8 md:text-left md:flex-grow">
-                
-                {/* First Row - Navigation Links */}
-                <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start">
-                  <Link
-                    href="/home"
-                    className="text-black hover:text-gray-700 transition-colors"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    href="/About Us"
-                    className="text-black hover:text-gray-700 transition-colors"
-                  >
-                    About Us
-                  </Link>
-                  <Link
-                    href="/Achievements"
-                    className="text-black transition-colors"
-                  >
-                    Achievements
-                  </Link>
-                  <Link
-                    href="/Projects"
-                    className="text-black transition-colors"
-                  >
-                    Projects
-                  </Link>
-                  <Link
-                    href="/Donate"
-                    className="text-black transition-colors"
-                  >
-                    Donate
-                  </Link>
-                </nav>
+                {/* Right Section */}
+                <div className="flex flex-col space-y-8 md:text-left md:flex-grow">
+                  
+                  {/* First Row - Navigation Links */}
+                  <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start">
+                    <Link
+                      href="/home"
+                      className="text-black hover:text-gray-700 transition-colors"
+                    >
+                      Home
+                    </Link>
+                    <Link
+                      href="/About Us"
+                      className="text-black hover:text-gray-700 transition-colors"
+                    >
+                      About Us
+                    </Link>
+                    <Link
+                      href="/Achievements"
+                      className="text-black transition-colors"
+                    >
+                      Achievements
+                    </Link>
+                    <Link
+                      href="/Projects"
+                      className="text-black transition-colors"
+                    >
+                      Projects
+                    </Link>
+                    <Link
+                      href="/Donate"
+                      className="text-black transition-colors"
+                    >
+                      Donate
+                    </Link>
+                  </nav>
 
-                {/* Second Row - Copyright Text */}
-                <div>
-                  <p>© 2024 Your Company. All rights reserved.</p>
-                </div>
+                  {/* Second Row - Copyright Text */}
+                  <div>
+                    <p>© 2024 Your Company. All rights reserved.</p>
+                  </div>
 
-                {/* Third Row - Developer and Designer Info */}
-                <div>
-                  <p>
-                    Designed by Abimbola | Developed by Ibrahim Adeshina &
-                    Kayode Kolawole
-                  </p>
+                  {/* Third Row - Developer and Designer Info */}
+                  <div>
+                    <p>
+                      Designed by Abimbola | Developed by Ibrahim Adeshina &
+                      Kayode Kolawole
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
+          </footer>
           </div>
-        </footer>
+        </div>
       </body>
     </html>
   );
