@@ -19,7 +19,7 @@ body {
 }
 
 footer {
-    margin-top: auto;
+    /* margin-top: auto; */
     /* position: fixed; */
     bottom: 0;
     left: 0;
@@ -27,3 +27,7 @@ footer {
     /*padding: 80px; /* THIS CAUSES (SIMILAR NATURED) UNWANTED BEHAVIOUR AT BREAKPOINTS */
     z-index: 1000; /* Ensure it's above other content*/ 
 }
+
+.relative.mt-auto {
+    margin-top: auto;
+  }
