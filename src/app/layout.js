@@ -33,8 +33,8 @@ export default function RootLayout({ children }) {
           <div className="absolute bottom-0 left-0 right-0 h-[calc(100%+2rem)] bg-cover bg-center" style={{ backgroundImage: "url(/figma-footer-image.jpeg)" }}>
             <div className="absolute inset-0 bg-black opacity-50"></div>
           </div>
-          <div className="relative z-10 container mx-auto px-4 md:px-2">
-          <footer className="bg-white text-gray-600 rounded-t-3xl py-8 lg:mx-12 md:mx-2">
+          <div className="relative z-10 container mx-auto px-4 md:px-2 md-lg:px-0.5">
+          <footer className="bg-white text-gray-600 rounded-t-3xl py-8 lg:mx-12 md:mx-2 md-lg:mx-0">
             <div className="container mx-auto px-12">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start md:space-x-8">
 
@@ -46,7 +46,7 @@ export default function RootLayout({ children }) {
                       href="https://instagram.com"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-black transition-colors"  
+                      className="hover:text-black transition-colors"
                     >
                       <GrInstagram className="w-6 h-6" />
                     </a>
