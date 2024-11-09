@@ -1,9 +1,10 @@
 import Image from "next/image";
+import AchievementWidgets from "./AchievementWidgets";
 // import AchievementWidget from "@/components/Achievement";
 
 export default function Achievement() {
   return (
-    <div>
+    <div className="relative">
       <Image
         src="/achievement-image.png"
         alt="achievement image"
@@ -11,9 +12,9 @@ export default function Achievement() {
         height={553}
         className="w-full h-auto"
       />
-      {/* <div> */}
-      {/* <AchievementWidget /> */}
-      {/* </div> */}
+      <div className="absolute bottom-8 right-8">
+        <AchievementWidgets />
+      </div>
     </div>
   );
 }
