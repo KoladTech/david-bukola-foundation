@@ -6,13 +6,13 @@ export default function Achievement() {
   return (
     <div className="relative">
       <Image
-        src="/achievement-image.png"
+        src="/achievements-image.png"
         alt="achievement image"
         width={1376}
         height={553}
         className="w-full h-auto"
       />
-      <div className="absolute bottom-8 right-8">
+      <div className="relative bottom-8 right-8">
         <AchievementWidgets />
       </div>
     </div>

@@ -8,10 +8,10 @@ export default function DonationWidget() {
 
   return (
     <motion.div
-      className="bottom-4 right-4 bg-white rounded-lg shadow-lg overflow-hidden"
+      className="bg-white rounded-lg shadow-lg overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7 }}
+      transition={{ duration: 0.9 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -21,7 +21,7 @@ export default function DonationWidget() {
         </p>
         <a
           href="/donate"
-          className="inline-block bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors"
+          className="inline-block bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-24 py-2 rounded-md transition-colors"
         >
           Donate Now
         </a>

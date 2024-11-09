@@ -11,13 +11,16 @@ export default function Home() {
   return (
     <main>
       {/* Main home page div */}
-      <div className="m-4">
-        <div className="flex justify-between items-center">
+      <div className="m-12">
+        <div className="flex justify-between items-end my-4">
           {/* Foundation Name and Motto */}
-          <p className="text-left font-bold">
-            DAVIDBUKOLA DEVELOPMENT FOUNDATION
+          <p className="text-5xl text-left font-semibold">
+            DAVIDBUKOLA
+            <span className="block">DEVELOPMENT FOUNDATION</span>
           </p>
-          <p className="text-right">Where care meets community</p>
+          <p className="text-3xl text-right md:whitespace-nowrap">
+            Where care meets community
+          </p>
         </div>
         {/* Community Image */}
         <div className="relative mt-4">
@@ -28,7 +31,7 @@ export default function Home() {
             height={553}
             className="w-full h-auto"
           />
-          <div className="absolute bottom-4 right-4">
+          <div className="absolute bottom-2 right-2 md:bottom-8 md:right-12">
             <DonationWidget />
           </div>
         </div>

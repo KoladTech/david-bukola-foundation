@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <header className="bg-white shadow-sm">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 className="hidden md:block"
@@ -110,7 +110,9 @@ export default function RootLayout({ children }) {
             </button>
           </div>
         </header>
-        <UnderConstruction />
+
+        {/* <UnderConstruction /> */}
+
         {isMenuOpen && (
           <div
             className={`fixed inset-0 bg-white z-50 md:hidden transition-transform duration-300 ease-in-out ${
