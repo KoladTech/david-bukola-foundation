@@ -56,13 +56,13 @@ export default function FAQSection() {
   return (
     <div className="bg-[#1d3557] text-white rounded-2xl my-12 p-8 w-full mx-auto">
       <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-semibold mb-2">
+        <h2 className="text-2xl md:text-4xl font-semibold mb-2">
           Frequently asked questions
         </h2>
-        <p className="text-gray-300 text-2xl">Everything to know</p>
+        <p className="text-gray-300 text-1xl md:text-2xl">Everything to know</p>
       </div>
 
-      <div className="space-y-4 text-3xl">
+      <div className="space-y-4 text-2xl ">
         {faqData.map((faq, index) => (
           <FAQItem key={index} question={faq.question} answer={faq.answer} />
         ))}

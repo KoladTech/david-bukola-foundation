@@ -34,13 +34,13 @@ export default function DonationWidget() {
               className="space-y-2 pt-2"
             >
               <div className="flex items-center justify-between text-sm text-gray-600">
-                <span>Naira</span>
-                <span className="font-medium">3118690462-First Bank</span>
+                {/* <span>Naira</span> */}
+                {/* <span className="font-medium">3118690462-First Bank</span> */}
               </div>
 
               <div className="flex items-center justify-between text-sm text-gray-600">
-                <span>Dollar</span>
-                <span className="font-medium">1877319747-Access Bank</span>
+                {/* <span>Dollar</span> */}
+                {/* <span className="font-medium">1877319747-Access Bank</span> */}
               </div>
             </motion.div>
           )}
