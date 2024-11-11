@@ -197,7 +197,7 @@ export default function RootLayout({ children }) {
                     />
                     <div className="flex space-x-4 mb-4">
                       <a
-                        href="https://instagram.com"
+                        href="https://www.instagram.com/davidbukola_foundation/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
@@ -205,7 +205,7 @@ export default function RootLayout({ children }) {
                         <GrInstagram className="w-6 h-6" />
                       </a>
                       <a
-                        href="https://facebook.com"
+                        href="#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
@@ -213,7 +213,7 @@ export default function RootLayout({ children }) {
                         <RiFacebookBoxFill className="w-6 h-6" />
                       </a>
                       <a
-                        href="https://X.com"
+                        href="#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
@@ -234,31 +234,31 @@ export default function RootLayout({ children }) {
                     {/* First Row - Navigation Links */}
                     <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-bold">
                       <Link
-                        href="/home"
+                        href="/"
                         className="text-black hover:text-gray-700 transition-colors"
                       >
                         Home
                       </Link>
                       <Link
-                        href="/About Us"
+                        href="/about"
                         className="text-black hover:text-gray-700 transition-colors"
                       >
                         About Us
                       </Link>
                       <Link
-                        href="/Achievements"
+                        href="/achievements"
                         className="text-black transition-colors"
                       >
                         Achievements
                       </Link>
                       <Link
-                        href="/Projects"
+                        href="/projects"
                         className="text-black transition-colors"
                       >
                         Projects
                       </Link>
                       <Link
-                        href="/Donate"
+                        href="/donate"
                         className="text-black transition-colors"
                       >
                         Donate

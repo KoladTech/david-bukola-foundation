@@ -7,22 +7,32 @@ const faqData = [
   {
     question: "What does the foundation do?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur. Consectetur massa eu pharetra porttitor nulla ornare.",
+      "Our foundation is committed to making impactful changes in communities by empowering individuals and creating opportunities. See more on our About Us page.",
   },
   {
     question: "How can I join the foundation?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur. Consectetur massa eu pharetra porttitor nulla ornare.",
+      " You can connect with us through our Instagram page (https://www.instagram.com/davidbukola_foundation/) or by email (davidbukolafoundation@gmail.com). Let’s work together to make a difference!",
   },
   {
-    question: "Is there a limit to the amount to people that can join?",
+    question: "How do you support individuals in tech?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur. Consectetur massa eu pharetra porttitor nulla ornare.",
+      "Our founders have a strong commitment to empowering young, aspiring tech enthusiasts. We offer various forms of support to help them thrive in the tech field, including funding for coding bootcamps, introductory coding courses for beginners, educational resources, and interview preparation for tech job opportunities. By providing these tools, we aim to open doors for individuals who want to build a career in technology.",
+  },
+  {
+    question: "Is there a limit to the amount of people that can join?",
+    answer:
+      "No, there’s no limit—everyone is welcome! The more of us there are, the greater the difference we can make together.",
   },
   {
     question: "How can I make an impact?",
     answer:
-      "Lorem ipsum dolor sit amet consectetur. Consectetur massa eu pharetra porttitor nulla ornare.",
+      "There are many ways to make a difference! While monetary support is always appreciated, you can also volunteer your time and skills. Another powerful way to help is by spreading the word about the DavidBukola Foundation on social media. The more people who know about our mission, the more lives we can touch and support together.",
+  },
+  {
+    question: "What is the minimum amount I can donate?",
+    answer:
+      "No amount is too small—every contribution makes a difference. What may seem small to you could mean the world to someone else.",
   },
 ];
 

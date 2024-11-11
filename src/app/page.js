@@ -144,15 +144,18 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 m-4">
             <div className="flex flex-col items-center">
               <PictureCard imageSrc="/meet-the-team-1.png" altText="" />
-              <ContentCard title="David Bukola" content="Head Of Operations" />
+              <ContentCard title="Demi Fasanya" content="CEO" />
             </div>
             <div className="flex flex-col items-center">
               <PictureCard imageSrc="/meet-the-team-2.png" altText="" />
-              <ContentCard title="David Bukola" content="Head Of Operations" />
+              <ContentCard
+                title="Mayowa Kolawole"
+                content="Head Of Operations"
+              />
             </div>
             <div className="flex flex-col items-center">
               <PictureCard imageSrc="/meet-the-team-3.png" altText="" />
-              <ContentCard title="David Bukola" content="Head Of Operations" />
+              <ContentCard title="Ibrahim Adesina" content="Developer" />
             </div>
             {/* <div className="flex flex-col items-center">
               <PictureCard imageSrc="/meet-the-team-4.png" altText="" />
