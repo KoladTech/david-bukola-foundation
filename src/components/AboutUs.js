@@ -8,11 +8,16 @@ export default function AboutUs() {
         <span className="font-semibold">∆</span>bout Us
       </h2>
       <p className="text-gray-600 mb-8 leading-relaxed font-bold">
-        Lorem ipsum dolor sit amet consectetur. Consectetur massa eu pharetra
-        porttitor nulla ornare. Cursus senectus id ipsum cras cursus. Nunc sed
-        eu amet purus. Diam aliquet enim lectus et aliquam eu. Consectetur massa
-        eu pharetra porttitor nulla ornare. Cursus senectus id iamet purus. Diam
-        aliquet enim lectus et aliquam eu.
+        At the DavidBukola Foundation, our mission is simple yet powerful:
+        Transforming lives, Empowering hope. We strive to alleviate poverty and
+        inspire hope for a brighter tomorrow. Our work includes providing
+        educational scholarships to children from low-income families, ensuring
+        that every child has a chance to learn and grow. We are also passionate
+        about providing education in technology to young, aspiring individuals
+        with an interest in the field, equipping them with the skills needed for
+        a successful future. Additionally, we extend compassionate support to
+        widows and individuals in crisis, helping them find stability and
+        renewed hope for the future.
       </p>
       <Link
         href="/about"
