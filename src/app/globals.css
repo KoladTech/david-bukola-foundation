@@ -4,8 +4,9 @@
 
 html,
 body {
+  max-width: 1140px;
   height: 100%; /* Make sure the html and body elements take the full height */
-  margin: 0;
+  margin: auto;
 }
 
 body {

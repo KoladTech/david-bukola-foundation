@@ -6,35 +6,21 @@ import TestimonyCards from "../components/TestimonyCards";
 import PictureCard from "../components/PictureCard";
 import ContentCard from "../components/ContentCard";
 import FAQ from "../components/FAQ";
+import HeroSection from "@/components/HeroSection";
 
 export default function Home() {
   return (
     <main>
       {/* Main home page div */}
-      <div className="m-12">
-        <div className="flex justify-between items-end my-4">
-          {/* Foundation Name and Motto */}
-          <p className="text-5xl text-left font-semibold">
-            DAVIDBUKOLA
-            <span className="block">DEVELOPMENT FOUNDATION</span>
-          </p>
-          <p className="text-3xl text-right md:whitespace-nowrap">
-            Where care meets community
-          </p>
-        </div>
-        {/* Community Image */}
-        <div className="relative mt-4">
-          <Image
-            src="/foundation-name-and-motto-image.png"
-            alt="Happy Community image"
-            width={1376}
-            height={553}
-            className="w-full h-auto"
-          />
-          <div className="absolute bottom-2 right-2 md:bottom-8 md:right-12">
-            <DonationWidget />
-          </div>
-        </div>
+      <div className="m-4 space-y-4">
+        <HeroSection
+          className=""
+          title="DAVIDBUKOLA"
+          title2="DEVELOPMENT FOUNDATION"
+          description="Where care meets community"
+          imageUrl="/foundation-name-and-motto-image.png"
+          alt="foundation"
+        />
 
         {/* About us section */}
         <div>
@@ -45,24 +31,24 @@ export default function Home() {
         </div>
 
         {/* Testimonies Section */}
-        <div>
+        {/* <div>
           <TestimonyCards />
-        </div>
+        </div> */}
 
         {/* Project Section */}
-        <div className="flex flex-col md:flex-row items-center p-8">
-          {/* Left Side - Image */}
+        {/* <div className="flex flex-col md:flex-row items-center p-8">
+          Left Side - Image
           <div className="w-full md:w-1/2 flex justify-center">
             <Image
-              src="/projects-image.png" // Path to your image
+              src="/projects-image.png"
               alt="Left Side Image"
-              width={500} // Adjust width and height as needed
-              height={500}
+              width={400}
+              height={400}
               className="object-cover rounded-lg"
             />
           </div>
 
-          {/* Right Side - Text */}
+          Right Side - Text
           <div className="w-full md:w-1/2 flex flex-col justify-center p-8 gap-y-6">
             <h2 className="text-2xl font-bold mb-4">Projects</h2>
             <p className="text-gray-600">
@@ -74,59 +60,104 @@ export default function Home() {
               Learn More
             </button>
           </div>
+        </div> */}
+
+        {/* Project Section */}
+        {/* <section>
+          <div className="flex flex-col md:flex-row items-center p-8 border">
+            <div className="w-full md:w-1/2 flex justify-center">
+              <PictureCard imageSrc="/projects-image.png" altText="" />
+            </div>
+            <div className="w-full md:w-1/2 flex flex-col justify-center p-8 gap-y-6">
+              <ContentCard
+                title="Projects"
+                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
+              blandit fringilla sem eget rutrum. Interdum et malesuada fames ac
+              ante ipsum primis in faucibus."
+              />
+              <button className="bg-blue-500 min-w-[100px] text-white rounded-md py-2 w-1/4 hover:bg-blue-600 transition-colors justify-start">
+                Learn More
+              </button>
+            </div>
         </div>
+        </section> */}
+
         {/* Get Involved Section */}
-        <section className="py-4 px-4 bg-gray-100">
-          <h2 className="text-2xl font-bold mb-6 text-center">Get Involved</h2>
-          <div className="flex flex-col items-center md:flex-row p-4">
-            <div className="flex flex-col md:flex-row p-4">
-              <ContentCard
-                title="Donate"
-                content="Want to make an impact in society? Donate to help others."
-              />
-              <PictureCard imageSrc="/donate-now-image.png" />
-            </div>
-            <div className="flex flex-col md:flex-row p-4">
-              <ContentCard
-                title="Join Us"
-                content="Want to make an impact in society? Donate to help others."
-              />
-              <PictureCard imageSrc="/join-us-image.png" />
-            </div>
-            <div className="flex flex-col md:flex-row p-4">
+        <section className="py-2 px-2">
+          <div className="max-w-6xl mx-auto my-4">
+            <h2 className="text-4xl font-semibold mb-6 text-center">
+              Get Involved
+            </h2>
+
+            <div className="flex flex-col md:flex-row gap-8">
+              {/* Donate Card */}
+              <div className="flex justify-between items-center bg-white gap-8 m-2 p-4 shadow-md rounded-2xl">
+                <div className="flex-1">
+                  <ContentCard
+                    title="Donate"
+                    content="Want to make an impact in society? Donate to help others."
+                  />
+                </div>
+                <div className="relative w-32 h-32 flex-shrink-0">
+                  <PictureCard imageSrc="/donate-now-image.png" altText="" />
+                </div>
+              </div>
+
+              {/* Join Us Card */}
+              <div className="flex justify-between items-center bg-white gap-8 m-2 p-4 shadow-md rounded-2xl">
+                <div className="flex-1">
+                  <ContentCard
+                    title="Join Us"
+                    content="Want to make an impact in society? Donate to help others."
+                  />
+                </div>
+                <div className="relative w-32 h-32 flex-shrink-0">
+                  <PictureCard imageSrc="/join-us-image.png" altText="" />
+                </div>
+              </div>
+
+              {/* Donate and Join Us card */}
+              {/* <div className="flex justify-between items-center bg-white gap-8 m-2">
+                <div className="flex-1">
               <ContentCard
                 title="Donate and Join Us"
                 content="Want to make an impact in society? Donate to help others."
               />
+                </div>
+                <div className="relative w-24 h-24 flex-shrink-0">
               <PictureCard imageSrc="/get-involved-image.png" />
+            </div>
+              </div> */}
             </div>
           </div>
         </section>
 
         {/* Meet our team section */}
-        <section className="py-4 px-4 items-center border justify-center text-center">
-          <h2 className="text-2xl font-bold mb-6 text-center">Meet Our team</h2>
+        <section className="py-4 px-4 my-4 items-center justify-center text-center">
+          <h2 className="text-4xl font-semibold mb-2 text-center">
+            Meet Our Team
+          </h2>
           <h3 className="">
-            Lorem Ipsum pendu libero molestie camero dune tasatrupt caspoer
-            idium
+            The Team Powering Our Vision and Making a Difference
           </h3>
-          <div className="flex flex-col md:flex-row justify-center items-center mx-4 p-2">
-            <div className="flex flex-col items-center m-4">
-              <PictureCard imageSrc="/meet-the-team-1.png" />
+
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 m-4">
+            <div className="flex flex-col items-center">
+              <PictureCard imageSrc="/meet-the-team-1.png" altText="" />
               <ContentCard title="David Bukola" content="Head Of Operations" />
             </div>
             <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/meet-the-team-2.png" />
+              <PictureCard imageSrc="/meet-the-team-2.png" altText="" />
               <ContentCard title="David Bukola" content="Head Of Operations" />
             </div>
             <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/meet-the-team-3.png" />
+              <PictureCard imageSrc="/meet-the-team-3.png" altText="" />
               <ContentCard title="David Bukola" content="Head Of Operations" />
             </div>
-            <div className="flex flex-col items-center border">
-              <PictureCard imageSrc="/meet-the-team-4.png" />
+            {/* <div className="flex flex-col items-center">
+              <PictureCard imageSrc="/meet-the-team-4.png" altText="" />
               <ContentCard title="David Bukola" content="Head Of Operations" />
-            </div>
+            </div> */}
           </div>
         </section>
 

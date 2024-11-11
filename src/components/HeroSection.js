@@ -1,14 +1,23 @@
 import Link from "next/link";
 import Image from "next/image";
 
-export default function HeroSection({ title, description, imageUrl, alt }) {
+export default function HeroSection({
+  title,
+  title2,
+  description,
+  imageUrl,
+  alt,
+}) {
   return (
     <>
-      <div className="flex flex-col md:flex-row justify-between items-start mb-8">
-        <h1 className="text-4xl md:text-5xl font-bold">{title}</h1>
-        <p className="text-gray-600">{description}</p>
+      <div className="flex flex-col md:flex-row items-start justify-between md:items-end my-4 space-y-4">
+        <h1 className="text-2xl md:text-5xl font-semibold">
+          {title}
+          <span className="block">{title2}</span>
+        </h1>
+        <p className="text-gray-600 md:whitespace-nowrap">{description}</p>
       </div>
-      <div className="relative rounded-3xl overflow-hidden mb-12 h-[300px] md:h-[600px]">
+      <div className="relative rounded-3xl overflow-hidden mb-12 h-[300px] md:h-[533px]">
         <div className="aspect-w-2 aspect-h-3 md:aspect-w-2 md:aspect-h-1">
           <Image
             src={imageUrl}

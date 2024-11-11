@@ -187,10 +187,14 @@ export default function RootLayout({ children }) {
           <div className="relative z-10 container mx-auto px-4 md:px-2 md-lg:px-0.5">
             <footer className="bg-white text-gray-600 rounded-t-3xl py-8 lg:mx-12 md:mx-2 md-lg:mx-0">
               <div className="container mx-auto px-12">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-start md:space-x-8">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-end md:space-x-8">
                   {/* Left Section */}
                   <div className="mb-8 md:mb-0 flex flex-col items-start">
-                    <img src="/symbol.svg" alt="Logo" className="mb-4" />
+                    <img
+                      src="/logo_variation 1.svg"
+                      alt="Logo"
+                      className="w-52 h-40"
+                    />
                     <div className="flex space-x-4 mb-4">
                       <a
                         href="https://instagram.com"
@@ -219,16 +223,16 @@ export default function RootLayout({ children }) {
                     </div>
                     <a
                       href="mailto:davidbukolafoundation@gmail.com"
-                      className="text-black transition-colors"
+                      className="text-black transition-colors font-bold"
                     >
                       davidbukolafoundation@gmail.com
                     </a>
                   </div>
 
                   {/* Right Section */}
-                  <div className="flex flex-col space-y-8 md:text-left md:flex-grow">
+                  <div className="flex flex-col space-y-8 md:text-left md:flex-grow md:items-end items-start">
                     {/* First Row - Navigation Links */}
-                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start">
+                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-bold">
                       <Link
                         href="/home"
                         className="text-black hover:text-gray-700 transition-colors"
@@ -263,7 +267,7 @@ export default function RootLayout({ children }) {
 
                     {/* Second Row - Copyright Text */}
                     <div>
-                      <p>© 2024 Your Company. All rights reserved.</p>
+                      <p>© 2024 DavidBukolaFoundation. All rights reserved.</p>
                     </div>
 
                     {/* Third Row - Developer and Designer Info */}

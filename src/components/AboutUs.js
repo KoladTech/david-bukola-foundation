@@ -15,7 +15,7 @@ export default function AboutUs() {
         aliquet enim lectus et aliquam eu.
       </p>
       <Link
-        href="/"
+        href="/about"
         className="inline-flex items-center gap-2 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors"
       >
         View Page
