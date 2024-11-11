@@ -193,7 +193,7 @@ export default function RootLayout({ children }) {
                     />
                     <div className="flex space-x-4 mb-4">
                       <a
-                        href="https://instagram.com"
+                        href="https://www.instagram.com/davidbukola_foundation/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
@@ -201,7 +201,7 @@ export default function RootLayout({ children }) {
                         <GrInstagram className="w-6 h-6" />
                       </a>
                       <a
-                        href="https://facebook.com"
+                        href="#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
@@ -209,7 +209,7 @@ export default function RootLayout({ children }) {
                         <RiFacebookBoxFill className="w-6 h-6" />
                       </a>
                       <a
-                        href="https://X.com"
+                        href="#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
