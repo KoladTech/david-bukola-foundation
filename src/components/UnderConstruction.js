@@ -1,9 +1,10 @@
+"use client";
 import { motion } from "framer-motion";
 import { LuHammer, LuCog } from "react-icons/lu";
 
 export default function UnderConstruction() {
   return (
-    <div className="min-h-fit bg-gray-10 flex flex-col items-center justify-center pt-24">
+    <div className="min-h-fit bg-gray-10 flex flex-col items-center justify-center p-4 pt-24 mb-12">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -11,7 +12,7 @@ export default function UnderConstruction() {
         className="text-center"
       >
         <h1 className="text-4xl md:text-6xl font-bold text-gray-800 mb-4">
-          Website Under Construction
+          Work in Progress!
         </h1>
         <p className="text-xl md:text-2xl text-gray-600 mb-12">
           We're working hard to bring you something amazing. Please check back
@@ -81,7 +82,7 @@ export default function UnderConstruction() {
         className="mt-12 text-center"
       >
         <p className="text-lg text-gray-600 mb-4 ps-3 pe-4">
-          While you wait… check out our giveaway site!
+          Giveaway coming up, check it out here!
         </p>
         <a
           href="https://jusgiveaway.com/"

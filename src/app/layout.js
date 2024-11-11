@@ -9,7 +9,6 @@ import { RiFacebookBoxFill } from "react-icons/ri";
 import { RiTwitterXLine } from "react-icons/ri";
 import { GrDocumentVerified, GrInstagram } from "react-icons/gr";
 import Image from "next/image";
-import UnderConstruction from "@/components/UnderConstruction";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -110,9 +109,6 @@ export default function RootLayout({ children }) {
             </button>
           </div>
         </header>
-
-        {/* <UnderConstruction /> */}
-
         {isMenuOpen && (
           <div
             className={`fixed inset-0 bg-white z-50 md:hidden transition-transform duration-300 ease-in-out ${
@@ -234,31 +230,31 @@ export default function RootLayout({ children }) {
                     {/* First Row - Navigation Links */}
                     <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-bold">
                       <Link
-                        href="/home"
+                        href="/"
                         className="text-black hover:text-gray-700 transition-colors"
                       >
                         Home
                       </Link>
                       <Link
-                        href="/About Us"
+                        href="/about"
                         className="text-black hover:text-gray-700 transition-colors"
                       >
                         About Us
                       </Link>
                       <Link
-                        href="/Achievements"
+                        href="/achievements"
                         className="text-black transition-colors"
                       >
                         Achievements
                       </Link>
                       <Link
-                        href="/Projects"
+                        href="/projects"
                         className="text-black transition-colors"
                       >
                         Projects
                       </Link>
                       <Link
-                        href="/Donate"
+                        href="/donate"
                         className="text-black transition-colors"
                       >
                         Donate
