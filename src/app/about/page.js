@@ -64,9 +64,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Get Involved Section */}
-      <GetInvolved />
-
       {/* Team Section */}
       <section className="py-4 px-4 my-4 items-center justify-center text-center">
         <h2 className="text-4xl font-semibold mb-2 text-center">
@@ -96,6 +93,9 @@ export default function AboutPage() {
         </div>
       </section>
       {/* <MeetOurTeam /> */}
+
+      {/* Get Involved Section */}
+      <GetInvolved />
     </div>
   );
 }
