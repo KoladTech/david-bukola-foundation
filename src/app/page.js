@@ -7,6 +7,7 @@ import PictureCard from "../components/PictureCard";
 import ContentCard from "../components/ContentCard";
 import FAQ from "../components/FAQ";
 import HeroSection from "@/components/HeroSection";
+import GetInvolved from "@/components/GetInvolved";
 
 export default function Home() {
   return (
@@ -83,54 +84,7 @@ export default function Home() {
         </section> */}
 
         {/* Get Involved Section */}
-        <section className="py-2 px-2">
-          <div className="max-w-6xl mx-auto my-4">
-            <h2 className="text-4xl font-semibold mb-6 text-center">
-              Get Involved
-            </h2>
-
-            <div className="flex flex-col md:flex-row gap-8">
-              {/* Donate Card */}
-              <div className="flex justify-between items-center bg-white gap-8 m-2 p-4 shadow-md rounded-2xl">
-                <div className="flex-1">
-                  <ContentCard
-                    title="Donate"
-                    content="Want to make an impact in society? Donate to help others."
-                  />
-                </div>
-                <div className="relative w-32 h-32 flex-shrink-0">
-                  <PictureCard imageSrc="/donate-now-image.png" altText="" />
-                </div>
-              </div>
-
-              {/* Join Us Card */}
-              <div className="flex justify-between items-center bg-white gap-8 m-2 p-4 shadow-md rounded-2xl">
-                <div className="flex-1">
-                  <ContentCard
-                    title="Join Us"
-                    content="Want to make an impact in society? Donate to help others."
-                  />
-                </div>
-                <div className="relative w-32 h-32 flex-shrink-0">
-                  <PictureCard imageSrc="/join-us-image.png" altText="" />
-                </div>
-              </div>
-
-              {/* Donate and Join Us card */}
-              {/* <div className="flex justify-between items-center bg-white gap-8 m-2">
-                <div className="flex-1">
-              <ContentCard
-                title="Donate and Join Us"
-                content="Want to make an impact in society? Donate to help others."
-              />
-                </div>
-                <div className="relative w-24 h-24 flex-shrink-0">
-              <PictureCard imageSrc="/get-involved-image.png" />
-            </div>
-              </div> */}
-            </div>
-          </div>
-        </section>
+        <GetInvolved />
 
         {/* Meet our team section */}
         <section className="py-4 px-4 my-4 items-center justify-center text-center">
@@ -143,15 +97,15 @@ export default function Home() {
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 m-4">
             <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/meet-the-team-1.png" altText="" />
+              <PictureCard imageSrc="/person placeholder.png" altText="" />
               <ContentCard title="David Bukola" content="Head Of Operations" />
             </div>
             <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/meet-the-team-2.png" altText="" />
+              <PictureCard imageSrc="/person placeholder.png" altText="" />
               <ContentCard title="David Bukola" content="Head Of Operations" />
             </div>
             <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/meet-the-team-3.png" altText="" />
+              <PictureCard imageSrc="/person placeholder.png" altText="" />
               <ContentCard title="David Bukola" content="Head Of Operations" />
             </div>
             {/* <div className="flex flex-col items-center">
