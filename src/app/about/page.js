@@ -17,7 +17,7 @@ export default function AboutPage() {
           alt={"Group of people looking at laptop"}
         />
 
-        <div className="max-w-4xl mb-16">
+        <div className="mb-16">
           <p className="text-gray-700 mb-4">
             At the DavidBukola Foundation, our mission is simple yet powerful:
             Transforming lives, Empowering hope. We strive to alleviate poverty

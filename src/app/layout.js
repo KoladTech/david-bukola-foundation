@@ -200,22 +200,22 @@ export default function RootLayout({ children }) {
                       >
                         <GrInstagram className="w-6 h-6" />
                       </a>
-                      <a
+                      {/* <a
                         href="#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
-                      >
-                        <RiFacebookBoxFill className="w-6 h-6" />
-                      </a>
-                      <a
+                      > */}
+                      <RiFacebookBoxFill className="w-6 h-6" />
+                      {/* </a> */}
+                      {/* <a
                         href="#"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
-                      >
-                        <RiTwitterXLine className="w-6 h-6" />
-                      </a>
+                      > */}
+                      <RiTwitterXLine className="w-6 h-6" />
+                      {/* </a> */}
                     </div>
                     <a
                       href="mailto:davidbukolafoundation@gmail.com"
