@@ -13,6 +13,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 /* This makes the main content take up the remaining space */
@@ -32,4 +33,11 @@ footer {
 
 .relative.mt-auto {
   margin-top: auto;
+}
+
+.full-width-div {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
 }
