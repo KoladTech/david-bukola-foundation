@@ -2,17 +2,42 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import Link from "next/link";
 
 const faqData = [
   {
     question: "What does the foundation do?",
-    answer:
-      "Our foundation is committed to making impactful changes in communities by empowering individuals and creating opportunities. See more on our About Us page.",
+    answer: [
+      "Our foundation is committed to making impactful changes in communities by empowering individuals and creating opportunities. See more on our  ",
+      <Link key="about" href="/about" className="text-blue-300 hover:underline">
+        About Us
+      </Link>,
+      " page.",
+    ],
   },
   {
     question: "How can I join the foundation?",
-    answer:
-      " You can connect with us through our Instagram page (https://www.instagram.com/davidbukola_foundation/) or by email (davidbukolafoundation@gmail.com). Let’s work together to make a difference!",
+    answer: [
+      "You can connect with us through our ",
+      <a
+        key="instagram"
+        href="https://www.instagram.com/davidbukola_foundation/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-300 hover:underline"
+      >
+        Instagram page
+      </a>,
+      " or by email ",
+      <a
+        key="email"
+        href="mailto:davidbukolafoundation@gmail.com"
+        className="text-blue-300 hover:underline break-words"
+      >
+        davidbukolafoundation@gmail.com
+      </a>,
+      ". Let's work together to make a difference!",
+    ],
   },
   {
     question: "How do you support individuals in tech?",
@@ -55,7 +80,7 @@ function FAQItem({ question, answer }) {
       </button>
       {isOpen && (
         <div className="pb-4 text-gray-300">
-          <p>{answer}</p>
+          <p>{Array.isArray(answer) ? answer : answer}</p>
         </div>
       )}
     </div>
