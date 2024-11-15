@@ -8,8 +8,7 @@ export default function PictureCard({ imageSrc, altText }) {
         <Image
           src={imageSrc} // Path to your image
           alt={altText}
-          width={400} // Adjust width and height as needed
-          height={400}
+          fill
           className="object-cover rounded-lg"
         />
       </div>

@@ -8,6 +8,7 @@ import ContentCard from "../components/ContentCard";
 import FAQ from "../components/FAQ";
 import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
+import MeetOurTeam from "@/components/MeetOurTeam";
 
 export default function Home() {
   return (
@@ -67,7 +68,7 @@ export default function Home() {
         {/* <section>
           <div className="flex flex-col md:flex-row items-center p-8 border">
             <div className="w-full md:w-1/2 flex justify-center">
-              <PictureCard imageSrc="/projects-image.png" altText="" />
+              <PictureCard imageSrc="/project-page-image1.png" altText="" />
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center p-8 gap-y-6">
               <ContentCard
