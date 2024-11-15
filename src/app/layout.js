@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="bg-white shadow-lg full-width-div">
+        <header className="bg-white full-width-div">
           <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
               <Image
