@@ -228,34 +228,34 @@ export default function RootLayout({ children }) {
                   {/* Right Section */}
                   <div className="flex flex-col space-y-8 md:text-left md:flex-grow md:items-end items-start">
                     {/* First Row - Navigation Links */}
-                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-bold">
+                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-semibold">
                       <Link
                         href="/"
-                        className="text-black hover:text-gray-700 transition-colors"
+                        className="text-black hover:font-bold hover:scale-105 transition-transform"
                       >
                         Home
                       </Link>
                       <Link
                         href="/about"
-                        className="text-black hover:text-gray-700 transition-colors"
+                        className="text-black hover:font-bold hover:scale-105 transition-transform"
                       >
                         About Us
                       </Link>
                       <Link
                         href="/achievements"
-                        className="text-black transition-colors"
+                        className="text-black hover:font-bold hover:scale-105 transition-transform"
                       >
                         Achievements
                       </Link>
                       <Link
                         href="/projects"
-                        className="text-black transition-colors"
+                        className="text-black hover:font-bold hover:scale-105 transition-transform"
                       >
                         Projects
                       </Link>
                       <Link
                         href="/donate"
-                        className="text-black transition-colors"
+                        className="text-black hover:font-bold hover:scale-105 transition-transform"
                       >
                         Donate
                       </Link>
