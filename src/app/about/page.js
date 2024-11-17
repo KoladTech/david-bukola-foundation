@@ -11,12 +11,14 @@ export default function AboutPage() {
     <div className="bg-white">
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-8">
+        {/* <div className="full-width-div"> */}
         <HeroSection
           title={"ABOUT US"}
           description={"Learn about the Foundation"}
           imageUrl={"/main_about_us.jpg"}
           alt={"Group of people looking at laptop"}
         />
+        {/* </div> */}
 
         <div className="mb-16">
           <p className="text-gray-700 mb-4">
