@@ -1,7 +1,6 @@
 import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
-import UnderConstruction from "@/components/UnderConstruction";
 
 export default function Page() {
   return (
