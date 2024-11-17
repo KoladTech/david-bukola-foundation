@@ -43,7 +43,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="bg-white shadow-sm">
+        <header className="bg-white full-width-div">
           <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
               <Image
@@ -173,9 +173,9 @@ export default function RootLayout({ children }) {
         )}
         {children}
         {/* Default Footer Section */}
-        <div className="relative mt-auto">
+        <div className="relative mt-auto full-width-div">
           <div
-            className="absolute bottom-0 left-0 right-0 h-[calc(100%+2rem)] bg-cover bg-center"
+            className="absolute bottom-0 left-0 right-0 h-[calc(100%+2rem)] bg-cover bg-center w-full"
             style={{ backgroundImage: "url(/figma-footer-image.jpeg)" }}
           >
             <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -228,7 +228,7 @@ export default function RootLayout({ children }) {
                   {/* Right Section */}
                   <div className="flex flex-col space-y-8 md:text-left md:flex-grow md:items-end items-start">
                     {/* First Row - Navigation Links */}
-                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-semibold">
+                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md-lg:gap-4 md:justify-start font-bold">
                       <Link
                         href="/"
                         className="text-black hover:font-bold hover:scale-105 transition-transform"
