@@ -5,7 +5,7 @@ import UnderConstruction from "@/components/UnderConstruction";
 
 export default function Page() {
   return (
-    <div className="flex flex-col gap-2 my-4">
+    <div className="flex flex-col gap-2 my-4 p-4">
       {/* Hero Section */}
       <div className="flex flex-col">
         <HeroSection
@@ -29,7 +29,7 @@ Lorem ipsum dolor sit amet consectetur. Consectetur massa eu pharetra porttitor 
 Lorem ipsum dolor sit amet consectetur. Consectetur massa eu pharetra porttitor nulla ornare. Cursus senectus id ipsum cras cursus. Nunc sed eu amet purus. Diam aliquet enim lectus etiam aliquam eu. Lorem ipsum dolor sit amet consectetur. Consectetur massa eu pharetra porttitor nulla ornare. Cursus senectus id ipsum cras cursus. Nunc sed eu amet purus. Diam aliquet enim lectus etiam aliquam eu."
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-6">
           <div className="relative aspect-[4/3] w-full">
             <PictureCard
               className=""
