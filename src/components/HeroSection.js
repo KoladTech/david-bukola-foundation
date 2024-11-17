@@ -11,7 +11,7 @@ export default function HeroSection({
   return (
     <>
       <div className="flex flex-col md:flex-row items-start justify-between md:items-end my-4 space-y-4">
-        <h1 className="text-2xl md:text-5xl font-semibold">
+        <h1 className="text-4xl md:text-5xl font-semibold">
           {title}
           <span className="block">{title2}</span>
         </h1>
