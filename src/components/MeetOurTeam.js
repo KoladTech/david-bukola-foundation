@@ -66,7 +66,7 @@ export default function MeetOurTeam() {
             <PictureCard imageSrc="/person placeholder.png" altText="" />
           </div>
           <div>
-            <ContentCard title="Demi Fasanya" content="CEO" />
+            <ContentCard title="Demi Fasanya" content="Co-founder, CEO" />
           </div>
         </div>
 
