@@ -8,6 +8,7 @@ import ContentCard from "../components/ContentCard";
 import FAQ from "../components/FAQ";
 import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
+import MeetOurTeam from "@/components/MeetOurTeam";
 
 export default function Home() {
   return (
@@ -67,7 +68,7 @@ export default function Home() {
         {/* <section>
           <div className="flex flex-col md:flex-row items-center p-8 border">
             <div className="w-full md:w-1/2 flex justify-center">
-              <PictureCard imageSrc="/projects-image.png" altText="" />
+              <PictureCard imageSrc="/project-page-image1.png" altText="" />
             </div>
             <div className="w-full md:w-1/2 flex flex-col justify-center p-8 gap-y-6">
               <ContentCard
@@ -87,39 +88,14 @@ export default function Home() {
         <GetInvolved />
 
         {/* Meet our team section */}
-        <section className="py-4 px-4 my-4 items-center justify-center text-center">
-          <h2 className="text-4xl font-semibold mb-2 text-center">
-            Meet Our Team
-          </h2>
-          <h3 className="">
-            The Team Powering Our Vision and Making a Difference
-          </h3>
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 p-4 m-4">
-            <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/person placeholder.png" altText="" />
-              <ContentCard title="Demi Fasanya" content="Co-founder, CEO" />
-            </div>
-            <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/person placeholder.png" altText="" />
-              <ContentCard
-                title="Mayowa Kolawole"
-                content="Head Of Operations"
-              />
-            </div>
-            {/* <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/person placeholder.png" altText="" />
-              <ContentCard title="David Bukola" content="Head Of Operations" />
-            </div> */}
-            {/* <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/meet-the-team-4.png" altText="" />
-              <ContentCard title="David Bukola" content="Head Of Operations" />
-            </div> */}
-          </div>
-        </section>
+        <MeetOurTeam />
 
+        {/* Frequently asked questions section */}
         <div>
           <FAQ />
         </div>
+
+        {/* Main div closing tag */}
       </div>
     </main>
   );
