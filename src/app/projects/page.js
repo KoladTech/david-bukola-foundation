@@ -1,8 +1,36 @@
+"use client";
+import { useEffect, useState } from "react";
 import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
+import { fetchProjects } from "@/firebase/projectPage";
 
-export default function Page() {
+export default function ProjectsPage() {
+  const [projects, setProjects] = useState([]);
+  const [error, setError] = useState(null);
+
+  // Fetch projects on component mount
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const fetchedProjects = await fetchProjects();
+        setProjects(fetchedProjects);
+        console.log(projects);
+        console.log(fetchedProjects);
+      } catch (err) {
+        setError("Failed to load projects");
+        console.error(err);
+      }
+    };
+
+    loadProjects();
+    console.log(projects);
+  }, []);
+
+  useEffect(() => {
+    console.log("Projects updated:", projects);
+  }, [projects]);
+
   return (
     <div className="flex flex-col gap-2 my-4 p-4">
       {/* Hero Section */}
@@ -17,6 +45,19 @@ export default function Page() {
       </div>
       {/* Project Sections  */}
       <div className="flex flex-col space-y-10 mb-24">
+        {/* Data from backend */}
+        {error ? (
+          <p className="text-red-500">{error}</p>
+        ) : (
+          projects.map((project) => (
+            <div key={project.id}>
+              <h2>{project.title}</h2>
+              <p>{project.description}</p>
+            </div>
+          ))
+        )}
+        {/* Data from backend */}
+
         <h3 className="text-3xl font-bold">Coming soon</h3>
         <div>
           <ContentCard
