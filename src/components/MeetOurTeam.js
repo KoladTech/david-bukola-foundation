@@ -71,23 +71,22 @@ export default function MeetOurTeam() {
         </div>
 
         <div className="flex flex-col items-center">
-          <div className="relative w-64 h-64 rounded-full mb-4 overflow-hidden">
+          <div className="relative w-64 h-64 mb-4 overflow-hidden">
             <PictureCard imageSrc="/person placeholder.png" altText="" />
           </div>
           <div>
             <ContentCard title="Mayowa Kolawole" content="Head Of Operations" />
           </div>
         </div>
-
+        {/* This commented section implements the circle picture option */}
         {/* <div className="flex flex-col items-center">
-              <PictureCard imageSrc="/person placeholder.png" altText="" />
-              <ContentCard title="David Bukola" content="Head Of Operations" />
-            </div> */}
-        {/* <div className="flex flex-col items-center">
-        
-        <PictureCard imageSrc="/meet-the-team-4.png" altText="" />
-              <ContentCard title="David Bukola" content="Head Of Operations" />
-            </div> */}
+          <div className="relative w-64 h-64 rounded-full mb-4 overflow-hidden">
+            <PictureCard imageSrc="/person placeholder.png" altText="" />
+          </div>
+          <div>
+            <ContentCard title="Mayowa Kolawole" content="Head Of Operations" />
+          </div>
+        </div> */}
       </div>
     </section>
   );
