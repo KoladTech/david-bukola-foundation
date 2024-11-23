@@ -12,14 +12,16 @@ import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
 
 // Imports for testing Firebase analytics using a custom event
-// import { logEvent } from "firebase/analytics";
-// import { analytics } from "@/firebase/firebaseConfig";
+import { logEvent } from "firebase/analytics";
+import { analytics } from "@/firebase/firebaseConfig";
 
 export default function Home() {
   // Testing Firebase analytics using a custom event
-  // if (analytics) {
-  //   logEvent(analytics, "custom_event_name", { key: "value" });
-  // }
+  if (analytics) {
+    logEvent(analytics, "Testing Analytics with a custom event", {
+      key: "Custom-event-works",
+    });
+  }
   return (
     <main>
       {/* Main home page div */}
