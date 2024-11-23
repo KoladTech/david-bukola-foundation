@@ -8,6 +8,7 @@ export default function HeroSection({
   imageUrl,
   alt,
   showStats = false,
+  stats = null,
 }) {
   return (
     <>
@@ -27,24 +28,31 @@ export default function HeroSection({
             fill={true}
             style={{ objectFit: "cover" }}
           />
-          {showStats && (
-            <div className="absolute inset-0 flex flex-col justify-end p-8">
-              <div className="text-white mb-8">
-                <div className="text-6xl font-bold mb-2">1,000+</div>
-                <div className="text-2xl">People Reached</div>
-              </div>
-              <div className="flex justify-start gap-8 text-white">
-                <div>
-                  <div className="text-5xl font-bold mb-2">10+</div>
-                  <div className="text-xl">Schools Reached</div>
+          {showStats &&
+            stats && ( // Show stats only if showStats is true and stats are provided
+              <div className="absolute inset-0 flex flex-col justify-end p-8">
+                <div className="text-white mb-8">
+                  <div className="text-6xl font-bold mb-2">
+                    {stats.peopleReached}+
+                  </div>
+                  <div className="text-2xl">People Reached</div>
                 </div>
-                <div>
-                  <div className="text-5xl font-bold mb-2">20+</div>
-                  <div className="text-xl">States Reached</div>
+                <div className="flex justify-start gap-8 text-white">
+                  <div>
+                    <div className="text-5xl font-bold mb-2">
+                      {stats.schoolsReached}+
+                    </div>
+                    <div className="text-xl">Schools Reached</div>
+                  </div>
+                  <div>
+                    <div className="text-5xl font-bold mb-2">
+                      {stats.statesReached}+
+                    </div>
+                    <div className="text-xl">States Reached</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
         <div className="absolute bottom-4 right-4 bg-white p-4 rounded-lg shadow-lg">
           <p className="text-sm mb-2">Want to make an impact?</p>
