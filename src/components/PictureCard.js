@@ -4,7 +4,7 @@ export default function PictureCard({ imageSrc, altText }) {
   return (
     <>
       {/* Right Side - Image  */}
-      <div className="w-full justify-center items-center">
+      <div className="relative w-full h-full justify-center items-center">
         <Image
           src={imageSrc} // Path to your image
           alt={altText}

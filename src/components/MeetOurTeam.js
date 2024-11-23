@@ -63,7 +63,7 @@ export default function MeetOurTeam() {
         {/* Team cards */}
         <div className="flex flex-col items-center">
           <div className=" relative w-64 h-64 mb-4 overflow-hidden">
-            <PictureCard imageSrc="/person placeholder.png" altText="" />
+            <PictureCard imageSrc="/Demi-CEO-image.png" altText="" />
           </div>
           <div>
             <ContentCard title="Demi Fasanya" content="Co-founder, CEO" />
@@ -72,7 +72,7 @@ export default function MeetOurTeam() {
 
         <div className="flex flex-col items-center">
           <div className="relative w-64 h-64 mb-4 overflow-hidden">
-            <PictureCard imageSrc="/person placeholder.png" altText="" />
+            <PictureCard imageSrc="/Mayowa-HOP-image.png" altText="" />
           </div>
           <div>
             <ContentCard title="Mayowa Kolawole" content="Head Of Operations" />
