@@ -35,15 +35,21 @@ export default function HeroSection({
                   {/* Mobile layout */}
                   <div className="flex flex-col md:hidden space-y-2">
                     <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">1,000+</div>
+                      <div className="text-4xl font-bold mb-2">
+                        {stats.peopleReached}+
+                      </div>
                       <div className="text-xl">People Reached</div>
                     </div>
                     <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">10+</div>
+                      <div className="text-4xl font-bold mb-2">
+                        {stats.schoolsReached}+
+                      </div>
                       <div className="text-xl">Schools Reached</div>
                     </div>
                     <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">20+</div>
+                      <div className="text-4xl font-bold mb-2">
+                        {stats.statesReached}+
+                      </div>
                       <div className="text-xl">States Reached</div>
                     </div>
                   </div>
@@ -51,16 +57,22 @@ export default function HeroSection({
                   {/* Desktop layout */}
                   <div className="hidden md:flex md:flex-col">
                     <div className="text-white mb-8">
-                      <div className="text-6xl font-bold mb-2">1,000+</div>
+                      <div className="text-6xl font-bold mb-2">
+                        {stats.peopleReached}+
+                      </div>
                       <div className="text-2xl">People Reached</div>
                     </div>
                     <div className="flex gap-16">
                       <div className="text-white">
-                        <div className="text-5xl font-bold mb-2">10+</div>
+                        <div className="text-5xl font-bold mb-2">
+                          {stats.schoolsReached}+
+                        </div>
                         <div className="text-xl">Schools Reached</div>
                       </div>
                       <div className="text-white">
-                        <div className="text-5xl font-bold mb-2">20+</div>
+                        <div className="text-5xl font-bold mb-2">
+                          {stats.statesReached}+
+                        </div>
                         <div className="text-xl">States Reached</div>
                       </div>
                     </div>
