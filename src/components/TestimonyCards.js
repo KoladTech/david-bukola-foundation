@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import { FaArrowCircleRight } from "react-icons/fa";
 
@@ -52,7 +53,9 @@ export default function ScrollableCardRow() {
         {/* Default Section */}
         <div className="flex flex-col p-4 text-center md:text-start">
           <h2 className="text-2xl font-bold mb-6 ">Testimonies</h2>
-          <p>"Hear what people are saying about our foundation."</p>
+          <Link href="/testimonials" className="flex-1">
+            <p>"Hear what people are saying about our foundation."</p>
+          </Link>
           <div className="flex flex-row justify-center md:justify-start my-4 py-4 gap-4">
             <FaArrowCircleLeft className="text-5xl text-blue-500" />
             <FaArrowCircleRight className="text-5xl text-blue-500" />
