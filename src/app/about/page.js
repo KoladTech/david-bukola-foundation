@@ -79,7 +79,7 @@ export default function AboutPage() {
             <section className="bg-[#0A2647] text-white py-16 full-width-div ">
               <div className="container max-w-6xl mx-auto px-4">
                 <div className="mb-12">
-                  <h2 className="text-4xl font-bold mb-4">Mission</h2>
+                  <h2 className="text-4xl font-bold mb-4">Our Mission</h2
                   <p className="text-gray-200"> {statements.mission}</p>
                 </div>
 
