@@ -1,0 +1,90 @@
+name: Build and Deploy Workflow
+
+# Trigger workflow on a pull request merged into the production branch or manually
+on:
+  pull_request:
+    branches:
+      - production-branch
+  workflow_dispatch: # Allow manual triggering of the workflow
+
+jobs:
+# Job to handle versioning
+  version:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    
+    steps:
+        # Step 1: Checks into the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+        # Step 2: Read the current version from the VERSION file
+      - name: Read current version
+        id: read_version
+        run: echo "::set-output name=version::$(cat VERSION)"
+        
+        # Step 3: Increment the semantic version
+      - name: Get new version
+        id: version
+        uses: paulhatch/semantic-version@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          current-version: ${{ steps.read_version.outputs.version }}
+
+
+        # Step 4: Save the new version to the VERSION file
+      - name: Save new version
+        run: echo "${{ steps.version.outputs.new_version }}" > VERSION
+
+        # Get commit name and tag the appropriate semantic version 
+      - name: Commit and tag new version
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add VERSION
+          git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
+          git tag "v${{ steps.version.outputs.new_version }}"
+          git push --follow-tags
+
+  # Job to build and deploy the Docker image
+  build_and_deploy:
+    needs: version # Wait for the versioning job to complete
+    runs-on: ubuntu-latest
+    
+    # Trigger only on merged pull requests or manual runs
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.ref == 'refs/heads/production-branch' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Docker Buildx for advanced Docker build capabilities
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Log in to GitHub Container Registry (GHCR)
+      - name: Log in to GHCR
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 4: Build and push the Docker image to GHCR
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: . # Use the current directory as the Docker context
+          push: true # Push the image to the registry
+          tags: ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+
+      # Step 5: Deploy the Docker image to Hostinger VPS
+      - name: Deploy to Hostinger VPS
+        run: |
+          ssh -o StrictHostKeyChecking=no user@hostinger_vps_ip << 'EOF'
+          docker pull ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          docker stop dbf_current_container || true
+          docker rm dbf_current_container || true
+          docker run -d --name dbf_current_container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          EOF
