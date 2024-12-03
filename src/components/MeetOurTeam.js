@@ -16,9 +16,9 @@ const teamMembers = [
   },
   {
     id: 3,
-    name: "Mr David",
-    role: "Chief Consultant",
-    image: "/CHIEF-CONSULTANT-image.png",
+    name: "Mr David Wambebe",
+    role: "Head Consultant",
+    image: "/Head-Consultant-image.png",
   },
 ];
 
@@ -33,7 +33,7 @@ export default function MeetOurTeam() {
         {teamMembers.map((member) => (
           <div className="flex flex-col items-center justify-center">
             <div key={member.id}>
-              <div className=" flex relative w-64 h-64 mb-4 overflow-hidden">
+              <div className=" flex w-72 h-72 mb-4 overflow-hidden">
                 <PictureCard imageSrc={member.image} altText="" />
               </div>
               <div className="flex items-center justify-center">
