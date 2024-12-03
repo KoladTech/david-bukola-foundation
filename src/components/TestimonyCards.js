@@ -9,7 +9,7 @@ const cards = [
     title: "Card 1",
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit fringilla sem eget rutrum. Interdum et malesuada fames ac  Quisque vehicula viverra risus quis iaculis.",
-    imageSrc: "/symbol.svg",
+    imageSrc: "/person placeholder.png",
     name: "Name",
   },
   {
@@ -17,7 +17,7 @@ const cards = [
     title: "Card 2",
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque blandit fringilla sem eget rutrum. Interdum et malesuada fames ac  Quisque vehicula viverra risus quis iaculis.",
-    imageSrc: "/symbol.svg",
+    imageSrc: "/person placeholder.png",
     name: "Name",
   },
   {
@@ -25,7 +25,7 @@ const cards = [
     title: "Card 3",
     content:
       "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed quis libero quis  suscipit vitae ante eu, scelerisque hendrerit ipsum.",
-    imageSrc: "/symbol.svg",
+    imageSrc: "/person placeholder.png",
     name: "Name",
   },
   {
@@ -33,7 +33,7 @@ const cards = [
     title: "Card 4",
     content:
       "Praesent a cursus sapien, id dictum magna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  efficitur. Fusce lacinia urna sodales vehicula suscipit.",
-    imageSrc: "/symbol.svg",
+    imageSrc: "/person placeholder.png",
     name: "Name",
   },
   {
@@ -41,7 +41,7 @@ const cards = [
     title: "Card 5",
     content:
       "Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Ut consequat sapien ut sapien vehicula fermentum. Maecenas  nec sem tincidunt, at feugiat leo porta. Morbi et accumsan nulla, eu auctor dui.",
-    imageSrc: "/symbol.svg",
+    imageSrc: "/person placeholder.png",
     name: "Name",
   },
 ];

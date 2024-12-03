@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Play, MessageSquarePlus, VideoIcon } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
+import VideoPlayer from "@/components/VideoPlayer";
 
 const testimonials = [
   {
@@ -11,8 +12,8 @@ const testimonials = [
     name: "Vincent Anderson",
     role: "Student volunteer",
     content:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-    image: "/placeholder.svg?height=400&width=400",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
+    image: "/person placeholder.png?height=400&width=400",
     type: "text",
   },
   {
@@ -21,7 +22,7 @@ const testimonials = [
     role: "Partner University of Lagos",
     content:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/person placeholder.png",
     type: "text",
   },
   {
@@ -30,7 +31,7 @@ const testimonials = [
     role: "Student volunteer",
     content:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/person placeholder.png",
     type: "text",
   },
   {
@@ -38,15 +39,15 @@ const testimonials = [
     name: "Vincent Anderson",
     role: "Student volunteer",
     content:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-    image: "/placeholder.svg?height=400&width=400",
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis. ",
+    image: "/person placeholder.png",
     type: "text",
   },
   {
     id: 5,
     name: "Deyemi Akande",
     role: "Partner University of Lagos",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/person placeholder.png?height=400&width=400",
     type: "video",
     videoUrl: "/video-testimonial-1.mp4",
   },
@@ -54,7 +55,7 @@ const testimonials = [
     id: 6,
     name: "Deyemi Akande",
     role: "Partner University of Lagos",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/person placeholder.png?height=400&width=400",
     type: "video",
     videoUrl: "/video-testimonial-2.mp4",
   },
@@ -62,9 +63,9 @@ const testimonials = [
     id: 7,
     name: "Deyemi Akande",
     role: "Partner University of Lagos",
-    image: "/placeholder.svg?height=400&width=400",
+    image: "/person placeholder.png?height=400&width=400",
     type: "video",
-    videoUrl: "/video-testimonial-3.mp4",
+    videoUrl: "vidd.mp4",
   },
 ];
 
@@ -72,20 +73,36 @@ export default function TestimonialsPage() {
   return (
     <div className="container mx-auto px-4 py-8 my-8">
       {/* Featured Video Section */}
-      <HeroSection
+
+      {/* Featured Video Section */}
+      <div className="mb-6 rounded-lg overflow-hidden">
+        <VideoPlayer
+          src="/videoTest.mp4"
+          poster="/placeholder.svg?height=600&width=1200"
+          className="w-full aspect-video"
+        />
+      </div>
+
+      {/* <HeroSection
         title={"Testimonials"}
         imageUrl={"/main_about_us.jpg"}
         alt={"Featured testimonial video thumbnail"}
         video={true}
-      />
+      /> */}
 
       {/* Add Testimony Buttons */}
-      <div className="flex gap-4 mb-8">
-        <Button variant="outline" className="flex items-center gap-2">
+      <div className="flex flex-wrap gap-4 mb-8">
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 rounded-3xl"
+        >
           <MessageSquarePlus className="h-4 w-4" />
           Add Text Testimony
         </Button>
-        <Button variant="outline" className="flex items-center gap-2">
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 rounded-3xl"
+        >
           <VideoIcon className="h-4 w-4" />
           Add Video Testimony
         </Button>
@@ -98,7 +115,7 @@ export default function TestimonialsPage() {
           .map((testimonial, index) => (
             <Card
               key={testimonial.id}
-              className={`p-6 ${
+              className={`p-6 h-80 ${
                 index % 2 === 1 ? "bg-blue-500 text-white" : ""
               }`}
             >
@@ -135,7 +152,12 @@ export default function TestimonialsPage() {
               key={testimonial.id}
               className="relative aspect-square rounded-lg overflow-hidden bg-gray-100"
             >
-              <Image
+              <VideoPlayer
+                src={testimonial.videoUrl}
+                poster={testimonial.image}
+                className="w-full h-full"
+              />
+              {/* <Image
                 src={testimonial.image}
                 alt={`${testimonial.name}'s video thumbnail`}
                 fill
@@ -150,7 +172,7 @@ export default function TestimonialsPage() {
                   <Play className="h-6 w-6" />
                   <span className="sr-only">Play video testimonial</span>
                 </Button>
-              </div>
+              </div> */}
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent text-white">
                 <h3 className="font-semibold">{testimonial.name}</h3>
                 <p className="text-sm text-gray-200">{testimonial.role}</p>
