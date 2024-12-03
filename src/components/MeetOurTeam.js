@@ -16,7 +16,7 @@ const teamMembers = [
   },
   {
     id: 3,
-    name: "Mr David Wambebe",
+    name: "David Wambebe",
     role: "Head Consultant",
     image: "/Head-Consultant-image.png",
   },
