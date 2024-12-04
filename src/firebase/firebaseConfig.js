@@ -2,6 +2,7 @@ import { config } from "dotenv";
 config({ path: ".env.local" });
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
 
 // console.log(process.env.NEXT_PUBLIC_FIREBASE_API_KEY);
 
@@ -28,5 +29,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+// const analytics = getAnalytics(app);
+
+// Initialize Firebase Analytics
+export const analytics =
+  typeof window !== "undefined" ? getAnalytics(app) : null;
 
 export default db;
