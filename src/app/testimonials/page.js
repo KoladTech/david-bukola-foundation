@@ -47,25 +47,25 @@ const testimonials = [
     id: 5,
     name: "Deyemi Akande",
     role: "Partner University of Lagos",
-    image: "/person placeholder.png?height=400&width=400",
+    image: "",
     type: "video",
-    videoUrl: "/video-testimonial-1.mp4",
+    videoUrl: "/vid.mp4",
   },
   {
     id: 6,
     name: "Deyemi Akande",
     role: "Partner University of Lagos",
-    image: "/person placeholder.png?height=400&width=400",
+    image: "",
     type: "video",
-    videoUrl: "/video-testimonial-2.mp4",
+    videoUrl: "/vid2.mp4",
   },
   {
     id: 7,
     name: "Deyemi Akande",
     role: "Partner University of Lagos",
-    image: "/person placeholder.png?height=400&width=400",
+    image: "",
     type: "video",
-    videoUrl: "vidd.mp4",
+    videoUrl: "vid3.mp4",
   },
 ];
 
@@ -78,7 +78,7 @@ export default function TestimonialsPage() {
       <div className="mb-6 rounded-lg overflow-hidden">
         <VideoPlayer
           src="/videoTest.mp4"
-          poster="/placeholder.svg?height=600&width=1200"
+          poster="/thumbnail.jpg?height=600&width=1200"
           className="w-full aspect-video"
         />
       </div>

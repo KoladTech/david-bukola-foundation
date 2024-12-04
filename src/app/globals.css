@@ -41,6 +41,36 @@ footer {
   left: 50%;
   transform: translateX(-50%);
 }
+/* Custom scrollbar styles */
+.scrollbar-custom {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #3b82f6 transparent; /* Firefox */
+}
+/* Show and customize scrollbar on hover for larger screens */
+@media (min-width: 1024px) {
+  .scrollbar-custom {
+    scrollbar-width: thinb; /* Make scrollbar thin for Firefox */
+    scrollbar-color: #3b82f6 transparent; /* Firefox colors */
+  }
+}
+/* Other Screens */
+.scrollbar-custom::-webkit-scrollbar {
+  height: 8px; /* Adjust height for horizontal scrollbar */
+  background: transparent; /* Keep background invisible */
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #888; /* Thumb color */
+  border-radius: 4px; /* Rounded corners */
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Darker thumb color on hover */
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: transparent; /* Transparent track */
+}
 
 @layer base {
   :root {
