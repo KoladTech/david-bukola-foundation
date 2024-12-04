@@ -269,8 +269,7 @@ export default function RootLayout({ children }) {
                     {/* Third Row - Developer and Designer Info */}
                     <div>
                       <p>
-                        Designed by Abimbola | Developed by Ibrahim Adeshina &
-                        Kayode Kolawole
+                        Designed by Abimbola | Developed by Ibrahim & Kayode
                       </p>
                     </div>
                   </div>
