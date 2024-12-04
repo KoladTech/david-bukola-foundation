@@ -81,8 +81,15 @@ jobs:
 
       # Step 5: Deploy the Docker image to Hostinger VPS
       - name: Deploy to Hostinger VPS
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}
+          HOSTINGER_SSH_USER: ${{ secrets.HOSTINGER_SSH_USER }}
+          HOSTINGER_SSH_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
         run: |
-          ssh -o StrictHostKeyChecking=no user@hostinger_vps_ip << 'EOF'
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST << 'EOF'
           docker pull ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
           docker stop dbf_current_container || true
           docker rm dbf_current_container || true
