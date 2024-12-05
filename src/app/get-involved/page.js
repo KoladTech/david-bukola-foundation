@@ -60,7 +60,7 @@ export default function Page() {
           </div>
           <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center">
             <ContentCard title="Events" content={content} />
-            <NewPageButton buttonText="/events" />
+            <NewPageButton buttonText="Events" href="/events" />
           </div>
         </div>
       </div>
