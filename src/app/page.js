@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import DonationWidget from "../components/DonationWidget";
 import AboutUs from "@/components/AboutUs";
@@ -10,7 +11,17 @@ import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
 
+// Imports for testing Firebase analytics using a custom event
+import { logEvent } from "firebase/analytics";
+import { analytics } from "@/firebase/firebaseConfig";
+
 export default function Home() {
+  // Testing Firebase analytics using a custom event
+  if (analytics) {
+    logEvent(analytics, "Testing Analytics with a custom event", {
+      key: "Custom-event-works",
+    });
+  }
   return (
     <main>
       {/* Main home page div */}
