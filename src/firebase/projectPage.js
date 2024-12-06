@@ -1,9 +1,6 @@
 import db from "./firebaseConfig.js";
 import { collection, getDocs } from "firebase/firestore";
 import { z } from "zod";
-// import { firebaseApp } from "./firebase"; // Import your Firebase initialization
-
-// const db = getFirestore(firebaseApp);
 
 // Data to be gotten from the database
 const projectSchema = z.object({
@@ -15,6 +12,7 @@ const projectSchema = z.object({
 // Function to fetch available projects.
 export async function fetchProjects() {
   try {
+    // Get the collection and documents from db
     const projectsCollection = collection(db, "Projects");
     const snapshot = await getDocs(projectsCollection);
 
@@ -24,17 +22,16 @@ export async function fetchProjects() {
       console.log(doc.id, " => ", doc.data());
     });
 
+    // Maps the received document data from firestore into an array of js objects
     const projects = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    console.log(projects);
     //   validate the data received from database
     // return projects.forEach((project) => projectSchema.parse(project));
     return projects;
   } catch (error) {
     console.error("Error fetching projects:", error);
-    // throw new Error("Failed to fetch project");
   }
 }
