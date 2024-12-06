@@ -41,7 +41,7 @@ export default function ProjectsPage() {
           className=""
           title="PROJECTS"
           description=""
-          imageUrl="/project-page-main-image.png"
+          imageUrl="/projects-herosection-image.jpg"
           alt=""
         />
       </div>
@@ -118,7 +118,7 @@ export default function ProjectsPage() {
                 <div className="relative aspect-[4/3] w-full">
                   <PictureCard
                     className=""
-                    imageSrc="/project-page-image2.png"
+                    imageSrc="/borehole-project-image.jpg"
                     altText=""
                   />
                 </div>
