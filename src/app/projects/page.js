@@ -58,23 +58,15 @@ export default function ProjectsPage() {
           projects.map((project) => (
             <div key={project.id} className="space-y-4">
               <div className="flex flex-col gap-y-4">
+                {/* Title */}
                 <div>
                   <h3 className="text-3xl font-bold">
                     {project.title || "No Title Available"}
                   </h3>
                 </div>
-                <div className="">
-                  <h2 className="text-2xl font-bold">
-                    Planned Budget:{" "}
-                    {project.plannedBudget
-                      ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat("en-NG", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }).format(project.plannedBudget)}`
-                      : "No Budget Yet"}
-                  </h2>
-                </div>
               </div>
+
+              {/* Description */}
               <p>{project.description || "No Description Available"}</p>
               {/* <h1 className="text-xl font-semibold text-gray-700 mt-2 sm:mt-0">
                 Planned Start Date:{" "}
@@ -99,9 +91,43 @@ export default function ProjectsPage() {
                     : "No Timestamp Available"}{" "}
                 </span>
               </h1> */}
+
+              {/* Text Budget Written as header */}
+              <div className="">
+                {/* <h2 className="text-2xl font-bold">
+                  Planned Budget:{" "}
+                  {project.plannedBudget
+                    ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat("en-NG", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }).format(project.plannedBudget)}`
+                    : "No Budget Yet"}
+                </h2> */}
+              </div>
+
+              {/* Details Row */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+                {/* Planned Budget */}
                 <Card className="bg-white/10 backdrop-blur-sm p-4 flex items-start gap-3">
                   <Wallet className="w-6 h-6 text-blue-500" />
+                  <div>
+                    <h2 className="text-blue-500 text-sm font-semibold mt-2 sm:mt-0">
+                      Planned Budget{" "}
+                    </h2>
+                    <p className="font-semibold">
+                      {project.plannedBudget
+                        ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }).format(project.plannedBudget)}`
+                        : "No Budget Yet"}
+                    </p>
+                  </div>
+                </Card>
+
+                {/* Planned End Date Card */}
+                <Card className="bg-white/10 backdrop-blur-sm p-4 flex items-start gap-3">
+                  <Calendar className="w-6 h-6 text-blue-500" />
                   <div>
                     <h1 className="text-blue-500 text-sm font-semibold mt-2 sm:mt-0">
                       Planned Start Date
@@ -119,6 +145,8 @@ export default function ProjectsPage() {
                     </p>
                   </div>
                 </Card>
+
+                {/* Planned End Date Card */}
                 <Card className="bg-white/10 backdrop-blur-sm p-4 flex items-start gap-3">
                   <Calendar className="w-6 h-6 text-blue-500" />
                   <div>
@@ -127,34 +155,33 @@ export default function ProjectsPage() {
                     </h1>
                     <p className="font-semibold">
                       {project.expectedCompletionDate
-                        ? new Date(
-                            project.expectedCompletionDate.seconds * 1000
-                          ).toLocaleDateString()
+                        ? new Intl.DateTimeFormat("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                          }).format(
+                            new Date(
+                              project.expectedCompletionDate.seconds * 1000
+                            )
+                          )
                         : "No Timestamp Available"}
                     </p>
                   </div>
                 </Card>
-                <Card className="bg-white/10 backdrop-blur-sm p-4 flex items-start gap-3">
-                  <Clock className="w-6 h-6 text-blue-500" />
-                  <div>
-                    <div>
-                      <h1 className="text-blue-500 text-sm font-semibold mt-2 sm:mt-0">
-                        Duration
-                      </h1>
-                    </div>
-                    <p className="font-semibold">
-                      {`${project.duration} months` || "No Title Available"}
-                    </p>
-                  </div>
-                </Card>
+
+                {/* Location Card */}
                 <Card className="bg-white/10 backdrop-blur-sm p-4 flex items-start gap-3">
                   <Target className="w-6 h-6 text-blue-500" />
                   <div>
-                    <p className="text-blue-500 text-sm">Location</p>
+                    <h1 className="text-blue-500 text-sm font-semibold mt-2 sm:mt-0">
+                      Location
+                    </h1>
                     <p className="font-semibold">Kaduna, Nigeria</p>
                   </div>
                 </Card>
               </div>
+
+              {/* Goals */}
               <h2 className="text-3xl font-bold">Goals</h2>
               {/* Check if goal is an array and map over it */}
               {Array.isArray(project.goals) ? (
