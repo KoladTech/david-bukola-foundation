@@ -1,5 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Button } from "./ui/button";
+import { Play } from "lucide-react";
 
 export default function HeroSection({
   title,
@@ -9,11 +11,12 @@ export default function HeroSection({
   alt,
   showStats = false,
   stats = null,
+  video = false,
 }) {
   return (
     <>
       <div className="flex flex-col md:flex-row items-start justify-between md:items-end my-4 space-y-4">
-        <h1 className="text-4xl md:text-5xl font-semibold">
+        <h1 className="text-4xl md:text-5xl font-bold">
           {title}
           <span className="block">{title2}</span>
         </h1>
@@ -28,6 +31,30 @@ export default function HeroSection({
             fill={true}
             style={{ objectFit: "cover" }}
           />
+          {/* Video section for displaying the Testimonials Page featured video */}
+          {video && (
+            <div>
+              <div className="relative w-full aspect-video mb-6 rounded-lg overflow-hidden bg-gray-100">
+                <Image
+                  src="/placeholder.svg?height=600&width=1200"
+                  alt="Featured testimonial video thumbnail"
+                  fill
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <Button
+                    size="lg"
+                    variant="secondary"
+                    className="rounded-full w-16 h-16 p-0"
+                  >
+                    <Play className="h-8 w-8" />
+                    <span className="sr-only">Play featured video</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+          {/* Section for displaying stats on Achievements page */}
           {showStats &&
             stats && ( // Show stats only if showStats is true and stats are provided
               <div className="absolute inset-0">
@@ -36,21 +63,24 @@ export default function HeroSection({
                   <div className="flex flex-col md:hidden space-y-2">
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
-                        {stats.peopleReached}+
+                        {/* {stats.peopleReached}+ */}
+                        2,000,000+
                       </div>
-                      <div className="text-xl">People Reached</div>
+                      <div className="text-xl">Support provided</div>
                     </div>
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
-                        {stats.schoolsReached}+
+                        {/* {stats.schoolsReached}+ */}
+                        9+
                       </div>
                       <div className="text-xl">Schools Reached</div>
                     </div>
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
-                        {stats.statesReached}+
+                        {/* {stats.statesReached}+ */}
+                        100+
                       </div>
-                      <div className="text-xl">States Reached</div>
+                      <div className="text-xl">People Reached</div>
                     </div>
                   </div>
 
@@ -58,22 +88,25 @@ export default function HeroSection({
                   <div className="hidden md:flex md:flex-col">
                     <div className="text-white mb-8">
                       <div className="text-6xl font-bold mb-2">
-                        {stats.peopleReached}+
+                        {/* {stats.peopleReached}+  */}
+                        2,000,000+
                       </div>
-                      <div className="text-2xl">People Reached</div>
+                      <div className="text-2xl">Support Provided</div>
                     </div>
                     <div className="flex gap-16">
                       <div className="text-white">
                         <div className="text-5xl font-bold mb-2">
-                          {stats.schoolsReached}+
+                          {/* {stats.schoolsReached}+ */}
+                          9+
                         </div>
                         <div className="text-xl">Schools Reached</div>
                       </div>
                       <div className="text-white">
                         <div className="text-5xl font-bold mb-2">
-                          {stats.statesReached}+
+                          {/* {stats.statesReached}+ */}
+                          100+
                         </div>
-                        <div className="text-xl">States Reached</div>
+                        <div className="text-xl">People Reached</div>
                       </div>
                     </div>
                   </div>

@@ -37,3 +37,6 @@ next-env.d.ts
 
 #ignore .vs folder
 .vs
+
+# test firebase.js file
+/src/firebase/testFirebase.js
