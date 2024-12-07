@@ -4,6 +4,7 @@ import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
 import { fetchProjects } from "@/firebase/projectPage";
+import { NAIRA_SYMBOL } from "@/constants";
 
 export default function ProjectsPage() {
   // variables to store and set states for data and errors asynchronously
@@ -41,7 +42,7 @@ export default function ProjectsPage() {
           className=""
           title="PROJECTS"
           description=""
-          imageUrl="/projects-herosection-image.jpg"
+          imageUrl="/dbf-hands-collaboration.png"
           alt=""
         />
       </div>
@@ -54,17 +55,22 @@ export default function ProjectsPage() {
           // Each project displayed
           projects.map((project) => (
             <div key={project.id} className="space-y-4">
-              <div className="flex flex-col md:flex-row gap-x-12 ">
+              <div className="flex flex-col gap-y-4">
                 <div>
                   <h3 className="text-3xl font-bold">
                     {project.title || "No Title Available"}
                   </h3>
                 </div>
-                <div className="flex justify-end items-end">
-                  <h1 className="text-xl font-semibold text-gray-700 mt-2 sm:mt-0">
+                <div className="">
+                  <h2 className="text-2xl font-bold">
                     Planned Budget:{" "}
-                    <span> {project.plannedBudget || "No Budget Yet"} </span>
-                  </h1>
+                    {project.plannedBudget
+                      ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat("en-NG", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        }).format(project.plannedBudget)}`
+                      : "No Budget Yet"}
+                  </h2>
                 </div>
               </div>
               <p>{project.description || "No Description Available"}</p>
