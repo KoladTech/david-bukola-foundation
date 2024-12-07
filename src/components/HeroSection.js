@@ -36,21 +36,24 @@ export default function HeroSection({
                   <div className="flex flex-col md:hidden space-y-2">
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
-                        {stats.peopleReached}+
+                        {/* {stats.peopleReached}+ */}
+                        2,000,000+
                       </div>
-                      <div className="text-xl">People Reached</div>
+                      <div className="text-xl">Support provided</div>
                     </div>
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
-                        {stats.schoolsReached}+
+                        {/* {stats.schoolsReached}+ */}
+                        9+
                       </div>
                       <div className="text-xl">Schools Reached</div>
                     </div>
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
-                        {stats.statesReached}+
+                        {/* {stats.statesReached}+ */}
+                        100+
                       </div>
-                      <div className="text-xl">States Reached</div>
+                      <div className="text-xl">People Reached</div>
                     </div>
                   </div>
 
@@ -58,22 +61,25 @@ export default function HeroSection({
                   <div className="hidden md:flex md:flex-col">
                     <div className="text-white mb-8">
                       <div className="text-6xl font-bold mb-2">
-                        {stats.peopleReached}+
+                        {/* {stats.peopleReached}+  */}
+                        2,000,000+
                       </div>
-                      <div className="text-2xl">People Reached</div>
+                      <div className="text-2xl">Support Provided</div>
                     </div>
                     <div className="flex gap-16">
                       <div className="text-white">
                         <div className="text-5xl font-bold mb-2">
-                          {stats.schoolsReached}+
+                          {/* {stats.schoolsReached}+ */}
+                          9+
                         </div>
                         <div className="text-xl">Schools Reached</div>
                       </div>
                       <div className="text-white">
                         <div className="text-5xl font-bold mb-2">
-                          {stats.statesReached}+
+                          {/* {stats.statesReached}+ */}
+                          100+
                         </div>
-                        <div className="text-xl">States Reached</div>
+                        <div className="text-xl">People Reached</div>
                       </div>
                     </div>
                   </div>
