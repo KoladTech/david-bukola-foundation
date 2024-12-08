@@ -2,7 +2,7 @@ name: Build and Deploy Workflow
 
 # Trigger workflow on a pull request merged into the production branch or manually
 on:
-  pull_request:
+  push:
     branches:
       - production-branch
   workflow_dispatch: # Allow manual triggering of the workflow
