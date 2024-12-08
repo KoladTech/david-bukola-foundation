@@ -26,20 +26,43 @@ jobs:
         # Step 2: Read the current version from the VERSION file
       - name: Read current version
         id: read_version
-        run: echo "::set-output name=version::$(cat VERSION)"
+        run: echo "version=$(cat VERSION)" >> $GITHUB_ENV
+
         
         # Step 3: Increment the semantic version
       - name: Get new version
         id: version
-        uses: paulhatch/semantic-version@v3
+        # uses: paulhatch/semantic-version@v3
+        # with:
+        #   token: ${{ secrets.GITHUB_TOKEN }}
+        #   current-version: ${{ steps.read_version.outputs.version }}
+        uses: paulhatch/semantic-version@v5.4.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          current-version: ${{ steps.read_version.outputs.version }}
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a
+          # major (breaking) change, supports regular expressions wrapped with '/'
+          major_pattern: "(MAJOR)"
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+          minor_pattern: "(MINOR)"
+          # A string to determine the format of the version output
+          version_format: "${major}.${minor}.${patch}-prerelease${increment}"
+          # If true, the body of commits will also be searched for major/minor patterns to determine the version type.
+          search_commit_body: false
+          # The output method used to generate list of users, 'csv' or 'json'.
+          user_format_type: "csv"
+          # If enabled, diagnostic information will be added to the action output.
+          debug: true
+          # If true, the branch will be used to select the maximum version.
+          version_from_branch: false
 
 
-        # Step 4: Save the new version to the VERSION file
+        # Step 4: Save the new version to the VERSION file and set it as an environment variable
       - name: Save new version
-        run: echo "${{ steps.version.outputs.new_version }}" > VERSION
+        run: |
+          echo "${{ steps.version.outputs.new_version }}" > VERSION
+          echo "version=${{ steps.version.outputs.new_version }}" >> $GITHUB_ENV
+
 
         # Get commit name and tag the appropriate semantic version 
       - name: Commit and tag new version
