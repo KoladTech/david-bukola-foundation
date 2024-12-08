@@ -28,6 +28,10 @@ jobs:
         id: read_version
         run: echo "version=$(cat VERSION)" >> $GITHUB_ENV
 
+        # (Optional) Log the current version for debugging purposes
+      - name: Log current version
+        run: cat VERSION
+
         
         # Step 3: Increment the semantic version
       - name: Get new version
@@ -38,6 +42,9 @@ jobs:
         #   current-version: ${{ steps.read_version.outputs.version }}
         uses: paulhatch/semantic-version@v5.4.0
         with:
+
+          # The branch to run on
+          branch: production-branch
           # The prefix to use to identify tags
           tag_prefix: "v"
           # A string which, if present in a git commit, indicates that a change represents a
@@ -56,6 +63,10 @@ jobs:
           # If true, the branch will be used to select the maximum version.
           version_from_branch: false
 
+        # (Optional) Log the new version for debugging purposes
+      - name: Log new version
+        run: cat VERSION
+
 
         # Step 4: Save the new version to the VERSION file and set it as an environment variable
       - name: Save new version
@@ -63,6 +74,9 @@ jobs:
           echo "${{ steps.version.outputs.new_version }}" > VERSION
           echo "version=${{ steps.version.outputs.new_version }}" >> $GITHUB_ENV
 
+        # (Optional) Log the new saved version for debugging purposes
+      - name: Log new saved version
+        run: cat VERSION
 
         # Get commit name and tag the appropriate semantic version 
       - name: Commit and tag new version
