@@ -55,10 +55,10 @@ export default function RootLayout({ children }) {
               />
               <Image
                 className="md:hidden"
-                src="/symbol.svg"
+                src="/logo_variation 1.svg"
                 alt="Foundation Logo"
-                width={70}
-                height={70}
+                width={140}
+                height={140}
               />
               <span className="sr-only">
                 DAVIDBUKOLA DEVELOPMENT FOUNDATION
