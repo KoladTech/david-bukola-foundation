@@ -13,7 +13,7 @@ const testimonials = [
     role: "Student volunteer",
     content:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-    image: "/person placeholder.png?height=400&width=400",
+    image: "/images/person placeholder.png?height=400&width=400",
     type: "text",
   },
   {
@@ -22,7 +22,7 @@ const testimonials = [
     role: "Partner University of Lagos",
     content:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-    image: "/person placeholder.png",
+    image: "/images/person placeholder.png",
     type: "text",
   },
   {
@@ -31,7 +31,7 @@ const testimonials = [
     role: "Student volunteer",
     content:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-    image: "/person placeholder.png",
+    image: "/images/person placeholder.png",
     type: "text",
   },
   {
@@ -40,7 +40,7 @@ const testimonials = [
     role: "Student volunteer",
     content:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis. ",
-    image: "/person placeholder.png",
+    image: "/images/person placeholder.png",
     type: "text",
   },
   {
@@ -49,7 +49,7 @@ const testimonials = [
     role: "Partner University of Lagos",
     image: "",
     type: "video",
-    videoUrl: "/vid.mp4",
+    videoUrl: "/videos/vid.mp4",
   },
   {
     id: 6,
@@ -57,7 +57,7 @@ const testimonials = [
     role: "Partner University of Lagos",
     image: "",
     type: "video",
-    videoUrl: "/vid2.mp4",
+    videoUrl: "/videos/vid2.mp4",
   },
   {
     id: 7,
@@ -65,7 +65,7 @@ const testimonials = [
     role: "Partner University of Lagos",
     image: "",
     type: "video",
-    videoUrl: "vid3.mp4",
+    videoUrl: "/videos/vid3.mp4",
   },
 ];
 

@@ -48,14 +48,14 @@ export default function RootLayout({ children }) {
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 className="hidden md:block"
-                src="/logo_variation 1.svg"
+                src="/images/dbf-full-logo.svg"
                 alt="Foundation Logo"
                 width={140}
                 height={110}
               />
               <Image
                 className="md:hidden"
-                src="/logo_variation 1.svg"
+                src="/images/dbf-full-logo.svg"
                 alt="Foundation Logo"
                 width={140}
                 height={140}
@@ -187,8 +187,8 @@ export default function RootLayout({ children }) {
                   {/* Left Section */}
                   <div className="mb-8 md:mb-0 flex flex-col items-start">
                     <img
-                      src="/logo_variation 1.svg"
-                      alt="Logo"
+                      src="/images/dbf-full-logo.svg"
+                      alt="Foundation Logo"
                       className="w-52 h-40"
                     />
                     <div className="flex space-x-4 mb-4">
