@@ -72,29 +72,29 @@ jobs:
       #     echo "${{ steps.version.outputs.new_version }}" > VERSION
       #     echo "version=${{ steps.version.outputs.new_version }}" >> $GITHUB_ENV
 
-      - name: Save new version
-        run: |
-          if [ -z "${{ steps.version.outputs.new_version }}" ]; then
-            echo "No new version calculated, using existing VERSION file."
-            echo "$(cat VERSION)" > VERSION
-          else
-            echo "${{ steps.version.outputs.new_version }}" > VERSION
-          fi
-          echo "version=$(cat VERSION)" >> $GITHUB_ENV
+      # - name: Save new version
+      #   run: |
+      #     if [ -z "${{ steps.version.outputs.new_version }}" ]; then
+      #       echo "No new version calculated, using existing VERSION file."
+      #       echo "$(cat VERSION)" > VERSION
+      #     else
+      #       echo "${{ steps.version.outputs.new_version }}" > VERSION
+      #     fi
+      #     echo "version=$(cat VERSION)" >> $GITHUB_ENV
 
         # (Optional) Log the new saved version for debugging purposes
       - name: Log new saved version
         run: cat VERSION
 
         # Get commit name and tag the appropriate semantic version 
-      - name: Commit and tag new version
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add VERSION
-          git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
-          git tag "v${{ steps.version.outputs.new_version }}"
-          git push --follow-tags
+      # - name: Commit and tag new version
+      #   run: |
+      #     git config --global user.name "GitHub Actions"
+      #     git config --global user.email "actions@github.com"
+      #     git add VERSION
+      #     git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
+      #     git tag "v${{ steps.version.outputs.new_version }}"
+      #     git push --follow-tags
 
   # Job to build and deploy the Docker image
   build_and_deploy:
@@ -102,7 +102,7 @@ jobs:
     runs-on: ubuntu-latest
     
     # Trigger only on merged pull requests or manual runs
-    if: github.event_name == 'push' && github.event.pull_request.merged == true && github.ref == 'refs/heads/production-branch' || github.event_name == 'workflow_dispatch'
+    # if: github.event_name == 'push' && github.event.pull_request.merged == true && github.ref == 'refs/heads/production-branch' || github.event_name == 'workflow_dispatch'
 
     steps:
       # Step 1: Check out the repository code
@@ -127,7 +127,8 @@ jobs:
         with:
           context: . # Use the current directory as the Docker context
           push: true # Push the image to the registry
-          tags: ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          # tags: ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          tags: ghcr.io/koladtech/david-bukola-foundation-website:${{ cat VERSION }}
 
       # Step 5: Deploy the Docker image to Hostinger VPS
       - name: Deploy to Hostinger VPS
