@@ -128,7 +128,7 @@ jobs:
           context: . # Use the current directory as the Docker context
           push: true # Push the image to the registry
           # tags: ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
-          tags: ghcr.io/koladtech/david-bukola-foundation-website:${{ cat VERSION }}
+          tags: ghcr.io/koladtech/david-bukola-foundation-website:v2.2.4
 
       # Step 5: Deploy the Docker image to Hostinger VPS
       - name: Deploy to Hostinger VPS
