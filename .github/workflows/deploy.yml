@@ -119,7 +119,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.KOLADTECH_ACCOUNT_PASSWORD }}
 
       # Step 4: Build and push the Docker image to GHCR
       - name: Build and push Docker image
@@ -141,8 +141,8 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST << 'EOF'
-          docker pull ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          docker pull ghcr.io/koladtech/david-bukola-foundation-website:v2.2.4
           docker stop dbf_current_container || true
           docker rm dbf_current_container || true
-          docker run -d --name dbf_current_container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          docker run -d --name dbf_current_container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:v2.2.4
           EOF
