@@ -15,9 +15,7 @@ jobs:
 # Job to handle versioning
   version:
     runs-on: ubuntu-latest
-    
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
-   
+      
     steps:
         # Step 1: Checks into the repository
       - name: Checkout code
@@ -104,7 +102,7 @@ jobs:
     runs-on: ubuntu-latest
     
     # Trigger only on merged pull requests or manual runs
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.ref == 'refs/heads/production-branch' || github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push' && github.event.pull_request.merged == true && github.ref == 'refs/heads/production-branch' || github.event_name == 'workflow_dispatch'
 
     steps:
       # Step 1: Check out the repository code
