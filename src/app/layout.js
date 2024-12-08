@@ -98,10 +98,10 @@ export default function RootLayout({ children }) {
                 Donate
               </Link>
               <Link
-                href="/join"
+                href="/get-involved"
                 className="border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300"
               >
-                Join Us
+                Get Involved
               </Link>
             </div>
             <button onClick={toggleMenu} className="md:hidden">
@@ -161,11 +161,11 @@ export default function RootLayout({ children }) {
                   Donate
                 </Link>
                 <Link
-                  href="/join"
+                  href="/get-involved"
                   className="block border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 text-center text-xl"
                   onClick={toggleMenu}
                 >
-                  Join Us
+                  Get Involved
                 </Link>
               </div>
             </div>
