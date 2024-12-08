@@ -7,6 +7,10 @@ on:
       - production-branch
   workflow_dispatch: # Allow manual triggering of the workflow
 
+# Set permission for github bot to be able to write to the version 
+permissions:
+  contents: write
+  
 jobs:
 # Job to handle versioning
   version:
