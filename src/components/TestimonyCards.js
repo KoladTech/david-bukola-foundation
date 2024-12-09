@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { fecthedData } from "@/firebase/fetchFirebaseData";
+import LoadingSpinner from "./loadingSpinner";
 
 const cards = [
   {
@@ -76,14 +78,41 @@ export default function ScrollableCardRow() {
     }
   }, []);
 
+  // variables to store and set states for data and errors asynchronously
+  const [testimonials, setTestimonials] = useState([]);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch Testimonials on component mount (Using a variable to store the function)
+  useEffect(() => {
+    const loadTestimonials = async () => {
+      try {
+        // Get the fetched data
+        const fetchedTestimonials = await fecthedData("Testimonials");
+
+        // Set the fetched data
+        setTestimonials(fetchedTestimonials);
+
+        // log error if failed
+      } catch (err) {
+        setError("Failed to load projects");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadTestimonials();
+  }, []);
   return (
     <section className="py-12 px-4 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row items-start gap-8">
+        <div className="flex flex-col md:flex-row items-start gap-8 items-center">
           {/* Static Testimonies Section */}
-          <div className="w-full md:w-1/2 flex flex-col p-4 text-center ">
+          <div className="w-full md:w-1/2 flex flex-col p-4 text-center">
             <h2 className="text-3xl font-bold mb-6">Testimonials</h2>
-            <div className="justify-start md:text-start mb-6">
+
+            {/* Share testimony section */}
+            <div className="justify-start items-center md:text-start mb-6">
               <p className="mb-6 text-lg text-gray-600">
                 Hear what people are saying about our foundation!
               </p>
@@ -97,6 +126,7 @@ export default function ScrollableCardRow() {
                 </Link>
               </div>
             </div>
+            {/* Share testimony section */}
             <div className="justify-end md:text-end">
               <p className="mb-6 text-lg text-gray-600">
                 Would you like to share yours?
@@ -114,55 +144,77 @@ export default function ScrollableCardRow() {
           </div>
 
           {/* Scrollable Cards Section */}
-          <div className="w-full md:w-1/2 relative">
-            <div
-              ref={containerRef}
-              className="flex overflow-x-auto gap-6 pb-6 scrollbar-custom"
-              style={{ scrollSnapType: "x mandatory" }}
-            >
-              {cards.map((card) => (
-                <div
-                  key={card.id}
-                  className="flex-shrink-0 w-[300px] bg-white rounded-lg shadow-md p-6"
-                  style={{ scrollSnapAlign: "start" }}
-                >
-                  <div className="flex items-start gap-4 mb-4">
-                    <Image
-                      src={card.imageSrc}
-                      alt={`${card.name}'s profile picture`}
-                      width={60}
-                      height={60}
-                      className="rounded-full"
-                    />
-                    <div>
-                      <h3 className="text-xl font-semibold">{card.name}</h3>
-                      <p className="text-gray-600">{card.role}</p>
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <div className="w-full md:w-1/2 relative">
+              <div
+                ref={containerRef}
+                className="flex overflow-x-auto gap-6 pb-6 scrollbar-custom"
+                style={{ scrollSnapType: "x mandatory" }}
+              >
+                {testimonials.map((testimonial) => (
+                  <div
+                    key={testimonial.id}
+                    className="flex-shrink-0 w-[300px] bg-white rounded-lg shadow-md p-6"
+                    style={{ scrollSnapAlign: "start" }}
+                  >
+                    <div className="flex items-start gap-4 mb-4">
+                      {/* <Image
+                        src={testimonial.imageSrc}
+                        alt={`${testimonial.name}'s profile picture`}
+                        width={60}
+                        height={60}
+                        className="rounded-full"
+                      /> */}
+                      <div>
+                        <h3 className="text-xl font-semibold">
+                          {testimonial.name}
+                        </h3>
+                        <p className="text-gray-600">{testimonial.role}</p>
+                      </div>
+                    </div>
+                    <h4 className="text-lg font-semibold mb-2">
+                      {testimonial.title}
+                    </h4>
+                    <p className="text-gray-700">{testimonial.testimonial}</p>
+                    {/* Testimonial Dates */}
+                    <div className="flex items-end mt-4">
+                      <p className="text-sm">
+                        {" "}
+                        <span>
+                          {" "}
+                          {testimonial.date
+                            ? new Date(
+                                testimonial.date.seconds * 1000
+                              ).toLocaleDateString()
+                            : "No Timestamp Available"}{" "}
+                        </span>
+                      </p>
                     </div>
                   </div>
-                  <h4 className="text-lg font-semibold mb-2">{card.title}</h4>
-                  <p className="text-gray-700">{card.content}</p>
-                </div>
-              ))}
+                ))}
+              </div>
+              <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
+                <button
+                  onClick={() => handleScroll("left")}
+                  className="p-2 bg-slate-200 rounded-full shadow-md hover:bg-slate-300 transition-colors"
+                  aria-label="Scroll left"
+                >
+                  <ChevronLeft className="w-6 h-6 text-blue-600" />
+                </button>
+              </div>
+              <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
+                <button
+                  onClick={() => handleScroll("right")}
+                  className="p-2 bg-slate-200 rounded-full shadow-md hover:bg-slate-300 transition-colors"
+                  aria-label="Scroll right"
+                >
+                  <ChevronRight className="w-6 h-6 text-blue-600" />
+                </button>
+              </div>
             </div>
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
-              <button
-                onClick={() => handleScroll("left")}
-                className="p-2 bg-slate-200 rounded-full shadow-md hover:bg-slate-300 transition-colors"
-                aria-label="Scroll left"
-              >
-                <ChevronLeft className="w-6 h-6 text-blue-600" />
-              </button>
-            </div>
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
-              <button
-                onClick={() => handleScroll("right")}
-                className="p-2 bg-slate-200 rounded-full shadow-md hover:bg-slate-300 transition-colors"
-                aria-label="Scroll right"
-              >
-                <ChevronRight className="w-6 h-6 text-blue-600" />
-              </button>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

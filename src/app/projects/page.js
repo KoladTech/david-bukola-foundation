@@ -6,6 +6,7 @@ import PictureCard from "@/components/PictureCard";
 import { Calendar, Target, Clock, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { fetchProjects } from "@/firebase/projectPage";
+import { fecthedData } from "@/firebase/fetchFirebaseData";
 import { NAIRA_SYMBOL } from "@/constants";
 
 function SkeletonHeroSection() {
@@ -42,7 +43,7 @@ export default function ProjectsPage() {
     const loadProjects = async () => {
       try {
         // Get the fetched data
-        const fetchedProjects = await fetchProjects();
+        const fetchedProjects = await fecthedData("Projects");
 
         // Set the fetched data
         setProjects(fetchedProjects);

@@ -176,7 +176,7 @@ export default function RootLayout({ children }) {
         <div className="relative mt-auto full-width-div">
           <div
             className="absolute bottom-0 left-0 right-0 h-[calc(100%+2rem)] bg-cover bg-center w-full"
-            style={{ backgroundImage: "url(/figma-footer-image.jpeg)" }}
+            style={{ backgroundImage: "url(/images/figma-footer-image.jpeg)" }}
           >
             <div className="absolute inset-0 bg-black opacity-50"></div>
           </div>
