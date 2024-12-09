@@ -9,7 +9,6 @@ import VideoPlayer from "@/components/VideoPlayer";
 import { useEffect, useState } from "react";
 import { fecthedData } from "@/firebase/fetchFirebaseData";
 
-
 // const testimonials = [
 //   {
 //     id: 1,
@@ -112,9 +111,9 @@ export default function TestimonialsPage() {
   }, []);
 
   return (
-    <UnderConstruction />
-    // <div className="container mx-auto px-4 py-8 my-8">
-    //   {/* Featured Video Section */}
+    <div className="container mx-auto px-4 py-8 my-8">
+      {/* Featured Video Section */}
+
       {/* Featured Video Section */}
       {/* <div className="mb-6 rounded-lg overflow-hidden">
         <VideoPlayer
@@ -123,13 +122,13 @@ export default function TestimonialsPage() {
           className="w-full aspect-video"
         />
       </div> */}
-    //   {/* <HeroSection
-    //     title={"Testimonials"}
-    //     imageUrl={"/main_about_us.jpg"}
-    //     alt={"Featured testimonial video thumbnail"}
-    //     video={true}
-    //   /> */}
 
+      {/* <HeroSection
+        title={"Testimonials"}
+        imageUrl={"/main_about_us.jpg"}
+        alt={"Featured testimonial video thumbnail"}
+        video={true}
+      /> */}
 
       {/* Text Testimonials Grid */}
       {loading ? (
