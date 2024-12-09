@@ -6,19 +6,19 @@ const teamMembers = [
     id: 1,
     name: "Demi Fasanya",
     role: "Co-founder, CEO",
-    image: "/Demi-CEO-image.png",
+    image: "/images/Demi-CEO-image.png",
   },
   {
     id: 2,
     name: "Mayowa Kolawole",
     role: "Head of Operations",
-    image: "/Mayowa-HOP-image.png",
+    image: "/images/Mayowa-HOP-image.png",
   },
   {
     id: 3,
     name: "David Wambebe",
     role: "Head Consultant",
-    image: "/Head-Consultant-image.png",
+    image: "/images/Head-Consultant-image.png",
   },
 ];
 
