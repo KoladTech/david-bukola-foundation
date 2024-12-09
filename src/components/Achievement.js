@@ -6,7 +6,7 @@ export default function Achievement() {
   return (
     <div className="relative rounded-lg">
       <Image
-        src="/achievements-image.png"
+        src="/images/achievements-image.png"
         alt="achievement image"
         width={1376}
         height={553}

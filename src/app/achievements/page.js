@@ -86,7 +86,7 @@ export default function Page() {
               className=""
               title="ACHIEVEMENTS"
               description=""
-              imageUrl="/achievements-hero-image.jpg"
+              imageUrl="/images/achievements-hero-image.jpg"
               alt=""
               showStats={true}
               stats={stats}
