@@ -46,6 +46,10 @@ export default function Page() {
     fetchData();
   }, []);
 
+  function capitalize(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
   function ImageModal({ src, alt, onClose }) {
     return (
       <div
@@ -108,27 +112,24 @@ export default function Page() {
                 <TruncatedText text={achievement.description} limit={150} />
 
                 <div className="grid grid-cols-2 gap-4 mt-6">
-                  {Object.entries(achievement.details).map(
-                    ([key, value], i) => {
+                  {Object.entries(achievement.details)
+                    .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+                    .map(([key, value], i) => {
+                      console.log([key, value]);
                       if (typeof value === "object" && !Array.isArray(value))
                         return null;
                       if (key === "schools") return null; // Handle schools separately
                       return (
                         <div key={i} className="bg-gray-50 p-3 rounded-lg">
                           <h3 className="text-sm text-gray-500 mb-1">
-                            {key
-                              .replace(/([A-Z])/g, " $1")
-                              .replace(/^./, function (str) {
-                                return str.toUpperCase();
-                              })}
+                            {capitalize(key)}
                           </h3>
                           <p className="font-semibold">
                             {Array.isArray(value) ? value.join(", ") : value}
                           </p>
                         </div>
                       );
-                    }
-                  )}
+                    })}
                 </div>
 
                 {achievement.details.schools && (
@@ -136,22 +137,6 @@ export default function Page() {
                 )}
               </div>
               {achievement.details.images && (
-                // <div className="mt-6 grid grid-cols-2 gap-2">
-                //   <Image
-                //     src={achievement.details.images.image1}
-                //     alt={`Image 1 for ${achievement.title}`}
-                //     width={400}
-                //     height={300}
-                //     className="object-cover w-full h-48"
-                //   />
-                //   <Image
-                //     src={achievement.details.images.image2}
-                //     alt={`Image 2 for ${achievement.title}`}
-                //     width={400}
-                //     height={300}
-                //     className="object-cover w-full h-48"
-                //   />
-                // </div>
                 <div className="mt-6 grid grid-cols-2 gap-2">
                   <div
                     className="relative aspect-[4/3] cursor-pointer"
