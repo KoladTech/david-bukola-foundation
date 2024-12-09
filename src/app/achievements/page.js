@@ -46,10 +46,6 @@ export default function Page() {
     fetchData();
   }, []);
 
-  function capitalize(word) {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }
-
   function ImageModal({ src, alt, onClose }) {
     return (
       <div
@@ -122,7 +118,11 @@ export default function Page() {
                       return (
                         <div key={i} className="bg-gray-50 p-3 rounded-lg">
                           <h3 className="text-sm text-gray-500 mb-1">
-                            {capitalize(key)}
+                            {key
+                              .replace(/([A-Z])/g, " $1")
+                              .replace(/^./, function (str) {
+                                return str.toUpperCase();
+                              })}
                           </h3>
                           <p className="font-semibold">
                             {Array.isArray(value) ? value.join(", ") : value}
