@@ -31,8 +31,8 @@ export default function Home() {
           title="DAVIDBUKOLA"
           title2="DEVELOPMENT FOUNDATION"
           description="Where care meets community"
-          imageUrl="/foundation-name-and-motto-image.png"
-          alt="foundation"
+          imageUrl="/images/foundation-name-and-motto-image.png"
+          alt="foundation welcome image"
         />
 
         {/* About us section */}

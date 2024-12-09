@@ -21,7 +21,10 @@ export default function GetInvolved() {
                 />
               </div>
               <div className="relative w-32 h-32 flex-shrink-0">
-                <PictureCard imageSrc="/donate-now-image.png" altText="" />
+                <PictureCard
+                  imageSrc="/images/donate-now-image.png"
+                  altText=""
+                />
               </div>
             </div>
           </Link>
@@ -36,7 +39,7 @@ export default function GetInvolved() {
                 />
               </div>
               <div className="relative w-32 h-32 flex-shrink-0">
-                <PictureCard imageSrc="/join-us-image.png" altText="" />
+                <PictureCard imageSrc="/images/join-us-image.png" altText="" />
               </div>
             </div>
           </Link>
