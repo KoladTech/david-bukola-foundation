@@ -44,9 +44,9 @@ export default function Home() {
         </div>
 
         {/* Testimonies Section */}
-        {/* <div>
+        <div>
           <TestimonyCards />
-        </div> */}
+        </div>
 
         {/* Project Section */}
         {/* <div className="flex flex-col md:flex-row items-center p-8">
