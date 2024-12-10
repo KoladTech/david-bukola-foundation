@@ -28,8 +28,6 @@ export default function Page() {
           id: doc.id,
           ...doc.data(),
         }));
-        setAchievements(achievementsData);
-        console.log(achievementsData);
 
         // Process stats
         if (statsDoc.exists()) {
