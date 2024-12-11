@@ -30,24 +30,28 @@ const teamMembers = [
 
 export default function MeetOurTeam() {
   return (
-    <section className="py-4 px-4 my-4 items-center justify-center text-center">
-      <h2 className="text-4xl font-semibold mb-2 text-center">Meet Our Team</h2>
-      <h3 className="">The Team Powering Our Vision and Making a Difference</h3>
+    <section className="py-4 px-4 my-4 bg-gray-50 items-center justify-center text-center">
+      <div className="max-w-6xl mx-auto">
+        <h2 className="text-4xl font-semibold mb-4 text-center">
+          Meet Our Team
+        </h2>
+        <h3 className="text-xl mb-12 text-center text-gray-600">
+          The Team Powering Our Vision and Making a Difference
+        </h3>
 
-      <div className="flex flex-col md:flex-row justify-center items-center gap-12 p-8 m-4">
-        {/* Team cards */}
-        {teamMembers.map((member) => (
-          <div className="flex flex-col items-center justify-center">
-            <div key={member.id}>
-              <div className=" flex w-72 h-72 mb-4 overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+          {/* Team cards */}
+          {teamMembers.map((member) => (
+            <div key={member.id} className="flex flex-col items-center">
+              <div className=" flex items-center justify-center w-48 h-48 rounded-lg shadow-lg overflow-hidden">
                 <PictureCard imageSrc={member.image} altText="" />
               </div>
               <div className="flex items-center justify-center">
                 <ContentCard title={member.name} content={member.role} />
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

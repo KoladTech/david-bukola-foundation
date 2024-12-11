@@ -59,10 +59,6 @@ export default function ProjectsPage() {
     loadProjects();
   }, []);
 
-  useEffect(() => {
-    console.log("Projects After setState:", projects);
-  }, [projects]);
-
   return (
     <div className="flex flex-col gap-2 my-4 p-4">
       {/* Hero Section */}

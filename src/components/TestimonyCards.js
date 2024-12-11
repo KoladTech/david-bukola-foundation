@@ -106,13 +106,13 @@ export default function ScrollableCardRow() {
   return (
     <section className="py-12 px-4 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row items-start gap-8 items-center">
+        <div className="flex flex-col md:flex-row gap-8 items-center">
           {/* Static Testimonies Section */}
           <div className="w-full md:w-1/2 flex flex-col p-4 text-center">
             <h2 className="text-3xl font-bold mb-6">Testimonials</h2>
 
             {/* Share testimony section */}
-            <div className="justify-start items-center md:text-start mb-6">
+            <div className="items-center mb-6">
               <p className="mb-6 text-lg text-gray-600">
                 Hear what people are saying about our foundation!
               </p>
@@ -127,7 +127,7 @@ export default function ScrollableCardRow() {
               </div>
             </div>
             {/* Share testimony section */}
-            <div className="justify-end md:text-end">
+            <div className="hidden md:block">
               <p className="mb-6 text-lg text-gray-600">
                 Would you like to share yours?
               </p>
@@ -150,13 +150,13 @@ export default function ScrollableCardRow() {
             <div className="w-full md:w-1/2 relative">
               <div
                 ref={containerRef}
-                className="flex overflow-x-auto gap-6 pb-6 scrollbar-custom"
+                className="relative flex overflow-x-auto gap-6 pb-6 scrollbar-custom"
                 style={{ scrollSnapType: "x mandatory" }}
               >
                 {testimonials.map((testimonial) => (
                   <div
                     key={testimonial.id}
-                    className="flex-shrink-0 w-[300px] bg-white rounded-lg shadow-md p-6"
+                    className=" flex-shrink-0 w-[400px] bg-white rounded-lg shadow-md p-6"
                     style={{ scrollSnapAlign: "start" }}
                   >
                     <div className="flex items-start gap-4 mb-4">
@@ -177,9 +177,11 @@ export default function ScrollableCardRow() {
                     <h4 className="text-lg font-semibold mb-2">
                       {testimonial.title}
                     </h4>
-                    <p className="text-gray-700">{testimonial.testimonial}</p>
+                    <p className="text-gray-700 mb-2">
+                      {testimonial.testimonial}
+                    </p>
                     {/* Testimonial Dates */}
-                    <div className="flex items-end mt-4">
+                    <div className="absolute bottom-8 flex items-end">
                       <p className="text-sm">
                         {" "}
                         <span>
@@ -215,6 +217,20 @@ export default function ScrollableCardRow() {
               </div>
             </div>
           )}
+          <div className="md:hidden">
+            <p className="mb-6 text-lg text-gray-600">
+              Would you like to share yours?
+            </p>
+            <div className="flex justify-center">
+              <Link
+                href="/testimonials"
+                className="inline-flex items-center gap-2 p-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
+              >
+                Share your Testimony
+                <ArrowUpRight className="w-5 h-5" />
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </section>

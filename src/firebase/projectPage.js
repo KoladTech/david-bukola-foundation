@@ -16,11 +16,11 @@ export async function fetchProjects() {
     const projectsCollection = collection(db, "Projects");
     const snapshot = await getDocs(projectsCollection);
 
-    // Debugging
-    snapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
-    });
+    // // Debugging
+    // snapshot.forEach((doc) => {
+    //   // doc.data() is never undefined for query doc snapshots
+    //   console.log(doc.id, " => ", doc.data());
+    // });
 
     // Maps the received document data from firestore into an array of js objects
     const projects = snapshot.docs.map((doc) => ({
