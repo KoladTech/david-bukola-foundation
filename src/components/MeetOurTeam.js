@@ -21,7 +21,7 @@ const teamMembers = [
     image: "/images/Head-Consultant-image.png",
   },
   {
-    id: 3,
+    id: 4,
     name: "Omotayo Kolawole",
     role: "Co-founder",
     image: "/images/CO-founder-image.jpg",
