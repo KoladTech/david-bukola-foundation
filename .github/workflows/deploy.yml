@@ -2,17 +2,20 @@ name: Build and Deploy Workflow
 
 # Trigger workflow on a pull request merged into the production branch or manually
 on:
-  pull_request:
+  push:
     branches:
       - production-branch
   workflow_dispatch: # Allow manual triggering of the workflow
 
+# Set permission for github bot to be able to write to the version 
+permissions:
+  contents: write
+  
 jobs:
 # Job to handle versioning
   version:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
-    
+      
     steps:
         # Step 1: Checks into the repository
       - name: Checkout code
@@ -21,30 +24,77 @@ jobs:
         # Step 2: Read the current version from the VERSION file
       - name: Read current version
         id: read_version
-        run: echo "::set-output name=version::$(cat VERSION)"
+        run: echo "version=$(cat VERSION)" >> $GITHUB_ENV
+
+        # (Optional) Log the current version for debugging purposes
+      - name: Log current version
+        run: cat VERSION
+
         
         # Step 3: Increment the semantic version
       - name: Get new version
         id: version
-        uses: paulhatch/semantic-version@v3
+        # uses: paulhatch/semantic-version@v3
+        # with:
+        #   token: ${{ secrets.GITHUB_TOKEN }}
+        #   current-version: ${{ steps.read_version.outputs.version }}
+        uses: paulhatch/semantic-version@v5.4.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          current-version: ${{ steps.read_version.outputs.version }}
+
+          # The branch to run on
+          branch: production-branch
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a
+          # major (breaking) change, supports regular expressions wrapped with '/'
+          major_pattern: "(MAJOR)"
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+          minor_pattern: "(MINOR)"
+          # A string to determine the format of the version output
+          version_format: "${major}.${minor}.${patch}-prerelease${increment}"
+          # If true, the body of commits will also be searched for major/minor patterns to determine the version type.
+          search_commit_body: false
+          # The output method used to generate list of users, 'csv' or 'json'.
+          user_format_type: "csv"
+          # If enabled, diagnostic information will be added to the action output.
+          debug: true
+          # If true, the branch will be used to select the maximum version.
+          version_from_branch: false
+
+        # (Optional) Log the new version for debugging purposes
+      - name: Log new version
+        run: cat VERSION
 
 
-        # Step 4: Save the new version to the VERSION file
-      - name: Save new version
-        run: echo "${{ steps.version.outputs.new_version }}" > VERSION
+        # Step 4: Save the new version to the VERSION file and set it as an environment variable
+      # - name: Save new version
+      #   run: |
+      #     echo "${{ steps.version.outputs.new_version }}" > VERSION
+      #     echo "version=${{ steps.version.outputs.new_version }}" >> $GITHUB_ENV
+
+      # - name: Save new version
+      #   run: |
+      #     if [ -z "${{ steps.version.outputs.new_version }}" ]; then
+      #       echo "No new version calculated, using existing VERSION file."
+      #       echo "$(cat VERSION)" > VERSION
+      #     else
+      #       echo "${{ steps.version.outputs.new_version }}" > VERSION
+      #     fi
+      #     echo "version=$(cat VERSION)" >> $GITHUB_ENV
+
+        # (Optional) Log the new saved version for debugging purposes
+      - name: Log new saved version
+        run: cat VERSION
 
         # Get commit name and tag the appropriate semantic version 
-      - name: Commit and tag new version
-        run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add VERSION
-          git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
-          git tag "v${{ steps.version.outputs.new_version }}"
-          git push --follow-tags
+      # - name: Commit and tag new version
+      #   run: |
+      #     git config --global user.name "GitHub Actions"
+      #     git config --global user.email "actions@github.com"
+      #     git add VERSION
+      #     git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
+      #     git tag "v${{ steps.version.outputs.new_version }}"
+      #     git push --follow-tags
 
   # Job to build and deploy the Docker image
   build_and_deploy:
@@ -52,7 +102,7 @@ jobs:
     runs-on: ubuntu-latest
     
     # Trigger only on merged pull requests or manual runs
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.ref == 'refs/heads/production-branch' || github.event_name == 'workflow_dispatch'
+    # if: github.event_name == 'push' && github.event.pull_request.merged == true && github.ref == 'refs/heads/production-branch' || github.event_name == 'workflow_dispatch'
 
     steps:
       # Step 1: Check out the repository code
@@ -69,7 +119,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.KOLADTECH_ACCOUNT_PASSWORD }}
 
       # Step 4: Build and push the Docker image to GHCR
       - name: Build and push Docker image
@@ -77,8 +127,9 @@ jobs:
         with:
           context: . # Use the current directory as the Docker context
           push: true # Push the image to the registry
-          tags: ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
-
+          # tags: ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          tags: ghcr.io/koladtech/david-bukola-foundation-website:v2.2.4
+      
       # Step 5: Deploy the Docker image to Hostinger VPS
       - name: Deploy to Hostinger VPS
         env:
@@ -89,9 +140,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST << 'EOF'
-          docker pull ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          ls -l ~/.ssh
+          cat ~/.ssh/id_rsa
+          ssh -tt -o StrictHostKeyChecking=no $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST << 'EOF'
+          docker pull ghcr.io/koladtech/david-bukola-foundation-website:v2.2.4
           docker stop dbf_current_container || true
           docker rm dbf_current_container || true
-          docker run -d --name dbf_current_container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:${{ steps.version.outputs.new_version }}
+          docker run -d --name dbf_current_container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:v2.2.4
           EOF
