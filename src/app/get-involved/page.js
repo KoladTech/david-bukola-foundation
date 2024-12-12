@@ -47,7 +47,6 @@ export default function Page() {
               imageSrc="/achievements-image-1.jpg"
               altText=""
             />
-            <NewPageButton buttonText="Volunteer" />
           </div>
         </div>
         <div className="grid grid-rows-2:md md:grid-cols-2 md:gap-10">
