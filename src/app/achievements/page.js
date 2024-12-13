@@ -29,8 +29,8 @@ export default function Page() {
           id: doc.id,
           ...doc.data(),
         }));
+
         setAchievements(achievementsData);
-        console.log(achievementsData);
 
         // Process stats
         if (statsDoc.exists()) {
@@ -111,7 +111,6 @@ export default function Page() {
                   {Object.entries(achievement.details)
                     .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
                     .map(([key, value], i) => {
-                      console.log([key, value]);
                       if (typeof value === "object" && !Array.isArray(value))
                         return null;
                       if (key === "schools") return null; // Handle schools separately
@@ -165,6 +164,7 @@ export default function Page() {
                       objectFit="cover"
                       className="rounded-lg"
                     />
+                    console.log({achievement.details.images.image2})
                   </div>
                 </div>
               )}

@@ -142,11 +142,11 @@ export default function TestimonialsPage() {
             // Displaying Testimonials
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {testimonials
-                .filter((testimonial) => testimonial.type === "text")
+                .filter((textTestimonial) => textTestimonial.type === "text")
                 .map((testimonial) => (
                   <Card
                     key={testimonial.id}
-                    className={`p-6 h-80 ${
+                    className={`relative p-6 h-72 ${
                       testimonial.num % 2 === 1 ? "bg-blue-500 text-white" : ""
                     }`}
                   >
@@ -174,7 +174,7 @@ export default function TestimonialsPage() {
                         </div>
                       </div>
                       {/* Testimonial Dates */}
-                      <div className="flex items-end mt-4">
+                      <div className="absolute bottom-4 flex items-end">
                         <p className="text-sm">
                           {" "}
                           <span>

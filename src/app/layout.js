@@ -81,6 +81,12 @@ export default function RootLayout({ children }) {
                 About Us
               </Link>
               <Link
+                href="/testimonials"
+                className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
+              >
+                Testimonials
+              </Link>
+              <Link
                 href="/achievements"
                 className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
               >
@@ -249,6 +255,12 @@ export default function RootLayout({ children }) {
                         className="text-black hover:font-bold hover:scale-105 transition-transform"
                       >
                         Achievements
+                      </Link>
+                      <Link
+                        href="/testimonials"
+                        className="text-black hover:font-bold hover:scale-105 transition-transform"
+                      >
+                        Testimonials
                       </Link>
                       <Link
                         href="/projects"
