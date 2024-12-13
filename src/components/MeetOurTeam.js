@@ -39,11 +39,11 @@ export default function MeetOurTeam() {
           The Team Powering Our Vision and Making a Difference
         </h3>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-x-8 gap-y-8 mb-8">
           {/* Team cards */}
           {teamMembers.map((member) => (
             <div key={member.id} className="flex flex-col items-center">
-              <div className=" flex items-center justify-center w-48 h-48 rounded-lg shadow-lg overflow-hidden">
+              <div className=" flex items-center justify-center w-64 h-64 rounded-lg shadow-lg overflow-hidden">
                 <PictureCard imageSrc={member.image} altText="" />
               </div>
               <div className="flex items-center justify-center">

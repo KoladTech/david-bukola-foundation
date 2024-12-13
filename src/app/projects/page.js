@@ -16,15 +16,15 @@ function SkeletonHeroSection() {
 function SkeletonProject() {
   return (
     <div className="p-4 animate-pulse rounded-md">
-      <div className="h-64 bg-gray-300 rounded-md mb-4"></div>
-      <div className="flex flex-col md:flex-row h-24 bg-white rounded-md mb-2 gap-4 justify-between">
+      <div className="h-64 bg-gray-300 rounded-md mb-4 mx-2 "></div>
+      <div className="flex flex-col md:flex-row h-24 bg-white rounded-md mb-2 justify-between">
         <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
         <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
         <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
         <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
       </div>
-      <div className="h-32 bg-gray-300 rounded-md mb-2"></div>
-      <div className="flex flex-col md:flex-row h-52 bg-white rounded-md mb-2 gap-4 justify-between">
+      <div className="h-32 bg-gray-300 rounded-md mb-2 mx-2 "></div>
+      <div className="flex flex-col md:flex-row h-52 bg-white rounded-md mb-2 justify-between">
         <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
         <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
       </div>
@@ -240,14 +240,14 @@ export default function ProjectsPage() {
                   <div className="relative aspect-[4/3] w-full">
                     <PictureCard
                       className=""
-                      imageSrc="/images/borehole-project-image2.png"
+                      imageSrc={project.images.image1}
                       altText=""
                     />
                   </div>
                   <div className="relative aspect-[4/3] w-full">
                     <PictureCard
                       className=""
-                      imageSrc="/images/borehole-project-image.jpg"
+                      imageSrc={project.images.image2}
                       altText=""
                     />
                   </div>
