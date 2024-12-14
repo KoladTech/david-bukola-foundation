@@ -8,6 +8,7 @@ import Image from "next/image";
 import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
 import { LuX } from "react-icons/lu";
+import { NAIRA_SYMBOL } from "@/constants";
 
 export default function Page() {
   const [stats, setStats] = useState(null);
@@ -124,7 +125,17 @@ export default function Page() {
                               })}
                           </h3>
                           <p className="font-semibold">
-                            {Array.isArray(value) ? value.join(", ") : value}
+                            {key === "totalFinancialSupport"
+                              ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat(
+                                  "en-NG",
+                                  {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 0,
+                                  }
+                                ).format(value)}`
+                              : Array.isArray(value)
+                              ? value.join(", ")
+                              : value}
                           </p>
                         </div>
                       );
