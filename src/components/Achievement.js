@@ -15,7 +15,6 @@ export default function Achievement() {
       />
       <div className="absolute bottom-6 right-6 md:right-7">
         <AchievementWidgets />
-        {/* <NewPageButton buttonText={"View Achievements"} /> */}
       </div>
     </div>
   );

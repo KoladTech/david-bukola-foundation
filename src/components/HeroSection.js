@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
 import { NAIRA_SYMBOL } from "@/constants";
+import AchievementWidgets from "./AchievementWidgets";
 
 export default function HeroSection({
   title,
@@ -13,6 +14,7 @@ export default function HeroSection({
   showStats = false,
   stats = null,
   video = false,
+  atTop = true,
 }) {
   return (
     <>
@@ -159,15 +161,21 @@ export default function HeroSection({
               </div>
             )}
         </div>
-        <div className="absolute bottom-4 right-3 md:right-4 bg-white p-2 md:p-4 rounded-lg shadow-lg">
-          <p className="text-xs md:text-sm mb-2">Want to make an impact?</p>
-          <Link
-            href="/donate"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md inline-block text-xs md:text-sm hover:bg-blue-600 transition-colors"
-          >
-            Donate Now
-          </Link>
-        </div>
+        {atTop ? (
+          <div className="absolute bottom-4 right-3 md:right-4 bg-white p-2 md:p-4 rounded-lg shadow-lg">
+            <p className="text-xs md:text-sm mb-2">Want to make an impact?</p>
+            <Link
+              href="/donate"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md inline-block text-xs md:text-sm hover:bg-blue-600 transition-colors"
+            >
+              Donate Now
+            </Link>
+          </div>
+        ) : (
+          <div className="absolute bottom-6 right-6 md:right-7">
+            <AchievementWidgets />
+          </div>
+        )}
       </div>
     </>
   );

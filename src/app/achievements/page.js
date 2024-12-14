@@ -2,28 +2,28 @@
 import HeroSection from "@/components/HeroSection";
 import LoadingSpinner from "@/components/loadingSpinner";
 import db from "@/firebase/firebaseConfig";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
 import { LuX } from "react-icons/lu";
 import { NAIRA_SYMBOL } from "@/constants";
+import { useApiData } from "@/context/ApiStatsContext";
 
 export default function Page() {
-  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [achievements, setAchievements] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const { stats, error } = useApiData();
 
   useEffect(() => {
     async function fetchData() {
       try {
         // Fetch achievements and site stats concurrently
-        const [achievementsSnapshot, statsDoc] = await Promise.all([
-          getDocs(collection(db, "Achievements")), // Fetch achievements
-          getDoc(doc(db, "Site Statistics", "jZGeXcoSIbk6pGTNXlln")), // Fetch stats
-        ]);
+        const achievementsSnapshot = await getDocs(
+          collection(db, "Achievements")
+        );
 
         // Process achievements
         const achievementsData = achievementsSnapshot.docs.map((doc) => ({
@@ -32,11 +32,6 @@ export default function Page() {
         }));
 
         setAchievements(achievementsData);
-
-        // Process stats
-        if (statsDoc.exists()) {
-          setStats(statsDoc.data());
-        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

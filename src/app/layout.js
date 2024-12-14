@@ -9,6 +9,7 @@ import { RiFacebookBoxFill } from "react-icons/ri";
 import { RiTwitterXLine } from "react-icons/ri";
 import { GrInstagram } from "react-icons/gr";
 import Image from "next/image";
+import { ApiStatsProvider } from "@/context/ApiStatsContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -180,7 +181,7 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         )}
-        {children}
+        <ApiStatsProvider>{children}</ApiStatsProvider>
         {/* Default Footer Section */}
         <div className="relative mt-auto full-width-div">
           <div
