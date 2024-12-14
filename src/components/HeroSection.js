@@ -66,21 +66,21 @@ export default function HeroSection({
                         {/* {stats.peopleReached}+ */}
                         ₦2,000,000+
                       </div>
-                      <div className="text-xl">Support provided</div>
+                      <div className="text-lg md:text-xl">Support provided</div>
                     </div>
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
                         {/* {stats.schoolsReached}+ */}
                         9+
                       </div>
-                      <div className="text-xl">Schools Reached</div>
+                      <div className="text-lg md:text-xl">Schools Reached</div>
                     </div>
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
                         {/* {stats.statesReached}+ */}
                         100+
                       </div>
-                      <div className="text-xl">People Reached</div>
+                      <div className="text-lg md:text-xl">People Reached</div>
                     </div>
                   </div>
 
@@ -114,11 +114,11 @@ export default function HeroSection({
               </div>
             )}
         </div>
-        <div className="absolute bottom-4 right-4 bg-white p-4 rounded-lg shadow-lg">
-          <p className="text-sm mb-2">Want to make an impact?</p>
+        <div className="absolute bottom-4 right-3 md:right-4 bg-white p-2 md:p-4 rounded-lg shadow-lg">
+          <p className="text-xs md:text-sm mb-2">Want to make an impact?</p>
           <Link
             href="/donate"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md inline-block text-sm hover:bg-blue-600 transition-colors"
+            className="bg-blue-500 text-white px-4 py-2 rounded-md inline-block text-xs md:text-sm hover:bg-blue-600 transition-colors"
           >
             Donate Now
           </Link>
