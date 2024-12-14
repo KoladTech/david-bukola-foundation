@@ -7,7 +7,7 @@ import "./globals.css";
 import Link from "next/link";
 import { RiFacebookBoxFill } from "react-icons/ri";
 import { RiTwitterXLine } from "react-icons/ri";
-import { GrDocumentVerified, GrInstagram } from "react-icons/gr";
+import { GrInstagram } from "react-icons/gr";
 import Image from "next/image";
 
 const geistSans = localFont({
@@ -47,7 +47,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <header className="bg-white full-width-div">
-          <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between">
+          <div className="container mx-auto my-8 px-2 py-4 flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 className="hidden md:block"
@@ -67,7 +67,7 @@ export default function RootLayout({ children }) {
                 DAVIDBUKOLA DEVELOPMENT FOUNDATION
               </span>
             </Link>
-            <nav className="hidden md:flex space-x-6 md-lg:space-x-1">
+            <nav className="hidden md:flex space-x-6 md-lg:space-x-0 md-lg:text-sm">
               <Link
                 href="/"
                 className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
@@ -99,7 +99,7 @@ export default function RootLayout({ children }) {
                 Projects
               </Link>
             </nav>
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex md-lg:text-xs items-center space-x-4">
               <Link
                 href="/donate"
                 className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
@@ -107,10 +107,10 @@ export default function RootLayout({ children }) {
                 Donate
               </Link>
               <Link
-                href="/get-involved"
-                className="border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300"
+                href="/join"
+                className="border border-blue-500 text-blue-500 px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300"
               >
-                Get Involved
+                Join Us
               </Link>
             </div>
             <button onClick={toggleMenu} className="md:hidden">
@@ -170,11 +170,11 @@ export default function RootLayout({ children }) {
                   Donate
                 </Link>
                 <Link
-                  href="/get-involved"
+                  href="/join"
                   className="block border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 text-center text-xl"
                   onClick={toggleMenu}
                 >
-                  Get Involved
+                  Join Us
                 </Link>
               </div>
             </div>
