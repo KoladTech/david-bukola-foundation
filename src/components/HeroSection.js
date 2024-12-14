@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
+import { NAIRA_SYMBOL } from "@/constants";
 
 export default function HeroSection({
   title,
@@ -61,52 +62,96 @@ export default function HeroSection({
                 <div className="h-full flex flex-col justify-end p-6 md:p-8">
                   {/* Mobile layout */}
                   <div className="flex flex-col md:hidden space-y-2">
-                    <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">
-                        {/* {stats.peopleReached}+ */}
-                        ₦2,000,000+
+                    {stats.totalFinancialSupportProvided ? (
+                      <div className="text-white">
+                        <div className="text-4xl font-bold mb-2">
+                          {`${NAIRA_SYMBOL}${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(stats.totalFinancialSupportProvided)}+`}
+                        </div>
+                        <div className="text-lg md:text-xl">
+                          Support provided
+                        </div>
                       </div>
-                      <div className="text-lg md:text-xl">Support provided</div>
-                    </div>
-                    <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">
-                        {/* {stats.schoolsReached}+ */}
-                        9+
+                    ) : (
+                      ""
+                    )}
+                    {stats.schoolsReached ? (
+                      <div className="text-white">
+                        <div className="text-4xl font-bold mb-2">
+                          {`${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(stats.schoolsReached)}+`}
+                        </div>
+                        <div className="text-lg md:text-xl">
+                          Schools Reached
+                        </div>
                       </div>
-                      <div className="text-lg md:text-xl">Schools Reached</div>
-                    </div>
-                    <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">
-                        {/* {stats.statesReached}+ */}
-                        100+
+                    ) : (
+                      ""
+                    )}
+                    {stats.peopleReached ? (
+                      <div className="text-white">
+                        <div className="text-4xl font-bold mb-2">
+                          {`${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(stats.peopleReached)}+`}
+                        </div>
+                        <div className="text-lg md:text-xl">People Reached</div>
                       </div>
-                      <div className="text-lg md:text-xl">People Reached</div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
 
                   {/* Desktop layout */}
                   <div className="hidden md:flex md:flex-col">
-                    <div className="text-white mb-8">
-                      <div className="text-6xl font-bold mb-2">
-                        {/* {stats.peopleReached}+  */}
-                        ₦2,000,000+
+                    {stats.totalFinancialSupportProvided ? (
+                      <div className="text-white mb-8">
+                        <div className="text-6xl font-bold mb-2">
+                          {`${NAIRA_SYMBOL}${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(stats.totalFinancialSupportProvided)}+`}
+                        </div>
+                        <div className="text-2xl">Support Provided</div>
                       </div>
-                      <div className="text-2xl">Support Provided</div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                     <div className="flex gap-16">
                       <div className="text-white">
-                        <div className="text-5xl font-bold mb-2">
-                          {/* {stats.schoolsReached}+ */}
-                          9+
-                        </div>
-                        <div className="text-xl">Schools Reached</div>
+                        {stats.schoolsReached ? (
+                          <>
+                            <div className="text-5xl font-bold mb-2">
+                              {`${new Intl.NumberFormat("en-NG", {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              }).format(stats.schoolsReached)}+`}
+                            </div>
+                            <div className="text-xl">Schools Reached</div>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </div>
                       <div className="text-white">
-                        <div className="text-5xl font-bold mb-2">
-                          {/* {stats.statesReached}+ */}
-                          100+
-                        </div>
-                        <div className="text-xl">People Reached</div>
+                        {stats.peopleReached ? (
+                          <>
+                            <div className="text-5xl font-bold mb-2">
+                              {`${new Intl.NumberFormat("en-NG", {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              }).format(stats.peopleReached)}+`}
+                            </div>
+                            <div className="text-xl">People Reached</div>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     </div>
                   </div>
