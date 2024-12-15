@@ -6,39 +6,14 @@ import { Card } from "@/components/ui/card";
 import { Play, MessageSquarePlus, VideoIcon } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
 import VideoPlayer from "@/components/VideoPlayer";
-import { useEffect, useState } from "react";
+import ShareTestimony from "@/components/ShareTestimony";
+import React, { useRef, useEffect, useState } from "react";
 import { fecthedData } from "@/firebase/fetchFirebaseData";
 
 // const testimonials = [
 //   {
+//   {
 //     id: 1,
-//     name: "Vincent Anderson",
-//     role: "Student volunteer",
-//     content:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-//     image: "/images/person placeholder.png?height=400&width=400",
-//     type: "text",
-//   },
-//   {
-//     id: 2,
-//     name: "Michael Hamilton",
-//     role: "Partner University of Lagos",
-//     content:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-//     image: "/images/person placeholder.png",
-//     type: "text",
-//   },
-//   {
-//     id: 3,
-//     name: "Vincent Anderson",
-//     role: "Student volunteer",
-//     content:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis.",
-//     image: "/images/person placeholder.png",
-//     type: "text",
-//   },
-//   {
-//     id: 4,
 //     name: "Vincent Anderson",
 //     role: "Student volunteer",
 //     content:
@@ -47,30 +22,13 @@ import { fecthedData } from "@/firebase/fetchFirebaseData";
 //     type: "text",
 //   },
 //   {
-//     id: 5,
+//     id: 2,
 //     name: "Deyemi Akande",
 //     role: "Partner University of Lagos",
 //     image: "",
 //     type: "video",
 //     videoUrl: "/videos/vid.mp4",
 //   },
-//   {
-//     id: 6,
-//     name: "Deyemi Akande",
-//     role: "Partner University of Lagos",
-//     image: "",
-//     type: "video",
-//     videoUrl: "/videos/vid2.mp4",
-//   },
-//   {
-//     id: 7,
-//     name: "Deyemi Akande",
-//     role: "Partner University of Lagos",
-//     image: "",
-//     type: "video",
-//     videoUrl: "/videos/vid3.mp4",
-//   },
-// ];
 
 function SkeletonProject() {
   return (
@@ -88,6 +46,8 @@ export default function TestimonialsPage() {
   const [testimonials, setTestimonials] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showTestimonyForm, setShowTestimonyForm] = useState(false);
+  const formRef = useRef(null);
 
   // Fetch Testimonials on component mount (Using a variable to store the function)
   useEffect(() => {
@@ -109,6 +69,25 @@ export default function TestimonialsPage() {
     };
     loadTestimonials();
   }, []);
+
+  // Close form page on Clicking outside the form
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setShowTestimonyForm(false);
+      }
+    };
+
+    // Set event to run on show of the form
+    if (showTestimonyForm) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    // useEffect Clean up function (Runs After every render/re-render, mount/removal of the component)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showTestimonyForm]); //dependencies (list of all reactive code in the effect setup)
 
   return (
     <div className="container mx-auto px-4 py-8 my-8">
@@ -195,17 +174,6 @@ export default function TestimonialsPage() {
         </div>
       )}
 
-      {/* Add Share Testimony Buttons */}
-      <div className="flex flex-wrap gap-4 mb-8">
-        <Button
-          variant="outline"
-          className="flex items-center gap-2 rounded-3xl"
-        >
-          <MessageSquarePlus className="h-4 w-4" />
-          Share Testimony
-        </Button>
-      </div>
-
       {/* Video Testimonials Grid */}
       {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {testimonials
@@ -227,6 +195,27 @@ export default function TestimonialsPage() {
             </div>
           ))}
       </div> */}
+
+      {/* Add Share Testimony Buttons */}
+      <div className="flex flex-wrap gap-4 mb-8">
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 rounded-3xl"
+          onClick={() => {
+            setShowTestimonyForm(true);
+          }}
+        >
+          <MessageSquarePlus className="h-4 w-4" />
+          Share Testimony
+        </Button>
+      </div>
+
+      {/* Display Testimony form */}
+      {showTestimonyForm && (
+        <div>
+          <ShareTestimony closeForm={formRef} />
+        </div>
+      )}
     </div>
   );
 }
