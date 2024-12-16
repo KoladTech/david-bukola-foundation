@@ -49,7 +49,7 @@ export default function TestimonialsPage() {
   const [showTestimonyForm, setShowTestimonyForm] = useState(false);
   const formRef = useRef(null);
 
-  // Fetch Testimonials on component mount (Using a variable to store the function)
+  // Fetch Testimonials on component mount (Using a variable (loadTestimonials) to store the function)
   useEffect(() => {
     const loadTestimonials = async () => {
       try {
@@ -89,6 +89,10 @@ export default function TestimonialsPage() {
     };
   }, [showTestimonyForm]); //dependencies (list of all reactive code in the effect setup)
 
+  // Function to close the form
+  const closeForm = () => {
+    setShowTestimonyForm(false);
+  };
   return (
     <div className="container mx-auto px-4 py-8 my-8">
       {/* Featured Video Section */}
@@ -109,6 +113,20 @@ export default function TestimonialsPage() {
         video={true}
       /> */}
 
+      {/* Add Share Testimony Buttons */}
+      <div className="flex justify-start mb-8">
+        <Button
+          variant="outline"
+          className="flex items-center gap-2 rounded-3xl"
+          onClick={() => {
+            setShowTestimonyForm(true);
+          }}
+        >
+          <MessageSquarePlus className="h-4 w-4" />
+          Share Testimony
+        </Button>
+      </div>
+
       {/* Text Testimonials Grid */}
       {loading ? (
         <SkeletonProject />
@@ -118,15 +136,26 @@ export default function TestimonialsPage() {
           {error ? (
             <p className="text-red-500">{error}</p>
           ) : (
-            // Displaying Testimonials
+            // Displaying Testimonials: Filter text testimonies > sort by date > display sorted testimonies
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {testimonials
                 .filter((testimonial) => testimonial.type === "text")
-                .map((testimonial) => (
+                .sort((a, b) => {
+                  // Ensure both dates are valid before sorting
+                  const dateA = a.date?.seconds
+                    ? new Date(a.date.seconds * 1000)
+                    : new Date(0); // Default to epoch for invalid dates
+                  const dateB = b.date?.seconds
+                    ? new Date(b.date.seconds * 1000)
+                    : new Date(0);
+                  return dateB - dateA; // Sort in descending order (most recent first)
+                })
+                .map((testimonial, index) => (
                   <Card
                     key={testimonial.id}
+                    // Give alternating cards blue color
                     className={`relative p-6 h-72 ${
-                      testimonial.num % 2 === 1 ? "bg-blue-500 text-white" : ""
+                      index % 2 === 1 ? "bg-blue-500 text-white" : ""
                     }`}
                   >
                     <div className="flex flex-col">
@@ -142,12 +171,12 @@ export default function TestimonialsPage() {
                           <h3 className="font-semibold">{testimonial.name}</h3>
                           <p
                             className={`text-sm ${
-                              testimonial.num % 2 === 1
+                              index % 2 === 1
                                 ? "text-blue-100"
                                 : "text-gray-500"
                             } mb-2`}
                           >
-                            {testimonial.role}
+                            {testimonial.designation}
                           </p>
                           <p className="text-sm">{testimonial.testimonial}</p>
                         </div>
@@ -196,24 +225,10 @@ export default function TestimonialsPage() {
           ))}
       </div> */}
 
-      {/* Add Share Testimony Buttons */}
-      <div className="flex flex-wrap gap-4 mb-8">
-        <Button
-          variant="outline"
-          className="flex items-center gap-2 rounded-3xl"
-          onClick={() => {
-            setShowTestimonyForm(true);
-          }}
-        >
-          <MessageSquarePlus className="h-4 w-4" />
-          Share Testimony
-        </Button>
-      </div>
-
       {/* Display Testimony form */}
       {showTestimonyForm && (
         <div>
-          <ShareTestimony closeForm={formRef} />
+          <ShareTestimony clickCloseForm={formRef} closeForm={closeForm} />
         </div>
       )}
     </div>

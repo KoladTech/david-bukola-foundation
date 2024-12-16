@@ -1,19 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import db from "@/firebase/firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-export default function ShareTestimony({ closeForm }) {
+export default function ShareTestimony({ clickCloseForm, closeForm }) {
   const [testimonial, setTestimonial] = useState("");
   const [showThankYou, setShowThankYou] = useState("");
-  // const [showTestimonyForm, setShowTestimonyForm] = useState(true);
+  const [showTestimonyForm, setShowTestimonyForm] = useState(true);
   const [testimonyData, setTestimonyData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
+    // lastName: "",
     designation: "",
-    testimony: "",
+    testimonial: "",
+    type: "text",
+    date: serverTimestamp(),
   });
+
+  // set form data from user inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setTestimonyData((prevData) => ({
@@ -22,43 +26,49 @@ export default function ShareTestimony({ closeForm }) {
     }));
   };
 
+  // Handles form submission on clicking share button
   const handleTestimonialFormSubmit = async (e) => {
     e.preventDefault();
     try {
-      const collectionRef = collection(db, "testimonials"); //get the testimonial collection
-      await addDoc(collectionRef, testimonyData);
-      alert("Thank You for your testimony! It will be approved soon");
+      const collectionRef = collection(db, "Testimonials"); //get the testimonial collection
+      const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
+    } catch (error) {
+      console.log("Error adding testimony: ", error);
+    } finally {
+      // Remove form display
+      setShowTestimonyForm(false);
+      // Show thank you message
+      setShowThankYou(true);
+
+      // Set a timeout for thank you message and close the form in the parent page
+      setTimeout(() => {
+        setShowThankYou(false);
+        closeForm();
+      }, 3000);
 
       // Reset Testimony data.
       setTestimonyData({
-        firstName: "",
-        lastName: "",
+        name: "",
+        // lastName: "",
         designation: "",
-        testimony: "",
+        testimonial: "",
+        type: "text",
+        date: serverTimestamp(),
       });
-    } catch (error) {
-      console.log("Error adding testimony: ", error);
-      alert("Something went wrong please try again.");
-    } finally {
-      setShowThankYou(true);
-      setTimeout(() => {
-        setShowTestimonyForm(false);
-        setShowThankYou(false);
-      }, 2000);
-      setShowTestimonyForm(true);
+      // setShowTestimonyForm(true);
     }
   };
   const maxLength = 250; // Set the character limit
-  // Create a single ref object
-  const formDataRefs = useRef({});
+
+  const formDataRefs = useRef({}); // Create a single ref object
 
   return (
     <div>
-      {true && (
+      {showTestimonyForm && (
         <Card>
           <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
             <div
-              ref={closeForm}
+              ref={clickCloseForm}
               className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg text-center"
             >
               <form
@@ -74,11 +84,11 @@ export default function ShareTestimony({ closeForm }) {
                     <div className="flex flex-row gap-4">
                       <input
                         type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={testimonyData.firstName}
-                        placeholder="First Name *"
-                        ref={(el) => (formDataRefs.current.firstName = el)}
+                        id="name"
+                        name="name"
+                        value={testimonyData.name}
+                        placeholder="Full Name *"
+                        ref={(el) => (formDataRefs.current.name = el)}
                         required
                         className="input-field"
                         onChange={handleInputChange}
@@ -126,23 +136,30 @@ export default function ShareTestimony({ closeForm }) {
                     <Button
                       onClick={handleTestimonialFormSubmit}
                       disabled={
-                        !formDataRefs.current.firstName?.value ||
+                        !formDataRefs.current.name?.value ||
                         !formDataRefs.current.testimonial?.value
                       }
                     >
                       Share
                     </Button>
                   </div>
-                  {showThankYou && (
-                    <div>
-                      <h2 className="text-lg font-semibold">
-                        Thank you for sharing your Testimony with us. It will be
-                        reviewed and approved soon
-                      </h2>
-                    </div>
-                  )}
                 </div>
               </form>
+            </div>
+          </div>
+        </Card>
+      )}
+      {showThankYou && (
+        <Card>
+          <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+            <div
+              // ref={closeForm}
+              className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
+            >
+              <h2 className="text-lg font-semibold">
+                Thank you for sharing your Testimony with us. It will be
+                reviewed and approved soon!
+              </h2>
             </div>
           </div>
         </Card>
