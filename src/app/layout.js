@@ -190,7 +190,7 @@ export default function RootLayout({ children }) {
             <div className="absolute inset-0 bg-black opacity-50"></div>
           </div>
           <div className="relative z-10 container mx-auto px-4 md:px-2 md-lg:px-0.5">
-            <footer className="bg-white text-gray-600 rounded-t-3xl py-8 lg:mx-12 md:mx-2 md-lg:mx-0">
+            <footer className="bg-white text-gray-600 rounded-t-3xl py-6 lg:mx-8 md:mx-2 md-lg:-mx-4">
               <div className="container mx-auto px-12">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-end md:space-x-8">
                   {/* Left Section */}
@@ -198,7 +198,7 @@ export default function RootLayout({ children }) {
                     <img
                       src="/images/dbf-full-logo.svg"
                       alt="Foundation Logo"
-                      className="w-52 h-40"
+                      className="w-48 h-36 md-lg:w-40 md-lg:h-32"
                     />
                     <div className="flex space-x-4 mb-4">
                       <a
@@ -235,9 +235,9 @@ export default function RootLayout({ children }) {
                   </div>
 
                   {/* Right Section */}
-                  <div className="flex flex-col space-y-8 md:text-left md:flex-grow md:items-end items-start">
+                  <div className="flex flex-col space-y-8 md:text-left md:flex-grow md:items-end items-start md-lg:text-sm">
                     {/* First Row - Navigation Links */}
-                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md-lg:gap-4 md:justify-start font-bold">
+                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-bold lg:gap-2 md-lg:gap-2 md-lg:text-xs">
                       <Link
                         href="/"
                         className="text-black hover:font-bold hover:scale-105 transition-transform"

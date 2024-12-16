@@ -7,54 +7,6 @@ import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { fecthedData } from "@/firebase/fetchFirebaseData";
 import LoadingSpinner from "./loadingSpinner";
 
-const cards = [
-  {
-    id: 1,
-    title: "Incredible Impact",
-    content:
-      "The foundation's work has truly transformed our community. Their dedication to improving lives is inspiring.",
-    imageSrc: "/images/person placeholder.png",
-    name: "John Doe",
-    role: "Community Leader",
-  },
-  {
-    id: 2,
-    title: "Life-Changing Support",
-    content:
-      "Thanks to their support, I was able to pursue my education. They've opened doors I never thought possible.",
-    imageSrc: "/images/person placeholder.png",
-    name: "Jane Smith",
-    role: "Student",
-  },
-  {
-    id: 3,
-    title: "Exceptional Volunteers",
-    content:
-      "Working with this foundation has been a rewarding experience. Their volunteers are passionate and committed.",
-    imageSrc: "/images/person placeholder.png",
-    name: "Alice Johnson",
-    role: "Volunteer Coordinator",
-  },
-  {
-    id: 4,
-    title: "Transparent Operations",
-    content:
-      "As a donor, I appreciate their transparency. It's clear that every contribution is used effectively to create change.",
-    imageSrc: "/images/person placeholder.png",
-    name: "Bob Williams",
-    role: "Regular Donor",
-  },
-  {
-    id: 5,
-    title: "Innovative Approach",
-    content:
-      "Their innovative programs address root causes, not just symptoms. It's a fresh approach to community development.",
-    imageSrc: "/images/person placeholder.png",
-    name: "Eva Brown",
-    role: "Social Worker",
-  },
-];
-
 export default function ScrollableCardRow() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const containerRef = useRef(null);
@@ -153,7 +105,7 @@ export default function ScrollableCardRow() {
                 className="relative flex overflow-x-auto gap-6 pb-6 scrollbar-custom"
                 style={{ scrollSnapType: "x mandatory" }}
               >
-                {testimonials.map((testimonial) => (
+                {testimonials.slice(0, 3).map((testimonial) => (
                   <div
                     key={testimonial.id}
                     className=" flex-shrink-0 w-[400px] bg-white rounded-lg shadow-md p-6"
@@ -169,17 +121,14 @@ export default function ScrollableCardRow() {
                       /> */}
                       <div>
                         <h3 className="text-xl font-semibold">
-                          {testimonial.name}
+                          {testimonial.firstName}
                         </h3>
-                        <p className="text-gray-600">{testimonial.role}</p>
+                        <p className="text-gray-600">
+                          {testimonial.occupation}
+                        </p>
                       </div>
                     </div>
-                    <h4 className="text-lg font-semibold mb-2">
-                      {testimonial.title}
-                    </h4>
-                    <p className="text-gray-700 mb-2">
-                      {testimonial.testimonial}
-                    </p>
+                    <p className="mb-2">{testimonial.testimonial}</p>
                     {/* Testimonial Dates */}
                     <div className="absolute bottom-8 flex items-end">
                       <p className="text-sm">
