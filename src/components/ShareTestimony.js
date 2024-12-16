@@ -9,11 +9,12 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
   const [showThankYou, setShowThankYou] = useState("");
   const [showTestimonyForm, setShowTestimonyForm] = useState(true);
   const [testimonyData, setTestimonyData] = useState({
-    name: "",
-    // lastName: "",
-    designation: "",
+    firstName: "",
+    lastName: "",
+    occupation: "",
     testimonial: "",
     type: "text",
+    approved: false,
     date: serverTimestamp(),
   });
 
@@ -48,17 +49,18 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
 
       // Reset Testimony data.
       setTestimonyData({
-        name: "",
-        // lastName: "",
-        designation: "",
+        firstName: "",
+        lastName: "",
+        occupation: "",
         testimonial: "",
         type: "text",
+        approved: false,
         date: serverTimestamp(),
       });
       // setShowTestimonyForm(true);
     }
   };
-  const maxLength = 250; // Set the character limit
+  const maxLength = 300; // Set the character limit
 
   const formDataRefs = useRef({}); // Create a single ref object
 
@@ -84,33 +86,35 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                     <div className="flex flex-row gap-4">
                       <input
                         type="text"
-                        id="name"
-                        name="name"
-                        value={testimonyData.name}
-                        placeholder="Full Name *"
-                        ref={(el) => (formDataRefs.current.name = el)}
+                        id="firstName"
+                        name="firstName"
+                        value={testimonyData.firstName}
+                        placeholder="First Name *"
+                        ref={(el) => (formDataRefs.current.firstName = el)}
                         required
                         className="input-field"
                         onChange={handleInputChange}
                       ></input>
-                      {/* <input
+                      <input
                         type="text"
                         id="lastName"
                         name="lastName"
                         value={testimonyData.lastName}
-                        placeholder="Last Name (Optional)"
+                        ref={(el) => (formDataRefs.current.lastName = el)}
+                        placeholder="Last Name"
                         className="input-field"
                         onChange={handleInputChange}
-                      ></input> */}
+                      ></input>
                     </div>
 
-                    {/* Designation Field */}
+                    {/* Occupation Field */}
                     <input
                       type="text"
-                      id="designation"
-                      name="designation"
-                      value={testimonyData.designation}
-                      placeholder="Designation (Tell us what you do)"
+                      id="occupation"
+                      name="occupation"
+                      value={testimonyData.occupation}
+                      ref={(el) => (formDataRefs.current.occupation = el)}
+                      placeholder="Occupation"
                       className="input-field"
                       onChange={handleInputChange}
                     ></input>
@@ -136,7 +140,9 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                     <Button
                       onClick={handleTestimonialFormSubmit}
                       disabled={
-                        !formDataRefs.current.name?.value ||
+                        !formDataRefs.current.firstName?.value ||
+                        !formDataRefs.current.lastName?.value ||
+                        !formDataRefs.current.occupation?.value ||
                         !formDataRefs.current.testimonial?.value
                       }
                     >
@@ -158,7 +164,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
             >
               <h2 className="text-lg font-semibold">
                 Thank you for sharing your Testimony with us. It will be
-                reviewed and approved soon!
+                reviewed by our team!
               </h2>
             </div>
           </div>

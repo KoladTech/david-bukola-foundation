@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Play, MessageSquarePlus, VideoIcon } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
 import VideoPlayer from "@/components/VideoPlayer";
+import { Play, MessageSquarePlus, VideoIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import ShareTestimony from "@/components/ShareTestimony";
 import React, { useRef, useEffect, useState } from "react";
 import { fecthedData } from "@/firebase/fetchFirebaseData";
@@ -34,6 +34,7 @@ function SkeletonProject() {
   return (
     <div className="p-4 animate-pulse rounded-md">
       <div className="flex flex-col md:flex-row h-52 bg-white rounded-md mb-2 gap-4 justify-between">
+        <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
         <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
         <div className="bg-gray-300 rounded-md border-solid w-full mb-2 p-4 mx-2"></div>
       </div>
@@ -139,7 +140,10 @@ export default function TestimonialsPage() {
             // Displaying Testimonials: Filter text testimonies > sort by date > display sorted testimonies
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
               {testimonials
-                .filter((testimonial) => testimonial.type === "text")
+                .filter(
+                  (testimonial) =>
+                    testimonial.type === "text" && testimonial.approved === true
+                )
                 .sort((a, b) => {
                   // Ensure both dates are valid before sorting
                   const dateA = a.date?.seconds
@@ -168,7 +172,9 @@ export default function TestimonialsPage() {
                           className="rounded-full"
                         /> */}
                         <div>
-                          <h3 className="font-semibold">{testimonial.name}</h3>
+                          <h3 className="font-semibold">
+                            {testimonial.firstName}
+                          </h3>
                           <p
                             className={`text-sm ${
                               index % 2 === 1
@@ -176,7 +182,7 @@ export default function TestimonialsPage() {
                                 : "text-gray-500"
                             } mb-2`}
                           >
-                            {testimonial.designation}
+                            {testimonial.occupation}
                           </p>
                           <p className="text-sm">{testimonial.testimonial}</p>
                         </div>
