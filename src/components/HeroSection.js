@@ -64,7 +64,7 @@ export default function HeroSection({
                     <div className="text-white">
                       <div className="text-4xl font-bold mb-2">
                         {/* {stats.peopleReached}+ */}
-                        2,000,000+
+                        ₦2,000,000+
                       </div>
                       <div className="text-xl">Support provided</div>
                     </div>
@@ -89,7 +89,7 @@ export default function HeroSection({
                     <div className="text-white mb-8">
                       <div className="text-6xl font-bold mb-2">
                         {/* {stats.peopleReached}+  */}
-                        2,000,000+
+                        ₦2,000,000+
                       </div>
                       <div className="text-2xl">Support Provided</div>
                     </div>
