@@ -101,7 +101,8 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                         name="lastName"
                         value={testimonyData.lastName}
                         ref={(el) => (formDataRefs.current.lastName = el)}
-                        placeholder="Last Name"
+                        placeholder="Last Name *"
+                        required
                         className="input-field"
                         onChange={handleInputChange}
                       ></input>
@@ -114,7 +115,8 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                       name="occupation"
                       value={testimonyData.occupation}
                       ref={(el) => (formDataRefs.current.occupation = el)}
-                      placeholder="Occupation"
+                      placeholder="Occupation *"
+                      required
                       className="input-field"
                       onChange={handleInputChange}
                     ></input>
