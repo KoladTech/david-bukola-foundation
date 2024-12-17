@@ -156,8 +156,8 @@ export default function ProjectsPage() {
                       <p className="font-semibold">
                         {project.plannedBudget
                           ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat("en-NG", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
+                              minimumFractionDigits: 0,
+                              maximumFractionDigits: 0,
                             }).format(project.plannedBudget)}`
                           : "No Budget Yet"}
                       </p>

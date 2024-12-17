@@ -1,14 +1,18 @@
+import { LuArrowUpRight } from "react-icons/lu";
+import Link from "next/link";
+
 export default function AchievementWidgets() {
   return (
     // {View AchievementWidgets button}
-    <div className="absolute bottom-8 right-12">
-      <a
+    <>
+      <Link
         href="/achievements"
-        className="inline-block bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-4 py-2 rounded-md transition-colors"
+        className="w-fit inline-flex bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium px-2 py-2 rounded-xl transition-colors"
       >
         View Achievements
-      </a>
-    </div>
+        <LuArrowUpRight className="w-4 h-4" />
+      </Link>
+    </>
 
     // Achievement counts section...
   );
