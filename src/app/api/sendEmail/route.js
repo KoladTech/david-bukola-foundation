@@ -1,0 +1,49 @@
+import nodemailer from "nodemailer";
+
+export async function POST(req) {
+  const nodemailer = require("nodemailer");
+  try {
+    const body = await req.json();
+
+    const { firstName, email, occupation, testimonial } = body;
+
+    // Validate the input
+    if (!firstName || !email || !occupation || !testimonial) {
+      return new Response(
+        JSON.stringify({ message: "All fields are required." }),
+        { status: 400 }
+      );
+    }
+    // Create a Nodemailer transporter
+    const transporter = nodemailer.createTransport({
+      service: "Gmail", // Use the appropriate email service
+      auth: {
+        user: process.env.NEXT_PUBLIC_EMAIL_USERNAME, // Your email address
+        pass: process.env.NEXT_PUBLIC_EMAIL_APP_PASSWORD, // Your email password or app password
+      },
+    });
+
+    // Configure the email options
+    const mailOptions = {
+      from: `"${firstName}" <${email}>`, // Sender info
+      to: process.env.NEXT_PUBLIC_FOUNDATION_EMAIL, // Your foundation's email
+      subject: "New Testimony Submission", // Email subject
+      text: `Name: ${firstName}
+             Email: ${email}
+             Occupation: ${occupation}
+             Testimonial: ${testimonial}`, // Plain text content
+    };
+
+    // Send the email
+    const info = await transporter.sendMail(mailOptions);
+    return new Response(
+      JSON.stringify({ message: "Email sent successfully" }),
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return new Response(JSON.stringify({ error: "Failed to send email" }), {
+      status: 500,
+    });
+  }
+}

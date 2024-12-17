@@ -11,6 +11,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
   const [testimonyData, setTestimonyData] = useState({
     firstName: "",
     lastName: "",
+    email: "",
     occupation: "",
     testimonial: "",
     type: "text",
@@ -30,9 +31,26 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
   // Handles form submission on clicking share button
   const handleTestimonialFormSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      const collectionRef = collection(db, "Testimonials"); //get the testimonial collection
-      const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
+      // Get the mailed data
+      const response = await fetch("api/sendEmail", {
+        method: "POST",
+        headers: {
+          "content-Type": "application/json",
+        },
+        body: JSON.stringify(testimonyData),
+      });
+
+      // If the mail sent succesfully
+      if (response.ok) {
+        alert("Your testimony has been submitted successfully!");
+        const collectionRef = collection(db, "Testimonials"); //get the testimonial collection
+        const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
+      } else {
+        console.log(response);
+        alert("Failed to submit testimony. Please try again.");
+      }
     } catch (error) {
       console.log("Error adding testimony: ", error);
     } finally {
@@ -51,6 +69,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
       setTestimonyData({
         firstName: "",
         lastName: "",
+        email: "",
         occupation: "",
         testimonial: "",
         type: "text",
@@ -110,6 +129,18 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
 
                     {/* Occupation Field */}
                     <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={testimonyData.email}
+                      ref={(el) => (formDataRefs.current.email = el)}
+                      placeholder="Email *"
+                      required
+                      className="input-field"
+                      onChange={handleInputChange}
+                    ></input>
+
+                    <input
                       type="text"
                       id="occupation"
                       name="occupation"
@@ -122,7 +153,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                     ></input>
 
                     {/* Testimonial TextArea */}
-                    <textArea
+                    <textarea
                       id="testimonial"
                       name="testimonial"
                       maxLength={maxLength}
@@ -133,7 +164,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                       className="input-field h-48"
                       onInput={(e) => setTestimonial(e.target.value)}
                       onChange={handleInputChange}
-                    ></textArea>
+                    ></textarea>
 
                     {/* Testimonial Character Count */}
                     <p className="text-sm text-gray-500 mb-4">
@@ -144,6 +175,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                       disabled={
                         !formDataRefs.current.firstName?.value ||
                         !formDataRefs.current.lastName?.value ||
+                        !formDataRefs.current.email?.value ||
                         !formDataRefs.current.occupation?.value ||
                         !formDataRefs.current.testimonial?.value
                       }
