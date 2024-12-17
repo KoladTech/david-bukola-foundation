@@ -48,7 +48,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <header className="bg-white full-width-div">
-          <div className="container mx-auto my-8 px-2 py-4 flex items-center justify-between">
+          <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between text-sm lg:text-base">
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 className="hidden md:block"
@@ -68,7 +68,7 @@ export default function RootLayout({ children }) {
                 DAVIDBUKOLA DEVELOPMENT FOUNDATION
               </span>
             </Link>
-            <nav className="hidden md:flex space-x-6 md-lg:space-x-0 md-lg:text-sm">
+            <nav className="hidden md:flex space-x-6 md-lg:space-x-0 md-lg:text-xs">
               <Link
                 href="/"
                 className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
@@ -108,10 +108,10 @@ export default function RootLayout({ children }) {
                 Donate
               </Link>
               <Link
-                href="/join"
+                href="/get-involved"
                 className="border border-blue-500 text-blue-500 px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300"
               >
-                Join Us
+                Get Involved
               </Link>
             </div>
             <button onClick={toggleMenu} className="md:hidden">
@@ -171,11 +171,11 @@ export default function RootLayout({ children }) {
                   Donate
                 </Link>
                 <Link
-                  href="/join"
+                  href="/get-involved"
                   className="block border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 text-center text-xl"
                   onClick={toggleMenu}
                 >
-                  Join Us
+                  Get Involved
                 </Link>
               </div>
             </div>
