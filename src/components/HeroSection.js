@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
+import { NAIRA_SYMBOL } from "@/constants";
+import AchievementWidgets from "./AchievementWidgets";
 
 export default function HeroSection({
   title,
@@ -12,6 +14,7 @@ export default function HeroSection({
   showStats = false,
   stats = null,
   video = false,
+  atTop = true,
 }) {
   return (
     <>
@@ -61,52 +64,96 @@ export default function HeroSection({
                 <div className="h-full flex flex-col justify-end p-6 md:p-8">
                   {/* Mobile layout */}
                   <div className="flex flex-col md:hidden space-y-2">
-                    <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">
-                        {/* {stats.peopleReached}+ */}
-                        ₦2,000,000+
+                    {stats.totalFinancialSupportProvided ? (
+                      <div className="text-white">
+                        <div className="text-4xl font-bold mb-2">
+                          {`${NAIRA_SYMBOL}${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(stats.totalFinancialSupportProvided)}+`}
+                        </div>
+                        <div className="text-lg md:text-xl">
+                          Support provided
+                        </div>
                       </div>
-                      <div className="text-xl">Support provided</div>
-                    </div>
-                    <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">
-                        {/* {stats.schoolsReached}+ */}
-                        9+
+                    ) : (
+                      ""
+                    )}
+                    {stats.schoolsReached ? (
+                      <div className="text-white">
+                        <div className="text-4xl font-bold mb-2">
+                          {`${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(stats.schoolsReached)}+`}
+                        </div>
+                        <div className="text-lg md:text-xl">
+                          Schools Reached
+                        </div>
                       </div>
-                      <div className="text-xl">Schools Reached</div>
-                    </div>
-                    <div className="text-white">
-                      <div className="text-4xl font-bold mb-2">
-                        {/* {stats.statesReached}+ */}
-                        100+
+                    ) : (
+                      ""
+                    )}
+                    {stats.peopleReached ? (
+                      <div className="text-white">
+                        <div className="text-4xl font-bold mb-2">
+                          {`${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(stats.peopleReached)}+`}
+                        </div>
+                        <div className="text-lg md:text-xl">People Reached</div>
                       </div>
-                      <div className="text-xl">People Reached</div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
 
                   {/* Desktop layout */}
                   <div className="hidden md:flex md:flex-col">
-                    <div className="text-white mb-8">
-                      <div className="text-6xl font-bold mb-2">
-                        {/* {stats.peopleReached}+  */}
-                        ₦2,000,000+
+                    {stats.totalFinancialSupportProvided ? (
+                      <div className="text-white mb-8">
+                        <div className="text-6xl font-bold mb-2">
+                          {`${NAIRA_SYMBOL}${new Intl.NumberFormat("en-NG", {
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(stats.totalFinancialSupportProvided)}+`}
+                        </div>
+                        <div className="text-2xl">Support Provided</div>
                       </div>
-                      <div className="text-2xl">Support Provided</div>
-                    </div>
+                    ) : (
+                      ""
+                    )}
                     <div className="flex gap-16">
                       <div className="text-white">
-                        <div className="text-5xl font-bold mb-2">
-                          {/* {stats.schoolsReached}+ */}
-                          9+
-                        </div>
-                        <div className="text-xl">Schools Reached</div>
+                        {stats.schoolsReached ? (
+                          <>
+                            <div className="text-5xl font-bold mb-2">
+                              {`${new Intl.NumberFormat("en-NG", {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              }).format(stats.schoolsReached)}+`}
+                            </div>
+                            <div className="text-xl">Schools Reached</div>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </div>
                       <div className="text-white">
-                        <div className="text-5xl font-bold mb-2">
-                          {/* {stats.statesReached}+ */}
-                          100+
-                        </div>
-                        <div className="text-xl">People Reached</div>
+                        {stats.peopleReached ? (
+                          <>
+                            <div className="text-5xl font-bold mb-2">
+                              {`${new Intl.NumberFormat("en-NG", {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 0,
+                              }).format(stats.peopleReached)}+`}
+                            </div>
+                            <div className="text-xl">People Reached</div>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </div>
                     </div>
                   </div>
@@ -114,15 +161,21 @@ export default function HeroSection({
               </div>
             )}
         </div>
-        <div className="absolute bottom-4 right-4 bg-white p-4 rounded-lg shadow-lg">
-          <p className="text-sm mb-2">Want to make an impact?</p>
-          <Link
-            href="/donate"
-            className="bg-blue-500 text-white px-4 py-2 rounded-md inline-block text-sm hover:bg-blue-600 transition-colors"
-          >
-            Donate Now
-          </Link>
-        </div>
+        {atTop ? (
+          <div className="absolute bottom-4 right-3 md:right-4 bg-white p-2 md:p-4 rounded-lg shadow-lg">
+            <p className="text-xs md:text-sm mb-2">Want to make an impact?</p>
+            <Link
+              href="/donate"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md inline-block text-xs md:text-sm hover:bg-blue-600 transition-colors"
+            >
+              Donate Now
+            </Link>
+          </div>
+        ) : (
+          <div className="absolute bottom-6 right-6 md:right-7">
+            <AchievementWidgets />
+          </div>
+        )}
       </div>
     </>
   );

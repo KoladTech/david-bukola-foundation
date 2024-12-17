@@ -1,15 +1,12 @@
 "use client";
-import Image from "next/image";
-import DonationWidget from "../components/DonationWidget";
 import AboutUs from "@/components/AboutUs";
-import Achievement from "@/components/Achievement";
 import TestimonyCards from "../components/TestimonyCards";
-import PictureCard from "../components/PictureCard";
-import ContentCard from "../components/ContentCard";
 import FAQ from "../components/FAQ";
 import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
+import { useApiData } from "@/context/ApiStatsContext";
+import LoadingSpinner from "@/components/loadingSpinner";
 
 // Imports for testing Firebase analytics using a custom event
 // import { logEvent } from "firebase/analytics";
@@ -22,6 +19,7 @@ export default function Home() {
   //     key: "Custom-event-works",
   //   });
   // }
+  const { stats, loading_stats, error } = useApiData();
   return (
     <main>
       {/* Main home page div */}
@@ -40,7 +38,18 @@ export default function Home() {
           <AboutUs />
         </div>
         <div>
-          <Achievement />
+          {/* <Achievement /> */}
+          {loading_stats ? (
+            <LoadingSpinner />
+          ) : (
+            <HeroSection
+              imageUrl={`/images/achievements-image.png`}
+              alt={`achievement image`}
+              atTop={false}
+              showStats={true}
+              stats={stats}
+            />
+          )}
         </div>
 
         {/* Testimonies Section */}

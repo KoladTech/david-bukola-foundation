@@ -7,8 +7,9 @@ import "./globals.css";
 import Link from "next/link";
 import { RiFacebookBoxFill } from "react-icons/ri";
 import { RiTwitterXLine } from "react-icons/ri";
-import { GrDocumentVerified, GrInstagram } from "react-icons/gr";
+import { GrInstagram } from "react-icons/gr";
 import Image from "next/image";
+import { ApiStatsProvider } from "@/context/ApiStatsContext";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -47,7 +48,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <header className="bg-white full-width-div">
-          <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between">
+          <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between text-sm lg:text-base">
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 className="hidden md:block"
@@ -67,7 +68,7 @@ export default function RootLayout({ children }) {
                 DAVIDBUKOLA DEVELOPMENT FOUNDATION
               </span>
             </Link>
-            <nav className="hidden md:flex space-x-6 md-lg:space-x-1">
+            <nav className="hidden md:flex space-x-6 md-lg:space-x-0 md-lg:text-xs">
               <Link
                 href="/"
                 className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
@@ -99,7 +100,7 @@ export default function RootLayout({ children }) {
                 Projects
               </Link>
             </nav>
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden md:flex md-lg:text-xs items-center space-x-4">
               <Link
                 href="/donate"
                 className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
@@ -107,10 +108,10 @@ export default function RootLayout({ children }) {
                 Donate
               </Link>
               <Link
-                href="/join"
-                className="border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300"
+                href="/get-involved"
+                className="border border-blue-500 text-blue-500 px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300"
               >
-                Join Us
+                Get Involved
               </Link>
             </div>
             <button onClick={toggleMenu} className="md:hidden">
@@ -170,17 +171,17 @@ export default function RootLayout({ children }) {
                   Donate
                 </Link>
                 <Link
-                  href="/join"
+                  href="/get-involved"
                   className="block border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 text-center text-xl"
                   onClick={toggleMenu}
                 >
-                  Join Us
+                  Get Involved
                 </Link>
               </div>
             </div>
           </div>
         )}
-        {children}
+        <ApiStatsProvider>{children}</ApiStatsProvider>
         {/* Default Footer Section */}
         <div className="relative mt-auto full-width-div">
           <div
@@ -190,7 +191,7 @@ export default function RootLayout({ children }) {
             <div className="absolute inset-0 bg-black opacity-50"></div>
           </div>
           <div className="relative z-10 container mx-auto px-4 md:px-2 md-lg:px-0.5">
-            <footer className="bg-white text-gray-600 rounded-t-3xl py-8 lg:mx-12 md:mx-2 md-lg:mx-0">
+            <footer className="bg-white text-gray-600 rounded-t-3xl py-6 lg:mx-8 md:mx-2 md-lg:-mx-4">
               <div className="container mx-auto px-12">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-end md:space-x-8">
                   {/* Left Section */}
@@ -198,7 +199,7 @@ export default function RootLayout({ children }) {
                     <img
                       src="/images/dbf-full-logo.svg"
                       alt="Foundation Logo"
-                      className="w-52 h-40"
+                      className="w-48 h-36 md-lg:w-40 md-lg:h-32"
                     />
                     <div className="flex space-x-4 mb-4">
                       <a
@@ -235,9 +236,9 @@ export default function RootLayout({ children }) {
                   </div>
 
                   {/* Right Section */}
-                  <div className="flex flex-col space-y-8 md:text-left md:flex-grow md:items-end items-start">
+                  <div className="flex flex-col space-y-8 md:text-left md:flex-grow md:items-end items-start md-lg:text-sm">
                     {/* First Row - Navigation Links */}
-                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md-lg:gap-4 md:justify-start font-bold">
+                    <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-bold lg:gap-2 md-lg:gap-2 md-lg:text-xs">
                       <Link
                         href="/"
                         className="text-black hover:font-bold hover:scale-105 transition-transform"
