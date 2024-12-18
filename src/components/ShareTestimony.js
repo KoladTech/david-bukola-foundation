@@ -3,14 +3,15 @@ import { Card } from "@/components/ui/card";
 import { useEffect, useRef, useState } from "react";
 import db from "@/firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { FaLessThan } from "react-icons/fa6";
 
 export default function ShareTestimony({ clickCloseForm, closeForm }) {
   const [testimonial, setTestimonial] = useState("");
   const [showThankYou, setShowThankYou] = useState("");
   const [submissionError, setSubmissionError] = useState("");
+  const [emailErrorMessage, setEmailErrorMessage] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTestimonyForm, setShowTestimonyForm] = useState(true);
-
   const [testimonyData, setTestimonyData] = useState({
     firstName: "",
     lastName: "",
@@ -24,11 +25,23 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
 
   // set form data from user inputs
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // Get the name and value of the field that triggered the input
+    setEmailErrorMessage(false); // allow user type, without constant error message
     setTestimonyData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
+  };
+
+  // Email validation with a regex
+  const handleEmailValidation = (e) => {
+    const { name, value } = e.target;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+    if (name === "email") {
+      if (!emailPattern.test(value)) {
+        setEmailErrorMessage(true);
+      }
+    }
   };
 
   // Handles form submission on clicking share button
@@ -107,18 +120,6 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                 onSubmit={handleTestimonialFormSubmit}
                 className="w-full max-w-md mx-auto"
               >
-                {submissionError && (
-                  <p className="bg-red-600 text-lg text-white p-1 mb-1">
-                    {submissionError}
-                  </p>
-                )}
-
-                {isSubmitting && (
-                  <p className="text-2xl text-sky-500">
-                    Submitting your testimony...
-                  </p>
-                )}
-
                 <h2 className="text-2xl font-bold mb-4">
                   Fill Testimonial Below
                 </h2>
@@ -161,7 +162,16 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                       required
                       className="input-field"
                       onChange={handleInputChange}
+                      onBlur={handleEmailValidation}
                     ></input>
+                    {emailErrorMessage && (
+                      <div>
+                        <p className="text-red-500 text-md mt-2">
+                          Please enter a valid email address{" "}
+                          <p>e.g example@domain.com</p>
+                        </p>
+                      </div>
+                    )}
 
                     <input
                       type="text"
@@ -201,11 +211,18 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                         !formDataRefs.current.email?.value ||
                         !formDataRefs.current.occupation?.value ||
                         !formDataRefs.current.testimonial?.value ||
+                        emailErrorMessage ||
                         isSubmitting
                       }
                     >
                       {isSubmitting ? "Submitting..." : "Submit"}
                     </Button>
+
+                    {submissionError && (
+                      <p className="text-lg text-red-600 p-1 my-1">
+                        {submissionError}
+                      </p>
+                    )}
                   </div>
                 </div>
               </form>
