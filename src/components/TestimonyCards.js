@@ -105,7 +105,7 @@ export default function ScrollableCardRow() {
                 className="relative flex overflow-x-auto gap-6 pb-6 scrollbar-custom"
                 style={{ scrollSnapType: "x mandatory" }}
               >
-                {testimonials.slice(0, 3).map((testimonial) => (
+                {testimonials.slice(0, 5).map((testimonial) => (
                   <div
                     key={testimonial.id}
                     className=" flex-shrink-0 w-[400px] bg-white rounded-lg shadow-md p-6"

@@ -7,7 +7,10 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 export default function ShareTestimony({ clickCloseForm, closeForm }) {
   const [testimonial, setTestimonial] = useState("");
   const [showThankYou, setShowThankYou] = useState("");
+  const [submissionError, setSubmissionError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTestimonyForm, setShowTestimonyForm] = useState(true);
+
   const [testimonyData, setTestimonyData] = useState({
     firstName: "",
     lastName: "",
@@ -30,7 +33,9 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
 
   // Handles form submission on clicking share button
   const handleTestimonialFormSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); //Prevent default form reloading
+    setIsSubmitting(true); // Show loading indicator
+    setSubmissionError(""); // Reset error state
 
     try {
       // Get the mailed data
@@ -42,22 +47,22 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
         body: JSON.stringify(testimonyData),
       });
 
-      // If the mail sent succesfully
-      if (response.ok) {
-        alert("Your testimony has been submitted successfully!");
-        const collectionRef = collection(db, "Testimonials"); //get the testimonial collection
-        const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
-      } else {
+      // If the mail did not send succesfully
+      if (!response.ok) {
+        setSubmissionError("Failed to send email. Please try again.");
         console.log(response);
-        alert("Failed to submit testimony. Please try again.");
+        console.error("Email Error:", errorMessage);
+        return;
       }
-    } catch (error) {
-      console.log("Error adding testimony: ", error);
-    } finally {
-      // Remove form display
-      setShowTestimonyForm(false);
-      // Show thank you message
-      setShowThankYou(true);
+
+      // Add to firestore
+      const collectionRef = collection(db, "Testimonials"); //get the testimonial collection
+      const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
+
+      // Upon form submission and mail success
+      setShowTestimonyForm(false); // Remove form display
+
+      setShowThankYou(true); // Show thank you message
 
       // Set a timeout for thank you message and close the form in the parent page
       setTimeout(() => {
@@ -76,7 +81,13 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
         approved: false,
         date: serverTimestamp(),
       });
-      // setShowTestimonyForm(true);
+    } catch (error) {
+      console.log("Error adding testimony: ", error);
+      setSubmissionError(
+        "An error occurred while submitting your testimony. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false); //Hide loading indicator
     }
   };
   const maxLength = 300; // Set the character limit
@@ -96,6 +107,18 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                 onSubmit={handleTestimonialFormSubmit}
                 className="w-full max-w-md mx-auto"
               >
+                {submissionError && (
+                  <p className="bg-red-600 text-lg text-white p-1 mb-1">
+                    {submissionError}
+                  </p>
+                )}
+
+                {isSubmitting && (
+                  <p className="text-2xl text-sky-500">
+                    Submitting your testimony...
+                  </p>
+                )}
+
                 <h2 className="text-2xl font-bold mb-4">
                   Fill Testimonial Below
                 </h2>
@@ -177,10 +200,11 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                         !formDataRefs.current.lastName?.value ||
                         !formDataRefs.current.email?.value ||
                         !formDataRefs.current.occupation?.value ||
-                        !formDataRefs.current.testimonial?.value
+                        !formDataRefs.current.testimonial?.value ||
+                        isSubmitting
                       }
                     >
-                      Share
+                      {isSubmitting ? "Submitting..." : "Submit"}
                     </Button>
                   </div>
                 </div>

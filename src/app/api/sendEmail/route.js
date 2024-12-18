@@ -5,10 +5,10 @@ export async function POST(req) {
   try {
     const body = await req.json();
 
-    const { firstName, email, occupation, testimonial } = body;
+    const { firstName, lastName, email, occupation, testimonial } = body;
 
     // Validate the input
-    if (!firstName || !email || !occupation || !testimonial) {
+    if (!firstName || !lastName || !email || !occupation || !testimonial) {
       return new Response(
         JSON.stringify({ message: "All fields are required." }),
         { status: 400 }
@@ -25,13 +25,23 @@ export async function POST(req) {
 
     // Configure the email options
     const mailOptions = {
-      from: `"${firstName}" <${email}>`, // Sender info
+      from: `"${firstName} ${lastName}" <${email}>`, // Sender info
       to: process.env.NEXT_PUBLIC_FOUNDATION_EMAIL, // Your foundation's email
       subject: "New Testimony Submission", // Email subject
-      text: `Name: ${firstName}
-             Email: ${email}
-             Occupation: ${occupation}
-             Testimonial: ${testimonial}`, // Plain text content
+      text: ` First Name: ${firstName} 
+              Last Name: ${lastName}
+              Email: ${email}
+              Occupation: ${occupation}
+              Testimonial: ${testimonial}`, // Plain text content
+      html: ` <div style="font-family: Arial, sans-serif; line-height: 1.5; color: #333;">
+                <h2 style="color: #555;">New Testimony Submission</h2>
+                <p><strong>First Name:</strong> ${firstName}</p> 
+                <p><strong>Last Name:</strong> ${lastName}</p> 
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Occupation:</strong> ${occupation}</p>
+                <p><strong>Testimonial:</strong></p>
+                <p style="margin-left: 20px;">${testimonial}</p> 
+              </div> `, // HTML body
     };
 
     // Send the email
