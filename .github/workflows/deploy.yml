@@ -2,9 +2,9 @@ name: Build and Deploy Workflow
 
 # Trigger workflow on a pull request merged into the production branch or manually
 on:
-  push:
-    branches:
-      - production-branch
+  # push:
+  #   branches:
+  #     - production-branch
   workflow_dispatch: # Allow manual triggering of the workflow
 
 # Set permission for github bot to be able to write to the version 
