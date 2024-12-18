@@ -11,6 +11,7 @@ export default function ScrollableCardRow() {
   const [scrollPosition, setScrollPosition] = useState(0);
   const containerRef = useRef(null);
 
+  // Handles scrolling of testimony cards
   const handleScroll = (direction) => {
     const container = containerRef.current;
     if (container) {
