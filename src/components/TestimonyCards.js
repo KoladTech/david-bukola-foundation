@@ -105,46 +105,54 @@ export default function ScrollableCardRow() {
                 className="relative flex overflow-x-auto gap-6 pb-6 scrollbar-custom"
                 style={{ scrollSnapType: "x mandatory" }}
               >
-                {testimonials.slice(0, 5).map((testimonial) => (
-                  <div
-                    key={testimonial.id}
-                    className=" flex-shrink-0 w-[400px] bg-white rounded-lg shadow-md p-6"
-                    style={{ scrollSnapAlign: "start" }}
-                  >
-                    <div className="flex items-start gap-4 mb-4">
-                      {/* <Image
+                {testimonials
+                  .filter(
+                    (testimonial) =>
+                      testimonial.type === "text" &&
+                      testimonial.approved === true
+                  )
+                  .sort(() => Math.random() - 0.5) //Randomize the outputs
+                  .slice(0, 5)
+                  .map((testimonial) => (
+                    <div
+                      key={testimonial.id}
+                      className=" flex-shrink-0 w-[400px] bg-white rounded-lg shadow-md p-6"
+                      style={{ scrollSnapAlign: "start" }}
+                    >
+                      <div className="flex items-start gap-4 mb-4">
+                        {/* <Image
                         src={testimonial.imageSrc}
                         alt={`${testimonial.name}'s profile picture`}
                         width={60}
                         height={60}
                         className="rounded-full"
                       /> */}
-                      <div>
-                        <h3 className="text-xl font-semibold">
-                          {testimonial.firstName}
-                        </h3>
-                        <p className="text-gray-600">
-                          {testimonial.occupation}
+                        <div>
+                          <h3 className="text-xl font-semibold">
+                            {testimonial.firstName}
+                          </h3>
+                          <p className="text-gray-600">
+                            {testimonial.occupation}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="mb-2">{testimonial.testimonial}</p>
+                      {/* Testimonial Dates */}
+                      <div className="absolute bottom-8 flex items-end">
+                        <p className="text-sm">
+                          {" "}
+                          <span>
+                            {" "}
+                            {testimonial.date
+                              ? new Date(
+                                  testimonial.date.seconds * 1000
+                                ).toLocaleDateString()
+                              : "No Timestamp Available"}{" "}
+                          </span>
                         </p>
                       </div>
                     </div>
-                    <p className="mb-2">{testimonial.testimonial}</p>
-                    {/* Testimonial Dates */}
-                    <div className="absolute bottom-8 flex items-end">
-                      <p className="text-sm">
-                        {" "}
-                        <span>
-                          {" "}
-                          {testimonial.date
-                            ? new Date(
-                                testimonial.date.seconds * 1000
-                              ).toLocaleDateString()
-                            : "No Timestamp Available"}{" "}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
               <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
                 <button
