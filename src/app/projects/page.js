@@ -94,8 +94,13 @@ export default function ProjectsPage() {
             <p className="text-red-500">{error}</p>
           ) : (
             // Each project displayed
-            projects.map((project) => (
-              <div key={project.id} className="space-y-4">
+            projects.map((project, index) => (
+              <div
+                key={project.id}
+                className={`p-6 rounded-lg shadow-xl ${
+                  index % 2 === 0 ? "bg-gray-100" : "bg-white"
+                } border border-gray-200 space-y-4`}
+              >
                 <div className="flex flex-col gap-y-4">
                   {/* Title */}
                   <div>
