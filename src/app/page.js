@@ -29,7 +29,7 @@ export default function Home() {
           title="DAVIDBUKOLA"
           title2="DEVELOPMENT FOUNDATION"
           description="Where care meets community"
-          imageUrl="/images/foundation-name-and-motto-image.png"
+          imageUrl="/images/foundation-name-and-motto_2.png"
           alt="foundation welcome image"
         />
 

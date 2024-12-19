@@ -19,7 +19,7 @@ Together, we can make a world of difference. Get involved today!
           className=""
           title="Get Involved"
           description=""
-          imageUrl="/images/get_involved_hero_section_image.png"
+          imageUrl="/images/get_involved_hero_section_image.jpeg"
           alt="Get Involved image"
         />
       </div>
