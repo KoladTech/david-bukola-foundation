@@ -126,7 +126,7 @@ export default function RootLayout({ children }) {
             }`}
             // This transition does not work yet
           >
-            <div className="container mx-auto px-6 py-8 flex flex-col h-full gap-10">
+            <div className="container mx-auto px-6 py-8 flex flex-col h-full gap-12">
               <div className="flex justify-end py-8">
                 <button onClick={toggleMenu}>
                   <FaX className="h-8 w-8 text-gray-500" />
@@ -148,6 +148,13 @@ export default function RootLayout({ children }) {
                   About Us
                 </Link>
                 <Link
+                  href="/testimonials"
+                  className="text-gray-600 hover:text-gray-900 text-2xl"
+                  onClick={toggleMenu}
+                >
+                  Testimonials
+                </Link>
+                <Link
                   href="/achievements"
                   className="text-gray-600 hover:text-gray-900 text-2xl"
                   onClick={toggleMenu}
@@ -162,7 +169,7 @@ export default function RootLayout({ children }) {
                   Projects
                 </Link>
               </nav>
-              <div className="mt-auto mb-12 space-x-4 flex justify-center">
+              <div className="mt-auto mb-24 space-x-4 flex justify-center">
                 <Link
                   href="/donate"
                   className="block bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 text-center text-xl"
