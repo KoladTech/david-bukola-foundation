@@ -10,7 +10,7 @@ const projectSchema = z.object({
 });
 
 // Function to fetch available projects.
-export async function fecthedData(collectionData) {
+export async function fetchedData(collectionData) {
   try {
     // Get the collection and documents from db
     // const projectsCollection = collection(db, "Projects");
