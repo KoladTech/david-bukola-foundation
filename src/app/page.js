@@ -39,17 +39,15 @@ export default function Home() {
         </div>
         <div>
           {/* <Achievement /> */}
-          {loading_stats ? (
-            <LoadingSpinner />
-          ) : (
-            <HeroSection
-              imageUrl={`/images/achievements-image.png`}
-              alt={`achievement image`}
-              atTop={false}
-              showStats={true}
-              stats={stats}
-            />
-          )}
+
+          <HeroSection
+            imageUrl={`/images/achievements-image.png`}
+            alt={`achievement image`}
+            atTop={false}
+            showStats={true}
+            stats={stats}
+            statsLoading={loading_stats}
+          />
         </div>
 
         {/* Testimonies Section */}

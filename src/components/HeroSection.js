@@ -4,6 +4,42 @@ import { Button } from "./ui/button";
 import { Play } from "lucide-react";
 import AchievementWidgets from "./AchievementWidgets";
 import { formatCurrency } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import LoadingSpinner from "./loadingSpinner";
+
+const AnimatedCounter = ({ targetValue, statsLoading }) => {
+  const [displayValue, setDisplayValue] = useState(0); // Value to display
+  const [isVisible, setIsVisible] = useState(false); // Determines if the number is visible
+
+  useEffect(() => {
+    if (!statsLoading) {
+      setIsVisible(true); // Make the number visible after loading
+      let startValue = 0; // Start from 0
+      const duration = 2000; // Animation duration in milliseconds
+      const intervalTime = 10; // Update the value every 10ms
+      const totalSteps = duration / intervalTime; // Calculate total steps
+      const stepValue = targetValue / totalSteps; // Value to add per step
+
+      const interval = setInterval(() => {
+        startValue += stepValue; // Increment value
+        if (startValue >= targetValue) {
+          clearInterval(interval); // Stop the animation
+          setDisplayValue(targetValue); // Ensure it ends on the exact target
+        } else {
+          setDisplayValue(Math.ceil(startValue)); // Update display with rounded value
+        }
+      }, intervalTime);
+
+      return () => clearInterval(interval); // Clean up on component unmount
+    }
+  }, [statsLoading, targetValue]);
+
+  return (
+    <div style={{ visibility: isVisible ? "visible" : "hidden" }}>
+      <span>{displayValue.toLocaleString()}</span>
+    </div>
+  );
+};
 
 export default function HeroSection({
   title,
@@ -12,6 +48,7 @@ export default function HeroSection({
   imageUrl,
   alt,
   showStats = false,
+  statsLoading,
   stats = null,
   video = false,
   atTop = true,
@@ -58,7 +95,14 @@ export default function HeroSection({
             </div>
           )}
           {/* Section for displaying stats on Achievements page */}
-          {showStats &&
+          {statsLoading ? (
+            <div className="relative h-96">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <LoadingSpinner />
+              </div>
+            </div>
+          ) : (
+            showStats &&
             stats && ( // Show stats only if showStats is true and stats are provided
               <div className="absolute inset-0">
                 <div className="h-full flex flex-col justify-end p-6 md:p-8">
@@ -153,7 +197,8 @@ export default function HeroSection({
                   </div>
                 </div>
               </div>
-            )}
+            )
+          )}
         </div>
         {atTop ? (
           <div className="absolute bottom-4 right-3 md:right-4 bg-white p-2 md:p-4 rounded-lg shadow-lg">
