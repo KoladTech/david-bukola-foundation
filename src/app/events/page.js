@@ -157,11 +157,6 @@ export default function Page() {
   const upcomingEvents = events.filter((event) => event.status === "upcoming");
   const pastEvents = events.filter((event) => event.status === "past");
 
-  if (!loading) {
-    console.log(events);
-    console.log(events[0].plannedStartDate.toDate());
-  }
-
   return (
     <>
       <div className="p-4">
