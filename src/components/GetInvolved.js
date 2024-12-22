@@ -21,13 +21,16 @@ export default function GetInvolved() {
                 />
               </div>
               <div className="relative w-32 h-32 flex-shrink-0">
-                <PictureCard imageSrc="/donate-now-image.png" altText="" />
+                <PictureCard
+                  imageSrc="/images/donate-now-image.png"
+                  altText=""
+                />
               </div>
             </div>
           </Link>
 
           {/* Join Us Card */}
-          <Link href="/join" className="flex-1">
+          <Link href="/get-involved" className="flex-1">
             <div className="flex justify-between items-center bg-white gap-8 m-2 p-4 shadow-md rounded-2xl transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg cursor-pointer">
               <div className="flex-1">
                 <ContentCard
@@ -36,7 +39,7 @@ export default function GetInvolved() {
                 />
               </div>
               <div className="relative w-32 h-32 flex-shrink-0">
-                <PictureCard imageSrc="/join-us-image.png" altText="" />
+                <PictureCard imageSrc="/images/join-us-image.png" altText="" />
               </div>
             </div>
           </Link>

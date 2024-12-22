@@ -43,8 +43,8 @@ export default function AboutPage() {
         <HeroSection
           title={"ABOUT US"}
           description={"Learn about the Foundation"}
-          imageUrl={"/main_about_us.jpg"}
-          alt={"Group of people looking at laptop"}
+          imageUrl={"/images/about-us-image.jpg"}
+          alt={"about foundation image"}
         />
         {/* </div> */}
 

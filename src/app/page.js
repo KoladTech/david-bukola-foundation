@@ -1,27 +1,25 @@
 "use client";
-import Image from "next/image";
-import DonationWidget from "../components/DonationWidget";
 import AboutUs from "@/components/AboutUs";
-import Achievement from "@/components/Achievement";
 import TestimonyCards from "../components/TestimonyCards";
-import PictureCard from "../components/PictureCard";
-import ContentCard from "../components/ContentCard";
 import FAQ from "../components/FAQ";
 import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
+import { useApiData } from "@/context/ApiStatsContext";
+import LoadingSpinner from "@/components/loadingSpinner";
 
 // Imports for testing Firebase analytics using a custom event
-import { logEvent } from "firebase/analytics";
-import { analytics } from "@/firebase/firebaseConfig";
+// import { logEvent } from "firebase/analytics";
+// import { analytics } from "@/firebase/firebaseConfig";
 
 export default function Home() {
   // Testing Firebase analytics using a custom event
-  if (analytics) {
-    logEvent(analytics, "Testing Analytics with a custom event", {
-      key: "Custom-event-works",
-    });
-  }
+  // if (analytics) {
+  //   logEvent(analytics, "Testing Analytics with a custom event", {
+  //     key: "Custom-event-works",
+  //   });
+  // }
+  const { stats, loading_stats, error } = useApiData();
   return (
     <main>
       {/* Main home page div */}
@@ -31,8 +29,8 @@ export default function Home() {
           title="DAVIDBUKOLA"
           title2="DEVELOPMENT FOUNDATION"
           description="Where care meets community"
-          imageUrl="/foundation-name-and-motto-image.png"
-          alt="foundation"
+          imageUrl="/images/foundation-name-and-motto_2.png"
+          alt="foundation welcome image"
         />
 
         {/* About us section */}
@@ -40,13 +38,24 @@ export default function Home() {
           <AboutUs />
         </div>
         <div>
-          <Achievement />
+          {/* <Achievement /> */}
+          {loading_stats ? (
+            <LoadingSpinner />
+          ) : (
+            <HeroSection
+              imageUrl={`/images/achievements-image.png`}
+              alt={`achievement image`}
+              atTop={false}
+              showStats={true}
+              stats={stats}
+            />
+          )}
         </div>
 
         {/* Testimonies Section */}
-        {/* <div>
+        <div>
           <TestimonyCards />
-        </div> */}
+        </div>
 
         {/* Project Section */}
         {/* <div className="flex flex-col md:flex-row items-center p-8">

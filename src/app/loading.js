@@ -33,7 +33,12 @@ export default function Loading() {
         ></div>
       </div>
       <div className="absolute bottom-8 right-8">
-        <Image src="/logo.svg" alt="Foundation Logo" width={60} height={60} />
+        <Image
+          src="/images/dbf-logo.svg"
+          alt="Foundation Logo"
+          width={60}
+          height={60}
+        />
       </div>
     </div>
   );
