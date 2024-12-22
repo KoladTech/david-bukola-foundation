@@ -83,8 +83,9 @@ export default function Page() {
               className=""
               title="ACHIEVEMENTS"
               description=""
-              imageUrl="/images/achievements-hero-image.jpg"
+              imageUrl="/images/dbf-achievement-page-image1.jpg"
               alt=""
+              darkenImage={"absolute inset-0 bg-black bg-opacity-40"}
               showStats={true}
               stats={stats}
             />
