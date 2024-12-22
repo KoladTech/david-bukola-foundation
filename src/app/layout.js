@@ -193,12 +193,14 @@ export default function RootLayout({ children }) {
         <div className="relative mt-auto full-width-div">
           <div
             className="absolute bottom-0 left-0 right-0 h-[calc(100%+2rem)] bg-cover bg-center w-full"
-            style={{ backgroundImage: "url(/images/figma-footer-image.jpeg)" }}
+            style={{
+              backgroundImage: "url(/images/dbf-footer-image.jpg)",
+            }}
           >
             <div className="absolute inset-0 bg-black opacity-50"></div>
           </div>
           <div className="relative z-10 container mx-auto px-4 md:px-2 md-lg:px-0.5">
-            <footer className="bg-white text-gray-600 rounded-t-3xl py-6 lg:mx-8 md:mx-2 md-lg:-mx-4">
+            <footer className="bg-white/85 text-gray-600 rounded-t-3xl py-6 lg:mx-8 md:mx-2 md-lg:-mx-4">
               <div className="container mx-auto px-12">
                 <div className="flex flex-col md:flex-row md:justify-between md:items-end md:space-x-8">
                   {/* Left Section */}

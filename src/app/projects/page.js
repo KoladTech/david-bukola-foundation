@@ -6,8 +6,8 @@ import PictureCard from "@/components/PictureCard";
 import { Calendar, Target, Clock, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { fetchProjects } from "@/firebase/projectPage";
-import { fecthedData } from "@/firebase/fetchFirebaseData";
-import { NAIRA_SYMBOL } from "@/constants";
+import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { formatTimestamp, formatCurrency } from "@/lib/utils";
 
 function SkeletonHeroSection() {
   return <div className="h-96 bg-gray-200 animate-pulse rounded-md"></div>;
@@ -43,7 +43,7 @@ export default function ProjectsPage() {
     const loadProjects = async () => {
       try {
         // Get the fetched data
-        const fetchedProjects = await fecthedData("Projects");
+        const fetchedProjects = await fetchedData("Projects");
 
         // Set the fetched data
         setProjects(fetchedProjects);
@@ -159,12 +159,7 @@ export default function ProjectsPage() {
                         Planned Budget{" "}
                       </h2>
                       <p className="font-semibold">
-                        {project.plannedBudget
-                          ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat("en-NG", {
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 0,
-                            }).format(project.plannedBudget)}`
-                          : "No Budget Yet"}
+                        {formatCurrency(project.plannedBudget)}
                       </p>
                     </div>
                   </Card>
@@ -177,15 +172,7 @@ export default function ProjectsPage() {
                         Planned Start Date
                       </h1>
                       <p className="font-semibold">
-                        {project.plannedStartDate
-                          ? new Intl.DateTimeFormat("en-US", {
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                            }).format(
-                              new Date(project.plannedStartDate.seconds * 1000)
-                            )
-                          : "No Timestamp Available"}
+                        {formatTimestamp(project.plannedStartDate)}
                       </p>
                     </div>
                   </Card>
@@ -198,17 +185,7 @@ export default function ProjectsPage() {
                         Planned End Date
                       </h1>
                       <p className="font-semibold">
-                        {project.expectedCompletionDate
-                          ? new Intl.DateTimeFormat("en-US", {
-                              month: "long",
-                              day: "numeric",
-                              year: "numeric",
-                            }).format(
-                              new Date(
-                                project.expectedCompletionDate.seconds * 1000
-                              )
-                            )
-                          : "No Timestamp Available"}
+                        {formatTimestamp(project.expectedCompletionDate)}
                       </p>
                     </div>
                   </Card>

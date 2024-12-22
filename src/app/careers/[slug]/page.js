@@ -3,29 +3,33 @@
 import React, { use, useEffect, useState } from "react";
 import { LuArrowLeft, LuSend } from "react-icons/lu";
 import Link from "next/link";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDocs, collection, query, where } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 
 export default function JobDetailsPage({ params }) {
-  let id = params.jobId;
-
+  let slug = params.slug;
+  console.log(slug);
   const [loading, setLoading] = useState(true);
   const [job, setJob] = useState(null);
 
   useEffect(() => {
-    async function getCareerById(id) {
+    async function getCareerBySlug(slug) {
       try {
-        // Reference the document in the "careers" collection
-        const docRef = doc(db, "Careers", id);
+        // Create a reference to the "Careers" collection
+        const careersCollection = collection(db, "Careers");
 
-        // Fetch the document
-        const docSnap = await getDoc(docRef);
+        // Create a query to search for the document with the matching slug
+        const q = query(careersCollection, where("slug", "==", slug));
 
-        // Check if the document exists
-        if (docSnap.exists()) {
-          // Return the document data
-          setJob(docSnap.data());
+        // Execute the query
+        const querySnapshot = await getDocs(q);
+
+        // Check if any documents were returned
+        if (!querySnapshot.empty) {
+          // Assuming slug is unique, get the first matching document
+          const docData = querySnapshot.docs[0].data();
+          setJob(docData);
         } else {
           console.log("No such job exists");
           setJob(null);
@@ -37,8 +41,8 @@ export default function JobDetailsPage({ params }) {
         setLoading(false);
       }
     }
-    getCareerById(id);
-  }, [id]);
+    getCareerBySlug(slug);
+  }, [slug]);
 
   // const [formData, setFormData] = useState({
   //   name: "",
@@ -52,7 +56,11 @@ export default function JobDetailsPage({ params }) {
   // const job = jobPostings.filter((job) => job.id === id)[0];
 
   if (!job) {
-    return <LoadingSpinner />;
+    return (
+      <div className="mb-16">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   // const handleInputChange = (e) => {
