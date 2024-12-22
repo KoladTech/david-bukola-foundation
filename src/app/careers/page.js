@@ -74,7 +74,7 @@ export default function CareersPage() {
                   </div>
                   <p className="text-gray-600 mb-6">{job.description}</p>
                   <Link
-                    href={`/careers/${job.id}`}
+                    href={`/careers/${job.slug}`}
                     className="inline-flex items-center text-blue-500 hover:text-blue-600 font-medium"
                   >
                     Learn More
