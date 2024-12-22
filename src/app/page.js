@@ -5,6 +5,7 @@ import FAQ from "../components/FAQ";
 import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
+import ProjectCard from "@/components/ProjectCard";
 import { useApiData } from "@/context/ApiStatsContext";
 import LoadingSpinner from "@/components/loadingSpinner";
 
@@ -55,6 +56,11 @@ export default function Home() {
         {/* Testimonies Section */}
         <div>
           <TestimonyCards />
+        </div>
+
+        {/* Projects Section */}
+        <div>
+          <ProjectCard />
         </div>
 
         {/* Project Section */}
