@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ShareTestimony from "@/components/ShareTestimony";
 import React, { useRef, useEffect, useState } from "react";
-import { fecthedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/firebase/fetchFirebaseData";
 
 // const testimonials = [
 //   {
@@ -55,7 +55,7 @@ export default function TestimonialsPage() {
     const loadTestimonials = async () => {
       try {
         // Get the fetched data
-        const fetchedTestimonials = await fecthedData("Testimonials");
+        const fetchedTestimonials = await fetchedData("Testimonials");
 
         // Set the fetched data
         setTestimonials(fetchedTestimonials);

@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
-import { fecthedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/firebase/fetchFirebaseData";
 import LoadingSpinner from "./loadingSpinner";
 
 export default function ScrollableCardRow() {
@@ -41,7 +41,7 @@ export default function ScrollableCardRow() {
     const loadTestimonials = async () => {
       try {
         // Get the fetched data
-        const fetchedTestimonials = await fecthedData("Testimonials");
+        const fetchedTestimonials = await fetchedData("Testimonials");
 
         // Set the fetched data
         setTestimonials(fetchedTestimonials);

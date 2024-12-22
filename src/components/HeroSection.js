@@ -2,8 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
-import { NAIRA_SYMBOL } from "@/constants";
 import AchievementWidgets from "./AchievementWidgets";
+import { formatCurrency } from "@/lib/utils";
 
 export default function HeroSection({
   title,
@@ -67,10 +67,7 @@ export default function HeroSection({
                     {stats.totalFinancialSupportProvided ? (
                       <div className="text-white">
                         <div className="text-4xl font-bold mb-2">
-                          {`${NAIRA_SYMBOL}${new Intl.NumberFormat("en-NG", {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                          }).format(stats.totalFinancialSupportProvided)}+`}
+                          {formatCurrency(stats.totalFinancialSupportProvided)}+
                         </div>
                         <div className="text-lg md:text-xl">
                           Support provided
@@ -114,10 +111,7 @@ export default function HeroSection({
                     {stats.totalFinancialSupportProvided ? (
                       <div className="text-white mb-8">
                         <div className="text-6xl font-bold mb-2">
-                          {`${NAIRA_SYMBOL}${new Intl.NumberFormat("en-NG", {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                          }).format(stats.totalFinancialSupportProvided)}+`}
+                          {formatCurrency(stats.totalFinancialSupportProvided)}+
                         </div>
                         <div className="text-2xl">Support Provided</div>
                       </div>
