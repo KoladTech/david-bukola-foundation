@@ -15,6 +15,7 @@ export default function CareersPage() {
   useEffect(() => {
     async function fetchJobs() {
       try {
+        // get a snapshot of the collection data
         const jobsSnapshot = await getDocs(collection(db, "Careers"));
 
         // process jobs

@@ -96,7 +96,7 @@ export default function HeroSection({
             </div>
           )}
           {/* Section for displaying stats on Achievements page */}
-          {statsLoading ? (
+          {statsLoading ? ( //Check if the stats are still loading and display loading spinner as fallback
             <div className="relative h-96">
               <div className="absolute inset-0 flex items-center justify-center">
                 <LoadingSpinner />
