@@ -13,6 +13,7 @@ export default function ScrollableCardRow() {
 
   // Handles scrolling of testimony cards
   const handleScroll = (direction) => {
+    // Get the container in question
     const container = containerRef.current;
     if (container) {
       const scrollAmount = direction === "left" ? -300 : 300;
@@ -60,11 +61,11 @@ export default function ScrollableCardRow() {
     <section className="py-12 px-4 bg-gray-50">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row gap-8 items-center">
-          {/* Static Testimonies Section */}
+          {/* Testimonies Section */}
           <div className="w-full md:w-1/2 flex flex-col p-4 text-center">
             <h2 className="text-3xl font-bold mb-6">Testimonials</h2>
 
-            {/* Share testimony section */}
+            {/* All testimony section */}
             <div className="items-center mb-6">
               <p className="mb-6 text-lg text-gray-600">
                 Hear what people are saying about our foundation!
@@ -112,7 +113,16 @@ export default function ScrollableCardRow() {
                       testimonial.type === "text" &&
                       testimonial.approved === true
                   )
-                  .sort(() => Math.random() - 0.5) //Randomize the outputs
+                  .sort((a, b) => {
+                    // Ensure both dates are valid before sorting
+                    const dateA = a.date?.seconds
+                      ? new Date(a.date.seconds * 1000)
+                      : new Date(0); // Default to epoch for invalid dates
+                    const dateB = b.date?.seconds
+                      ? new Date(b.date.seconds * 1000)
+                      : new Date(0);
+                    return dateB - dateA; // Sort in descending order (most recent first)
+                  })
                   .slice(0, 5)
                   .map((testimonial) => (
                     <div
@@ -121,6 +131,7 @@ export default function ScrollableCardRow() {
                       style={{ scrollSnapAlign: "start" }}
                     >
                       <div className="flex items-start gap-4 mb-4">
+                        {/* Not using images currently */}
                         {/* <Image
                         src={testimonial.imageSrc}
                         alt={`${testimonial.name}'s profile picture`}
@@ -129,32 +140,31 @@ export default function ScrollableCardRow() {
                         className="rounded-full"
                       /> */}
                         <div>
+                          {/* Testifiers Name */}
                           <h3 className="text-xl font-semibold">
                             {testimonial.firstName}
                           </h3>
-                          <p className="text-gray-600">
+                          {/* Testifiers Occupation/Role */}
+                          <p className="text-gray-500">
                             {testimonial.occupation}
                           </p>
                         </div>
                       </div>
+                      {/* Testimony */}
                       <p className="mb-2">{testimonial.testimonial}</p>
                       {/* Testimonial Dates */}
                       <div className="absolute bottom-8 flex items-end">
                         <p className="text-sm">
-                          {" "}
-                          <span>
-                            {" "}
-                            {testimonial.date
-                              ? new Date(
-                                  testimonial.date.seconds * 1000
-                                ).toLocaleDateString()
-                              : "No Timestamp Available"}{" "}
-                          </span>
+                          {new Date(
+                            testimonial.date.seconds * 1000
+                          ).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
                   ))}
               </div>
+
+              {/* Left Scroll Button */}
               <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2">
                 <button
                   onClick={() => handleScroll("left")}
@@ -164,6 +174,7 @@ export default function ScrollableCardRow() {
                   <ChevronLeft className="w-6 h-6 text-blue-600" />
                 </button>
               </div>
+              {/* Right Scroll Button */}
               <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2">
                 <button
                   onClick={() => handleScroll("right")}
@@ -175,6 +186,7 @@ export default function ScrollableCardRow() {
               </div>
             </div>
           )}
+          {/* This section displays below the testimonials cards, only on mobile devices for better UX flow */}
           <div className="md:hidden">
             <p className="mb-6 text-lg text-gray-600">
               Would you like to share yours?

@@ -3,8 +3,10 @@ import nodemailer from "nodemailer";
 export async function POST(req) {
   const nodemailer = require("nodemailer");
   try {
+    // Get the request - The testimony data object
     const body = await req.json();
 
+    // Create and Set the testimony data variables required
     const { firstName, lastName, email, occupation, testimonial } = body;
 
     // Validate the input
@@ -14,7 +16,7 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-    // Create a Nodemailer transporter
+    // Create a Nodemailer transporter to handle the mail sending
     const transporter = nodemailer.createTransport({
       service: "Gmail", // Use the appropriate email service
       auth: {

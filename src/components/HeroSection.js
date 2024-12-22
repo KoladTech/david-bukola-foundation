@@ -48,6 +48,8 @@ export default function HeroSection({
   description,
   imageUrl,
   alt,
+  className,
+  darkenImage,
   showStats = false,
   statsLoading,
   stats = null,
@@ -68,10 +70,12 @@ export default function HeroSection({
           <Image
             src={imageUrl}
             alt={alt}
-            className="w-full h-full"
+            className={`w-full h-full ${className}`}
             fill={true}
             style={{ objectFit: "cover" }}
           />
+          {/* Darken background div */}
+          <div className={darkenImage}></div>
           {/* Video section for displaying the Testimonials Page featured video */}
           {video && (
             <div>

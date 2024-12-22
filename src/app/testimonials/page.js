@@ -157,13 +157,14 @@ export default function TestimonialsPage() {
                 .map((testimonial, index) => (
                   <Card
                     key={testimonial.id}
-                    // Give alternating cards blue color
+                    // Give alternating cards blue color by index
                     className={`relative p-6 h-72 ${
                       index % 2 === 1 ? "bg-blue-500 text-white" : ""
                     }`}
                   >
                     <div className="flex flex-col">
                       <div className="flex items-start gap-4">
+                        {/* Not using images currently */}
                         {/* <Image
                           src={testimonial.image}
                           alt={`${testimonial.name}'s profile picture`}
@@ -172,9 +173,11 @@ export default function TestimonialsPage() {
                           className="rounded-full"
                         /> */}
                         <div>
+                          {/* Testifiers Name */}
                           <h3 className="font-semibold">
                             {testimonial.firstName}
                           </h3>
+                          {/* Testifiers Occupation/Role */}
                           <p
                             className={`text-sm ${
                               index % 2 === 1
@@ -184,21 +187,16 @@ export default function TestimonialsPage() {
                           >
                             {testimonial.occupation}
                           </p>
+                          {/* Testimony */}
                           <p className="text-sm">{testimonial.testimonial}</p>
                         </div>
                       </div>
                       {/* Testimonial Dates */}
                       <div className="absolute bottom-4 flex items-end">
                         <p className="text-sm">
-                          {" "}
-                          <span>
-                            {" "}
-                            {testimonial.date
-                              ? new Date(
-                                  testimonial.date.seconds * 1000
-                                ).toLocaleDateString()
-                              : "No Timestamp Available"}{" "}
-                          </span>
+                          {new Date(
+                            testimonial.date.seconds * 1000
+                          ).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
@@ -231,7 +229,7 @@ export default function TestimonialsPage() {
           ))}
       </div> */}
 
-      {/* Display Testimony form */}
+      {/* Display Testimony form on clicking the share testimony button*/}
       {showTestimonyForm && (
         <div>
           <ShareTestimony clickCloseForm={formRef} closeForm={closeForm} />

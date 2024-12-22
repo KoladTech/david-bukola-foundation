@@ -5,6 +5,7 @@ import FAQ from "../components/FAQ";
 import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
+import ProjectCard from "@/components/ProjectCard";
 import { useApiData } from "@/context/ApiStatsContext";
 import LoadingSpinner from "@/components/loadingSpinner";
 
@@ -29,7 +30,7 @@ export default function Home() {
           title="DAVIDBUKOLA"
           title2="DEVELOPMENT FOUNDATION"
           description="Where care meets community"
-          imageUrl="/images/foundation-name-and-motto_2.png"
+          imageUrl="/images/dbf-home-page-image.jpg"
           alt="foundation welcome image"
         />
 
@@ -39,15 +40,18 @@ export default function Home() {
         </div>
         <div>
           {/* <Achievement /> */}
-
-          <HeroSection
-            imageUrl={`/images/achievements-image.png`}
-            alt={`achievement image`}
-            atTop={false}
-            showStats={true}
-            stats={stats}
-            statsLoading={loading_stats}
-          />
+          {loading_stats ? (
+            <LoadingSpinner />
+          ) : (
+            <HeroSection
+              imageUrl={`/images/dbf-home-achievements-image.jpg`}
+              darkenImage={"absolute inset-0 bg-black bg-opacity-50"}
+              alt={`achievement image`}
+              atTop={false}
+              showStats={true}
+              stats={stats}
+            />
+          )}
         </div>
 
         {/* Testimonies Section */}
@@ -55,52 +59,10 @@ export default function Home() {
           <TestimonyCards />
         </div>
 
-        {/* Project Section */}
-        {/* <div className="flex flex-col md:flex-row items-center p-8">
-          Left Side - Image
-          <div className="w-full md:w-1/2 flex justify-center">
-            <Image
-              src="/projects-image.png"
-              alt="Left Side Image"
-              width={400}
-              height={400}
-              className="object-cover rounded-lg"
-            />
-          </div>
-
-          Right Side - Text
-          <div className="w-full md:w-1/2 flex flex-col justify-center p-8 gap-y-6">
-            <h2 className="text-2xl font-bold mb-4">Projects</h2>
-            <p className="text-gray-600">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              blandit fringilla sem eget rutrum. Interdum et malesuada fames ac
-              ante ipsum primis in faucibus.
-            </p>
-            <button className="bg-blue-500 min-w-[100px] text-white rounded-md py-2 w-1/4 hover:bg-blue-600 transition-colors justify-start">
-              Learn More
-            </button>
-          </div>
-        </div> */}
-
-        {/* Project Section */}
-        {/* <section>
-          <div className="flex flex-col md:flex-row items-center p-8 border">
-            <div className="w-full md:w-1/2 flex justify-center">
-              <PictureCard imageSrc="/project-page-image1.png" altText="" />
-            </div>
-            <div className="w-full md:w-1/2 flex flex-col justify-center p-8 gap-y-6">
-              <ContentCard
-                title="Projects"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              blandit fringilla sem eget rutrum. Interdum et malesuada fames ac
-              ante ipsum primis in faucibus."
-              />
-              <button className="bg-blue-500 min-w-[100px] text-white rounded-md py-2 w-1/4 hover:bg-blue-600 transition-colors justify-start">
-                Learn More
-              </button>
-            </div>
+        {/* Projects Section */}
+        <div>
+          <ProjectCard />
         </div>
-        </section> */}
 
         {/* Get Involved Section */}
         <GetInvolved />
