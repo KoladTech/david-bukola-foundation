@@ -40,18 +40,16 @@ export default function Home() {
         </div>
         <div>
           {/* <Achievement /> */}
-          {loading_stats ? (
-            <LoadingSpinner />
-          ) : (
-            <HeroSection
-              imageUrl={`/images/dbf-home-achievements-image.jpg`}
-              darkenImage={"absolute inset-0 bg-black bg-opacity-50"}
-              alt={`achievement image`}
-              atTop={false}
-              showStats={true}
-              stats={stats}
-            />
-          )}
+
+          <HeroSection
+            imageUrl={`/images/dbf-home-achievements-image.jpg`}
+            darkenImage={"absolute inset-0 bg-black bg-opacity-50"}
+            alt={`achievement image`}
+            atTop={false}
+            showStats={true}
+            stats={stats}
+            statsLoading={loading_stats}
+          />
         </div>
 
         {/* Testimonies Section */}
