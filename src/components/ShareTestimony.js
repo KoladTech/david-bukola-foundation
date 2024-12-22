@@ -23,7 +23,11 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
     date: serverTimestamp(),
   });
 
-  // set form data from user inputs
+  const maxLength = 300; // Set the character limit
+
+  const formDataRefs = useRef({}); // Create a single ref object
+
+  // Function to set form data from user inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target; // Get the name and value of the field that triggered the input
     setEmailErrorMessage(false); // allow user type, without constant error message
@@ -33,10 +37,11 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
     }));
   };
 
-  // Email validation with a regex
+  // Function for Email validation with a regex
   const handleEmailValidation = (e) => {
-    const { name, value } = e.target;
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+    const { name, value } = e.target; // Get the name and value of the field
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Set basic email regex
+    // Validate the email
     if (name === "email") {
       if (!emailPattern.test(value)) {
         setEmailErrorMessage(true);
@@ -44,14 +49,40 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
     }
   };
 
+  // Function to show thank you message and reset the form data
+  const successfullySubmittedTestimony = () => {
+    // Upon form submission and mail success
+    setShowTestimonyForm(false); // Remove form display
+
+    setShowThankYou(true); // Show thank you message
+
+    // Set a timeout for thank you message and close the form in the parent page
+    setTimeout(() => {
+      setShowThankYou(false);
+      closeForm();
+    }, 3000);
+
+    // Reset Testimony data.
+    setTestimonyData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      occupation: "",
+      testimonial: "",
+      type: "text",
+      approved: false,
+      date: serverTimestamp(),
+    });
+  };
+
   // Handles form submission on clicking share button
   const handleTestimonialFormSubmit = async (e) => {
-    e.preventDefault(); //Prevent default form reloading
+    e.preventDefault(); //Prevent default i.e form reloading
     setIsSubmitting(true); // Show loading indicator
     setSubmissionError(""); // Reset error state
 
     try {
-      // Get the mailed data
+      // Send a POST request to the api with testimony data object as payload
       const response = await fetch("api/sendEmail", {
         method: "POST",
         headers: {
@@ -63,37 +94,14 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
       // If the mail did not send succesfully
       if (!response.ok) {
         setSubmissionError("Failed to send email. Please try again.");
-        console.log(response);
-        console.error("Email Error:", errorMessage);
         return;
       }
 
       // Add to firestore
       const collectionRef = collection(db, "Testimonials"); //get the testimonial collection
       const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
-
-      // Upon form submission and mail success
-      setShowTestimonyForm(false); // Remove form display
-
-      setShowThankYou(true); // Show thank you message
-
-      // Set a timeout for thank you message and close the form in the parent page
-      setTimeout(() => {
-        setShowThankYou(false);
-        closeForm();
-      }, 3000);
-
-      // Reset Testimony data.
-      setTestimonyData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        occupation: "",
-        testimonial: "",
-        type: "text",
-        approved: false,
-        date: serverTimestamp(),
-      });
+      // Call a success function
+      successfullySubmittedTestimony();
     } catch (error) {
       console.log("Error adding testimony: ", error);
       setSubmissionError(
@@ -103,9 +111,6 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
       setIsSubmitting(false); //Hide loading indicator
     }
   };
-  const maxLength = 300; // Set the character limit
-
-  const formDataRefs = useRef({}); // Create a single ref object
 
   return (
     <div>
