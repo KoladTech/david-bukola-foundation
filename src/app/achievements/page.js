@@ -16,7 +16,7 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [achievements, setAchievements] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { stats, error } = useApiData();
+  const { stats, loading_stats, error } = useApiData();
 
   useEffect(() => {
     async function fetchData() {
