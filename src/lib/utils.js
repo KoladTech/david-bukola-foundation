@@ -1,5 +1,6 @@
 import { clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+// import { NAIRA_SYMBOL } from "@/constants";
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -24,4 +25,13 @@ export function formatTimestamp(
     console.error("Error formatting timestamp:", error);
     return fallback;
   }
+}
+
+export function formatCurrency(amount) {
+  return new Intl.NumberFormat("en-NG", {
+    style: "currency",
+    currency: "NGN",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  }).format(amount);
 }

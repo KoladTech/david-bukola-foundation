@@ -7,8 +7,7 @@ import { Calendar, Target, Clock, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { fetchProjects } from "@/firebase/projectPage";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
-import { NAIRA_SYMBOL } from "@/constants";
-import { formatTimestamp } from "@/lib/utils";
+import { formatTimestamp, formatCurrency } from "@/lib/utils";
 
 function SkeletonHeroSection() {
   return <div className="h-96 bg-gray-200 animate-pulse rounded-md"></div>;
@@ -160,12 +159,7 @@ export default function ProjectsPage() {
                         Planned Budget{" "}
                       </h2>
                       <p className="font-semibold">
-                        {project.plannedBudget
-                          ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat("en-NG", {
-                              minimumFractionDigits: 0,
-                              maximumFractionDigits: 0,
-                            }).format(project.plannedBudget)}`
-                          : "No Budget Yet"}
+                        {formatCurrency(project.plannedBudget)}
                       </p>
                     </div>
                   </Card>

@@ -10,6 +10,7 @@ import SchoolsList from "./SchoolsList";
 import { LuX } from "react-icons/lu";
 import { NAIRA_SYMBOL } from "@/constants";
 import { useApiData } from "@/context/ApiStatsContext";
+import { formatCurrency, formatTimestamp } from "@/lib/utils";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -121,13 +122,7 @@ export default function Page() {
                           </h3>
                           <p className="font-semibold">
                             {key === "totalFinancialSupport"
-                              ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat(
-                                  "en-NG",
-                                  {
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
-                                  }
-                                ).format(value)}`
+                              ? formatCurrency(value)
                               : Array.isArray(value)
                               ? value.join(", ")
                               : value}
