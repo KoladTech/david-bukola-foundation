@@ -144,7 +144,7 @@ jobs:
           cat ~/.ssh/id_rsa
           ssh -tt -o StrictHostKeyChecking=no $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST << 'EOF'
           docker pull ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1
-          docker stop dbf_current_container || true
-          docker rm dbf_current_container || true
-          docker run -d --name dbf_current_container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1
+          docker stop dbf-current-container || true
+          docker rm dbf-current-container || true
+          docker run -d --name dbf-current-container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1
           EOF
