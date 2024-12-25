@@ -142,7 +142,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ls -l ~/.ssh
           cat ~/.ssh/id_rsa
-          ssh -tt -o StrictHostKeyChecking=no $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST << 'EOF'
+          ssh -tt -o StrictHostKeyChecking=no -o ServerAliveInterval=30 $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST << 'EOF'
           docker pull ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1
           docker stop dbf-current-container || true
           docker rm dbf-current-container || true
