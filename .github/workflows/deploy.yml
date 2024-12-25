@@ -146,5 +146,5 @@ jobs:
           docker pull ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1
           docker stop dbf-current-container || true
           docker rm dbf-current-container || true
-          docker run -d --name dbf-current-container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1
+          docker run -d --name dbf-current-container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1 wait
           EOF
