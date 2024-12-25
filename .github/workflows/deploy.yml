@@ -137,14 +137,27 @@ jobs:
           HOSTINGER_SSH_USER: ${{ secrets.HOSTINGER_SSH_USER }}
           HOSTINGER_SSH_HOST: ${{ secrets.HOSTINGER_SSH_HOST }}
         run: |
+          # Setup SSH
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ls -l ~/.ssh
-          cat ~/.ssh/id_rsa
-          ssh -tt -o StrictHostKeyChecking=no -o ServerAliveInterval=30 $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST << 'EOF'
-          docker pull ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1
-          docker stop dbf-current-container || true
-          docker rm dbf-current-container || true
-          docker run -d --name dbf-current-container -p 3000:3000 ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1 wait
-          EOF
+    
+          # Add better SSH options for stability
+          ssh -o StrictHostKeyChecking=no \
+              -o ServerAliveInterval=60 \
+              -o ServerAliveCountMax=10 \
+              $HOSTINGER_SSH_USER@$HOSTINGER_SSH_HOST '
+            # Pull the new image
+            docker pull ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1 && \
+            
+            # Stop and remove the old container
+            docker stop dbf-current-container || true && \
+            docker rm dbf-current-container || true && \
+            
+            # Run the new container
+            docker run -d \
+              --name dbf-current-container \
+              --restart unless-stopped \
+              -p 3000:3000 \
+              ghcr.io/koladtech/david-bukola-foundation-website:v3.3.1
+          '
