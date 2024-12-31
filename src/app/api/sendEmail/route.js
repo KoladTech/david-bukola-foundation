@@ -1,7 +1,6 @@
 import nodemailer from "nodemailer";
 
 export async function POST(req) {
-  const nodemailer = require("nodemailer");
   try {
     // Get the request - The testimony data object
     const body = await req.json();
