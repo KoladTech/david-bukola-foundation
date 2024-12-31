@@ -10,12 +10,13 @@ import SchoolsList from "./SchoolsList";
 import { LuX } from "react-icons/lu";
 import { NAIRA_SYMBOL } from "@/constants";
 import { useApiData } from "@/context/ApiStatsContext";
+import { formatCurrency, formatTimestamp } from "@/lib/utils";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
   const [achievements, setAchievements] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
-  const { stats, error } = useApiData();
+  const { stats, loading_stats, error } = useApiData();
 
   useEffect(() => {
     async function fetchData() {
@@ -82,8 +83,9 @@ export default function Page() {
               className=""
               title="ACHIEVEMENTS"
               description=""
-              imageUrl="/images/achievements-hero-image.jpg"
+              imageUrl="/images/dbf-achievement-page-image1.jpg"
               alt=""
+              darkenImage={"absolute inset-0 bg-black bg-opacity-40"}
               showStats={true}
               stats={stats}
             />
@@ -121,13 +123,7 @@ export default function Page() {
                           </h3>
                           <p className="font-semibold">
                             {key === "totalFinancialSupport"
-                              ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat(
-                                  "en-NG",
-                                  {
-                                    minimumFractionDigits: 0,
-                                    maximumFractionDigits: 0,
-                                  }
-                                ).format(value)}`
+                              ? formatCurrency(value)
                               : Array.isArray(value)
                               ? value.join(", ")
                               : value}
