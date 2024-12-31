@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { useEffect, useRef, useState } from "react";
 import db from "@/firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import handleEmailValidation from "@/lib/emailVerification";
 import { FaLessThan } from "react-icons/fa6";
 
 export default function ShareTestimony({ clickCloseForm, closeForm }) {
@@ -10,6 +11,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
   const [showThankYou, setShowThankYou] = useState("");
   const [submissionError, setSubmissionError] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showTestimonyForm, setShowTestimonyForm] = useState(true);
   const [testimonyData, setTestimonyData] = useState({
@@ -30,24 +32,31 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
   // Function to set form data from user inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target; // Get the name and value of the field that triggered the input
-    setEmailErrorMessage(false); // allow user type, without constant error message
+    if (name === "email") {
+      setEmailErrorMessage(false); // allow user type, without constant error message
+      // If email is valid
+      if (!handleEmailValidation(e)) {
+        setEmailValid(true);
+        setEmailErrorMessage(false);
+      } else setEmailValid(false);
+    }
     setTestimonyData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  // Function for Email validation with a regex
-  const handleEmailValidation = (e) => {
-    const { name, value } = e.target; // Get the name and value of the field
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Set basic email regex
-    // Validate the email
-    if (name === "email") {
-      if (!emailPattern.test(value)) {
-        setEmailErrorMessage(true);
-      }
-    }
-  };
+  // DELETE THIS ONCE THE EXTERNAL FUNCTION IMPORTED FROM UTILS IS WORKING PERFECTLY FINE
+  // // Email validation with a regex
+  // const handleEmailValidation = (e) => {
+  //   const { name, value } = e.target;
+  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
+  //   if (name === "email") {
+  //     if (!emailPattern.test(value)) {
+  //       setEmailErrorMessage(true);
+  //     }
+  //   }
+  // };
 
   // Function to show thank you message and reset the form data
   const successfullySubmittedTestimony = () => {
@@ -156,7 +165,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                       ></input>
                     </div>
 
-                    {/* Occupation Field */}
+                    {/* Email Field */}
                     <input
                       type="email"
                       id="email"
@@ -167,7 +176,9 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                       required
                       className="input-field"
                       onChange={handleInputChange}
-                      onBlur={handleEmailValidation}
+                      onBlur={(e) =>
+                        setEmailErrorMessage(handleEmailValidation(e))
+                      } // Use arrow function so you can pass the event as a parameter
                     ></input>
                     {emailErrorMessage && (
                       <div>
@@ -214,6 +225,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
                         !formDataRefs.current.firstName?.value ||
                         !formDataRefs.current.lastName?.value ||
                         !formDataRefs.current.email?.value ||
+                        !emailValid ||
                         !formDataRefs.current.occupation?.value ||
                         !formDataRefs.current.testimonial?.value ||
                         emailErrorMessage ||

@@ -28,7 +28,7 @@ export async function POST(req) {
     // Configure the email options
     const mailOptions = {
       from: `"${firstName} ${lastName}" <${email}>`, // Sender info
-      to: process.env.NEXT_PUBLIC_FOUNDATION_EMAIL, // Your foundation's email
+      // to: process.env.NEXT_PUBLIC_FOUNDATION_EMAIL, // Your foundation's email
       subject: "New Testimony Submission", // Email subject
       text: ` First Name: ${firstName} 
               Last Name: ${lastName}

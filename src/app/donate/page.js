@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, ChevronLeft } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import HeroSection from "@/components/HeroSection";
+import thankYouMessage from "@/lib/thankYouMessage";
+import handleEmailValidation from "@/lib/emailVerification";
 
 const donationAmounts = [
   { value: 5000, label: "₦5,000" },
@@ -22,6 +25,21 @@ const otherWays = [
   "Donate via USSD",
   "Others",
 ];
+
+// Bank account details
+const bankAccounts = [
+  {
+    bank: "First Bank",
+    accountNumber: "0123456789",
+    accountName: "David Bukola Foundation",
+  },
+  {
+    bank: "GTBank",
+    accountNumber: "0987654321",
+    accountName: "David Bukola Foundation",
+  },
+];
+
 const totalSteps = 3;
 
 export default function DonatePage() {
@@ -29,6 +47,8 @@ export default function DonatePage() {
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [otherAmount, setOtherAmount] = useState(false);
   const [inputMade, setInputMade] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -37,6 +57,39 @@ export default function DonatePage() {
     paymentMethod: "",
     amount: "",
   });
+  // router for going back to a previous page
+  const router = useRouter();
+  // Next js router for storing the search parameters of pages visited
+  const searchParams = useSearchParams();
+  const returnTo = searchParams.get("returnTo");
+  const [previousPage, setPreviousPage] = useState("/");
+  const [showThankYou, setShowThankYou] = useState("");
+  const [copiedStates, setCopiedStates] = useState(
+    bankAccounts.map(() => false)
+  );
+  // For storing the previous page
+  useEffect(() => {
+    // Store the previous page URL when the component mounts (Browser method)
+    if (typeof window !== "undefined") {
+      setPreviousPage(document.referrer);
+    }
+  }, []);
+  // Handles the copy buttons for the account numbers
+  const handleCopy = (index, accountNumber) => {
+    navigator.clipboard.writeText(accountNumber);
+    setCopiedStates((prev) => {
+      const newState = [...prev];
+      newState[index] = true;
+      return newState;
+    });
+    setTimeout(() => {
+      setCopiedStates((prev) => {
+        const newState = [...prev];
+        newState[index] = false;
+        return newState;
+      });
+    }, 2000);
+  };
 
   // Handles logic of going to next stage only after selecting a donation to give
   const handleNext = () => {
@@ -51,9 +104,17 @@ export default function DonatePage() {
     }
   };
 
-  // Handles getting data from input fields and populating the forData
+  // Handles getting data from input fields and populating the formData
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === "email") {
+      setEmailErrorMessage(false); // allow user type, without constant error message
+      // If email is valid
+      if (!handleEmailValidation(e)) {
+        setEmailValid(true);
+        setEmailErrorMessage(false);
+      } else setEmailValid(false);
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -83,10 +144,6 @@ export default function DonatePage() {
   // Create a single ref object
   const formDataRefs = useRef({});
 
-  // const firstNameRef = useRef(null);
-  // const lastNameRef = useRef(null);
-  // const emailRef = useRef(null);
-
   // Clears input field
   const clearInput = (e) => {
     setInputMade(false); // Make the input made button false (To disable next)
@@ -101,18 +158,7 @@ export default function DonatePage() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
     // Handle form submission (e.g., send data to Firestore or an API)
-    console.log("Form Data Submitted:", formData);
-    alert("Thank you for donating!");
   };
-
-  // Debugging!!!
-  useEffect(() => {
-    console.log(formData);
-    console.log(`Input Made ${inputMade}`);
-    console.log(`Input Made Value: ${inputRef.current.value}`);
-    console.log(`other amount ${otherAmount}`);
-    console.log(`selected Amount ${selectedAmount}`);
-  });
 
   return (
     // <form onSubmit={handleFormSubmit}>
@@ -132,9 +178,28 @@ export default function DonatePage() {
       </div>
 
       {/* Form Section */}
-      <div className="full-width-div ">
+      <div className="full-width-div">
         <div className="max-w-6xl mx-auto px-4 py-12 bg-sky-800">
           <div className="flex flex-col md:flex-row gap-8 py-12">
+            {/* Thank You message when "I have made payment is clicked". (Placed here so it'll display on the whole page) */}
+            {showThankYou && (
+              <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
+                <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
+                  <div
+                    // ref={closeForm}
+                    className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
+                  >
+                    <h2 className="text-2xl font-semibold text-gray-900">
+                      Thank you for your donation
+                    </h2>
+                    <p className="text-gray-700">
+                      Your generosity helps us make a difference.
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            )}
+
             {/* Main Form Area */}
             <div className="flex-1">
               <Card className="bg-white p-8">
@@ -295,6 +360,9 @@ export default function DonatePage() {
                               value={FormData.email}
                               onChange={handleInputChange}
                               // ref={emailRef}
+                              onBlur={(e) =>
+                                setEmailErrorMessage(handleEmailValidation(e))
+                              } // Use arrow function so you can pass the event as a parameter
                               ref={(el) => (formDataRefs.current.email = el)}
                               required
                               placeholder="Email * "
@@ -354,7 +422,9 @@ export default function DonatePage() {
                             disabled={
                               !formDataRefs.current.firstName?.value ||
                               !formDataRefs.current.lastName?.value ||
-                              !formDataRefs.current.email?.value
+                              !formDataRefs.current.email?.value ||
+                              emailErrorMessage ||
+                              !emailValid
                             }
                           >
                             Next
@@ -431,23 +501,110 @@ export default function DonatePage() {
                           </Button>
                         </div>
 
+                        {/* Account Numbers Display */}
+                        {/* Conditional Content Display */}
+                        {formData.paymentMethod && (
+                          // <Card className="p-4 bg-sky-900/50 border-sky-700">
+                          <Card className="p-4 bg-white">
+                            {formData.paymentMethod === "transfer" ? (
+                              <>
+                                <h3 className="text-center text-sky-900 font-semibold mb-4">
+                                  Bank Account Details
+                                </h3>
+                                <div className="space-y-4">
+                                  {bankAccounts.map((account, index) => (
+                                    <div
+                                      key={index}
+                                      className="p-3 rounded-lg "
+                                    >
+                                      <p className="text-black font-medium">
+                                        {account.bank}
+                                      </p>
+                                      <div className="flex justify-start items-center space-x-2">
+                                        <p className="text-black text-lg font-mono">
+                                          {account.accountNumber}
+                                        </p>
+                                        <Button
+                                          variant="ghost"
+                                          className="h-8 text-sky-800 hover:text-sky-100 hover:bg-sky-800"
+                                          onClick={() => {
+                                            handleCopy(
+                                              index,
+                                              account.accountNumber
+                                            ); // Function to copy and display copied message
+                                          }}
+                                        >
+                                          Copy
+                                        </Button>
+                                        {copiedStates[index] && (
+                                          <div className="text-xs text-sky-800 px-4 py-2 rounded-md shadow-lg">
+                                            Account number copied!
+                                          </div>
+                                        )}
+                                      </div>
+                                      <p className="text-black font-medium">
+                                        {account.accountName}
+                                      </p>
+                                    </div>
+                                  ))}
+                                </div>
+                              </>
+                            ) : (
+                              <div className="text-center py-8">
+                                <h3 className="text-2xl font-medium text-sky-300 mb-2">
+                                  Coming Soon...
+                                </h3>
+                                <p className="text-black">
+                                  Card payment integration is under development.
+                                </p>
+                              </div>
+                            )}
+                          </Card>
+                        )}
                         {/* Payment confirmation buttons */}
                         <div className="flex gap-4">
                           <Button
                             variant="outline"
                             className="flex-1 h-12 text-white bg-sky-600"
-                            // onClick={handleBack}
+                            onClick={() => {
+                              handleNext;
+
+                              setShowThankYou(thankYouMessage(true)); // Call the function to Show thank you message
+                              // thankYouMessage(false);
+
+                              // Set a timeout for thank you message and close the form in the parent page
+                              setTimeout(() => {
+                                setShowThankYou(thankYouMessage(false)); // Call the function to hide thank you message
+
+                                //redirect to the previous or home page
+                                if (returnTo) {
+                                  router.push(decodeURIComponent(returnTo));
+                                } else {
+                                  router.push("/");
+                                }
+                              }, 3000);
+
+                              // This uses the browser method to get the last visited page
+                              // if (previousPage) {
+                              //   router.push(previousPage);
+                              // } else {
+                              //   // Fallback to home page if no previous page
+                              //   router.push("/");
+                              // }
+                            }}
+                            // Disable the button until transfer method is selected
+                            disabled={!(formData.paymentMethod === "transfer")}
                           >
                             I have made payment
                           </Button>
-                          <Button
+                          {/* <Button
                             variant="outline"
                             className="flex-1 h-12 border-red-800 text-red-800"
-                            // onClick={handleNext}
+                            // onClick={handleNext;}
                             // disabled={!formData.paymentMethod}
                           >
                             Payment did not go through
-                          </Button>
+                          </Button> */}
                         </div>
 
                         {/* Navigation Buttons */}
@@ -459,6 +616,7 @@ export default function DonatePage() {
                           >
                             Back
                           </Button>
+
                           {/* <Button
                             className="flex-1 h-12 bg-sky-800 text-white hover:bg-sky-950"
                             onClick={handleNext}
