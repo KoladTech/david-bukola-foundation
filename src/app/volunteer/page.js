@@ -52,6 +52,7 @@ Together, we can make a world of difference. Get involved today!
 
   const [isInterestsOpen, setIsInterestsOpen] = useState(false);
   const [isDaysOpen, setIsDaysOpen] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -79,10 +80,45 @@ Together, we can make a world of difference. Get involved today!
     }));
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // validate the form fields
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = "First name is required.";
+    }
+
+    if (!formData.email.trim() || !validateEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email";
+    }
+
+    if (!formData.phone.trim()) {
+      newErrors.phone = "Phone number is required.";
+    }
+
+    if (formData.interests.length === 0) {
+      newErrors.interests = "Please select at least one volunteer opportunity.";
+    }
+
+    if (formData.availableDays.length === 0) {
+      newErrors.availableDays = "Please select at least one available day";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Handle form submission here
+    if (validateForm()) {
+      console.log("Form submitted:", formData);
+      // Handle form submission here
+    }
   };
 
   const renderPills = (options, selectedValues, toggleFunction) => {
@@ -138,8 +174,10 @@ Together, we can make a world of difference. Get involved today!
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    required
                   />
+                  {errors.firstName && (
+                    <p className="text-red-500 text-sm">{errors.firstName}</p>
+                  )}
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
@@ -159,11 +197,12 @@ Together, we can make a world of difference. Get involved today!
                 <Input
                   id="email"
                   name="email"
-                  type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  required
                 />
+                {errors.email && (
+                  <p className="text-red-500 text-sm">{errors.email}</p>
+                )}
               </div>
 
               <div className="space-y-2">
@@ -174,12 +213,17 @@ Together, we can make a world of difference. Get involved today!
                   type="tel"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  required
                 />
+                {errors.phone && (
+                  <p className="text-red-500 text-sm">{errors.phone}</p>
+                )}
               </div>
 
               <div className="space-y-2">
                 <Label>Volunteer opportunities you're interested in</Label>
+                {errors.interests && (
+                  <p className="text-red-500 text-sm">{errors.interests}</p>
+                )}
                 <div className="relative">
                   <div className="flex items-center p-2 border rounded-md">
                     <Collapsible
@@ -227,6 +271,9 @@ Together, we can make a world of difference. Get involved today!
 
               <div className="space-y-2">
                 <Label>Available Days</Label>
+                {errors.availableDays && (
+                  <p className="text-red-500 text-sm">{errors.availableDays}</p>
+                )}
                 <div className="relative">
                   <div className="flex items-center p-2 border rounded-md">
                     <Collapsible open={isDaysOpen} onOpenChange={setIsDaysOpen}>
