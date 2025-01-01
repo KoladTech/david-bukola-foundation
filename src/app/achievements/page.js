@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
-import { LuX } from "react-icons/lu";
+import ImageModal from "@/components/ImageModal";
 import { NAIRA_SYMBOL } from "@/constants";
 import { useApiData } from "@/context/ApiStatsContext";
 import { formatCurrency, formatTimestamp } from "@/lib/utils";
@@ -43,30 +43,6 @@ export default function Page() {
     fetchData();
   }, []);
 
-  function ImageModal({ src, alt, onClose }) {
-    return (
-      <div
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-        onClick={onClose}
-      >
-        <div className="relative max-w-3xl max-h-[90vh] w-full h-full">
-          <Image
-            src={src}
-            alt={alt}
-            layout="fill"
-            objectFit="contain"
-            className="rounded-lg"
-          />
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-opacity"
-          >
-            <LuX size={24} />
-          </button>
-        </div>
-      </div>
-    );
-  }
   // if (loading) {
   //   return <LoadingSpinner />; // Display a loading indicator while data is being fetched
   // }

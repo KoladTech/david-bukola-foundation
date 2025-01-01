@@ -1,11 +1,8 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 import { useState, useEffect } from "react";
-import { formatTimestamp, formatCurrency } from "@/lib/utils";
 import {
   CalendarDays,
   MapPin,
@@ -13,11 +10,14 @@ import {
   Target,
   Building2,
   Gift,
-  X,
 } from "lucide-react";
 import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import LoadingSpinner from "@/components/loadingSpinner";
+import Image from "next/image";
+import Link from "next/link";
+import { formatTimestamp, formatCurrency } from "@/lib/utils";
+import ImageModal from "@/components/ImageModal";
 
 export default function Page() {
   // variables to store and set states for data and errors asynchronously
@@ -163,31 +163,6 @@ export default function Page() {
     );
   }
 
-  function ImageModal({ src, alt, onClose }) {
-    return (
-      <div
-        className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-        onClick={onClose}
-      >
-        <div className="relative max-w-3xl max-h-[90vh] w-full h-full">
-          <Image
-            src={src}
-            alt={alt}
-            layout="fill"
-            objectFit="contain"
-            className="rounded-lg"
-          />
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-opacity"
-          >
-            <X size={24} />
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="p-4">
@@ -216,29 +191,38 @@ export default function Page() {
         </div>
       ) : (
         <div className="bg-gray-50">
-          <div className="container mx-auto px-4 py-12">
+          <div className="container mx-auto px-4 py-12 mb-20">
+            {/* Upcoming Events Section */}
             <h1 className="text-4xl md:text-5xl font-bold mb-14 text-center">
               Upcoming Events
             </h1>
+            <p className=" text-center text-2xl mb-14">
+              More events coming soon!
+            </p>
 
-            {/* Upcoming Events Section */}
-            <section className="mb-20">
-              {/* <h2 className="text-3xl font-bold mb-8">Upcoming Events</h2> */}
-              <div className="space-y-8">
-                {upcomingEvents.map((event, index) => (
-                  <EventCard
-                    key={index}
-                    event={event}
-                    isImageFirst={index % 2 === 0}
-                  />
-                ))}
-              </div>
-            </section>
+            {upcomingEvents.length > 0 && (
+              <section>
+                {/* <h2 className="text-3xl font-bold mb-8">Upcoming Events</h2> */}
+                <div className="space-y-8">
+                  {upcomingEvents.map((event, index) => (
+                    <EventCard
+                      key={index}
+                      event={event}
+                      isImageFirst={index % 2 === 0}
+                    />
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Past Events Section */}
             {pastEvents.length > 0 && (
               <section>
-                <h2 className="text-3xl font-bold mb-8">Past Events</h2>
+                {/* <h2 className="text-3xl font-bold mb-8">Past Events</h2> */}
+                <h1 className="text-4xl md:text-5xl font-bold mb-14 text-center">
+                  Past Events
+                </h1>
+
                 <div className="space-y-8">
                   {pastEvents.map((event, index) => (
                     <EventCard
