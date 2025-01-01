@@ -15,6 +15,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import db from "@/firebase/firebaseConfig";
+import LoadingSpinner from "@/components/loadingSpinner";
 
 const volunteerOptions = [
   { value: "orphanage-visits", label: "Orphanage Visits" },
@@ -48,10 +51,13 @@ Together, we can make a world of difference. Get involved today!
     availableDays: [],
     comments: "",
     newsletter: false,
+    date: serverTimestamp(),
   });
 
   const [isInterestsOpen, setIsInterestsOpen] = useState(false);
   const [isDaysOpen, setIsDaysOpen] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [showVolunteerForm, setShowVolunteerForm] = useState(true);
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
@@ -113,11 +119,60 @@ Together, we can make a world of difference. Get involved today!
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted:", formData);
-      // Handle form submission here
+      setSubmitting(true);
+      try {
+        // Send a POST request to the api with testimony data object as payload
+        const response = await fetch("api/newVolunteerEmail", {
+          method: "POST",
+          headers: {
+            "content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        // If the mail did not send succesfully
+        if (!response.ok) {
+          console.log("Error while sending email");
+          return;
+        }
+
+        // Add to firestore
+        const collectionRef = collection(db, "Volunteers"); //get the testimonial collection
+        const docRef = await addDoc(collectionRef, formData); //add a new document to the collection
+        // check for existence of that volunteer
+        // Call a success function
+      } catch (error) {
+        console.log("Error adding volunteer: ", error);
+      } finally {
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          phone: "",
+          interests: [],
+          availableDays: [],
+          comments: "",
+          newsletter: false,
+          date: serverTimestamp(),
+        });
+        setSubmitting(false); //Hide loading indicator
+      }
+      // await new Promise((resolve) => setTimeout(resolve, 3000));
+      // setFormData({
+      //   firstName: "",
+      //   lastName: "",
+      //   email: "",
+      //   phone: "",
+      //   interests: [],
+      //   availableDays: [],
+      //   comments: "",
+      //   newsletter: false,
+      //   date: serverTimestamp(),
+      // });
+      // setSubmitting(false);
     }
   };
 
@@ -160,7 +215,18 @@ Together, we can make a world of difference. Get involved today!
             <ContentCard content={content} />
           </div>
         </div>
-        <Card className="shadow-md">
+
+        <Card
+          className={`shadow-md ${
+            submitting && "blur-sm"
+          } transition duration-300`}
+        >
+          {submitting && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+              <LoadingSpinner />
+            </div>
+          )}
+
           <CardHeader>
             <CardTitle className="text-2xl">Volunteer Form</CardTitle>
           </CardHeader>
@@ -341,6 +407,14 @@ Together, we can make a world of difference. Get involved today!
 
               <Button
                 type="submit"
+                disabled={
+                  !formData.firstName ||
+                  !formData.phone ||
+                  !formData.email ||
+                  !formData.availableDays.length ||
+                  !formData.interests.length ||
+                  submitting
+                }
                 className="w-full bg-blue-500 hover:bg-blue-700"
               >
                 Submit
