@@ -368,6 +368,14 @@ export default function DonatePage() {
                               placeholder="Email * "
                               className="input-field"
                             />
+                            {emailErrorMessage && (
+                              <div>
+                                <p className="text-red-500 text-md mt-2">
+                                  Please enter a valid email address{" "}
+                                  <p>e.g example@domain.com</p>
+                                </p>
+                              </div>
+                            )}
                           </div>
                           <div>
                             <input
