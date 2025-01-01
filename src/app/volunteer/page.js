@@ -50,6 +50,7 @@ Together, we can make a world of difference. Get involved today!
     interests: [],
     availableDays: [],
     comments: "",
+    status: "pending",
     newsletter: false,
     date: serverTimestamp(),
   });
@@ -155,6 +156,7 @@ Together, we can make a world of difference. Get involved today!
           interests: [],
           availableDays: [],
           comments: "",
+          status: "pending",
           newsletter: false,
           date: serverTimestamp(),
         });
