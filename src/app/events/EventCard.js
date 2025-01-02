@@ -15,6 +15,7 @@ export default function EventCard({
   event,
   isImageFirst = false,
   onImageClick,
+  onVolunteer,
 }) {
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-14">
@@ -122,8 +123,9 @@ export default function EventCard({
           )}
           {event.requiresVolunteers && (
             <Button
-              href={""}
-              // onClick={""}
+              onClick={() => {
+                onVolunteer(event);
+              }}
               className="inline-flex items-center justify-center w-full px-6 py-3 mt-auto text-white font-medium bg-blue-500 rounded-full hover:bg-blue-600 transition-colors"
             >
               Volunteer

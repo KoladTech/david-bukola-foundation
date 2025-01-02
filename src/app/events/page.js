@@ -2,19 +2,21 @@
 
 import React from "react";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import LoadingSpinner from "@/components/loadingSpinner";
 import ImageModal from "@/components/ImageModal";
 import EventCard from "./EventCard";
+import VolunteerForm from "./VolunteerForm";
 
 export default function Page() {
   // variables to store and set states for data and errors asynchronously
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [showVolunteerForm, setShowVolunteerForm] = useState(false);
+  // const [showVolunteerForm, setShowVolunteerForm] = useState(false);
+  const [volunteerEvent, setVolunteerEvent] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Fetch projects on component mount (Using a variable to store the function)
@@ -38,11 +40,28 @@ export default function Page() {
     loadEvents();
   }, []);
 
+  const formRef = useRef();
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setVolunteerEvent(false);
+      }
+    }
+
+    // Add event listener for clicks outside the form
+    if (volunteerEvent) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    // Cleanup event listener on unmount
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [volunteerEvent]);
+
   const upcomingEvents = events.filter((event) => event.status === "upcoming");
   const pastEvents = events.filter((event) => event.status === "past");
 
   return (
     <>
+      {/* <div className="p-4" onClick={() => setVolunteerEvent(null)}> */}
       <div className="p-4">
         <HeroSection
           imageUrl={`/images/events_hero_section.jpg`}
@@ -108,6 +127,8 @@ export default function Page() {
                       event={event}
                       isImageFirst={index % 2 === 0}
                       onImageClick={setSelectedImage}
+                      // onVolunteer={setShowVolunteerForm}
+                      onVolunteer={setVolunteerEvent}
                     />
                   ))}
                 </div>
@@ -131,6 +152,14 @@ export default function Page() {
           alt="Full-screen image"
           onClose={() => setSelectedImage(null)}
         />
+      )}
+      {volunteerEvent && (
+        <div ref={formRef}>
+          <VolunteerForm
+            event={volunteerEvent}
+            onClose={() => setVolunteerEvent(null)}
+          />
+        </div>
       )}
     </>
   );
