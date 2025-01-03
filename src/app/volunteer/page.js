@@ -126,12 +126,15 @@ Together, we can make a world of difference. Get involved today!
       setSubmitting(true);
       try {
         // Send a POST request to the api with testimony data object as payload
-        const response = await fetch("api/newVolunteerEmail", {
+        const response = await fetch("api/sendMail", {
           method: "POST",
           headers: {
             "content-Type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify({
+            formType: "constantVolunteerForm",
+            formData: formData,
+          }),
         });
 
         // If the mail did not send succesfully

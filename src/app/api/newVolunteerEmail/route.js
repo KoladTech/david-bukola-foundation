@@ -72,9 +72,8 @@ export async function POST(req) {
           <p>We have received a new volunteer application. Here are the details:</p>
 
           <div class="section">
-            <p><span class="label">Name:</span> ${firstName} ${
-        lastName || ""
-      }</p>
+            <p><span class="label">Name:</span> ${firstName}</p>
+    ${lastName && `<p><span class="label">Last Name: ${lastName}</span> <p>`}
             <p><span class="label">Email:</span> ${email}</p>
             <p><span class="label">Phone:</span> ${phone}</p>
           </div>

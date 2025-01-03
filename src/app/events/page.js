@@ -40,11 +40,11 @@ export default function Page() {
     loadEvents();
   }, []);
 
-  const formRef = useRef();
+  const formRef = useRef(null);
   useEffect(() => {
     function handleClickOutside(event) {
       if (formRef.current && !formRef.current.contains(event.target)) {
-        setVolunteerEvent(false);
+        setVolunteerEvent(null);
       }
     }
 
@@ -154,12 +154,11 @@ export default function Page() {
         />
       )}
       {volunteerEvent && (
-        <div ref={formRef}>
-          <VolunteerForm
-            event={volunteerEvent}
-            onClose={() => setVolunteerEvent(null)}
-          />
-        </div>
+        <VolunteerForm
+          closeForm={formRef}
+          event={volunteerEvent}
+          onClose={() => setVolunteerEvent(null)}
+        />
       )}
     </>
   );
