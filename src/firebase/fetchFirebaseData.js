@@ -36,3 +36,32 @@ export async function fetchedData(collectionData) {
     console.error("Error fetching projects:", error);
   }
 }
+
+export async function fetchDocumentData(yourCollection) {
+  try {
+    // Fetch achievements and site stats concurrently
+    const documentSnapshot = await getDocs(
+      // const achievementsSnapshot = await getDocs(.................................1 (delete)
+      // Get the collection
+      collection(db, yourCollection)
+      // collection(db, "Achievements")............................................2 (delete)
+    );
+
+    // Process the data neede
+    // const achievementsData = achievementsSnapshot.docs.map((doc) => ({...........3 (delete)
+    const yourFetchedData = documentSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // setAchievements(achievementsData);...........................................4
+    return yourFetchedData;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  } finally {
+    // setLoading(false);............................................................5
+  }
+
+  // fetchData();.......................................................................6
+  // fetchDocumentData();
+}
