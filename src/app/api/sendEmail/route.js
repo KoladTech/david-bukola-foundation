@@ -1,13 +1,21 @@
 import nodemailer from "nodemailer";
 
 export async function POST(req) {
-  const nodemailer = require("nodemailer");
   try {
     // Get the request - The testimony data object
     const body = await req.json();
 
     // Create and Set the testimony data variables required
-    const { firstName, lastName, email, occupation, testimonial } = body;
+    const {
+      firstName,
+      lastName,
+      email,
+      occupation,
+      testimonial,
+      newsletter,
+      approved,
+      type,
+    } = body;
 
     // Validate the input
     if (!firstName || !lastName || !email || !occupation || !testimonial) {
@@ -28,7 +36,7 @@ export async function POST(req) {
     // Configure the email options
     const mailOptions = {
       from: `"${firstName} ${lastName}" <${email}>`, // Sender info
-      // to: process.env.NEXT_PUBLIC_FOUNDATION_EMAIL, // Your foundation's email
+      to: process.env.NEXT_PUBLIC_FOUNDATION_EMAIL, // Your foundation's email
       subject: "New Testimony Submission", // Email subject
       text: ` First Name: ${firstName} 
               Last Name: ${lastName}
@@ -41,8 +49,10 @@ export async function POST(req) {
                 <p><strong>Last Name:</strong> ${lastName}</p> 
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Occupation:</strong> ${occupation}</p>
-                <p><strong>Testimonial:</strong></p>
-                <p style="margin-left: 20px;">${testimonial}</p> 
+                <p><strong>Type:</strong> ${type}</p> 
+                <p><strong>Testimonial:</strong> ${testimonial}</p> 
+                <p><strong>Newsletter:</strong> ${newsletter}</p> 
+                <p><strong>Approved:</strong> ${approved}</p> 
               </div> `, // HTML body
     };
 

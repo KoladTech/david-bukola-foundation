@@ -54,7 +54,7 @@ export default function HeroSection({
   statsLoading,
   stats = null,
   video = false,
-  atTop = true,
+  bottomRightWidget = "donate",
 }) {
   return (
     <>
@@ -205,7 +205,7 @@ export default function HeroSection({
             )
           )}
         </div>
-        {atTop ? (
+        {bottomRightWidget === "donate" ? (
           <div className="absolute bottom-4 right-3 md:right-4 bg-white p-2 md:p-4 rounded-lg shadow-lg">
             <p className="text-xs md:text-sm mb-2">Want to make an impact?</p>
             <Link
@@ -215,11 +215,11 @@ export default function HeroSection({
               Donate Now
             </Link>
           </div>
-        ) : (
+        ) : bottomRightWidget === "achievements" ? (
           <div className="absolute bottom-6 right-6 md:right-7">
             <AchievementWidgets />
           </div>
-        )}
+        ) : null}
       </div>
     </>
   );

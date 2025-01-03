@@ -6,9 +6,21 @@ import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ChevronLeft } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import HeroSection from "@/components/HeroSection";
 import thankYouMessage from "@/lib/thankYouMessage";
 import handleEmailValidation from "@/lib/emailVerification";
+import db from "@/firebase/firebaseConfig";
+import addUserDocument from "@/firebase/createUser";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  getDoc,
+} from "firebase/firestore";
+import { useApiData } from "@/context/ApiBankDetailsContext";
 
 const donationAmounts = [
   { value: 5000, label: "₦5,000" },
@@ -20,42 +32,46 @@ const donationAmounts = [
 ];
 
 const otherWays = [
-  "Donate via Bank",
-  "Donate via Mobile",
-  "Donate via USSD",
-  "Others",
+  "Coming soon .",
+  "Coming soon ..",
+  "Coming soon ...",
+  "Coming soon ....",
 ];
 
-// Bank account details
-const bankAccounts = [
-  {
-    bank: "First Bank",
-    accountNumber: "0123456789",
-    accountName: "David Bukola Foundation",
-  },
-  {
-    bank: "GTBank",
-    accountNumber: "0987654321",
-    accountName: "David Bukola Foundation",
-  },
+const countries = [
+  { name: "United States", code: "US", phoneCode: "+1" },
+  { name: "United Kingdom", code: "GB", phoneCode: "+44" },
+  { name: "Nigeria", code: "NG", phoneCode: "+234" },
+  // Add more countries as needed
 ];
 
+// Number of card steps for donation process
 const totalSteps = 3;
 
 export default function DonatePage() {
+  // Form states
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState("");
+
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedAmount, setSelectedAmount] = useState(null);
   const [otherAmount, setOtherAmount] = useState(false);
   const [inputMade, setInputMade] = useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
-  const [formData, setFormData] = useState({
+  const [donateFormData, setDonateFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phone: "",
+    phoneNumber: "",
+    phoneCode: "",
     paymentMethod: "",
     amount: "",
+    city: "",
+    country: "",
+    newsletter: false,
+    approved: false,
+    date: serverTimestamp(),
   });
   // router for going back to a previous page
   const router = useRouter();
@@ -64,16 +80,60 @@ export default function DonatePage() {
   const returnTo = searchParams.get("returnTo");
   const [previousPage, setPreviousPage] = useState("/");
   const [showThankYou, setShowThankYou] = useState("");
+
+  // Getting bank details
+  const [bankDetails, setBankDetails] = useState([]);
+  const [loading_bankDetails, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [copiedStates, setCopiedStates] = useState(
-    bankAccounts.map(() => false)
+    bankDetails.map(() => false)
   );
-  // For storing the previous page
-  useEffect(() => {
-    // Store the previous page URL when the component mounts (Browser method)
-    if (typeof window !== "undefined") {
-      setPreviousPage(document.referrer);
+
+  // Getting countries and phone codes
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedPhoneCode, setSelectedPhoneCode] = useState("");
+
+  const handleCountryChange = (e) => {
+    const countryCode = e.target.value;
+    setSelectedCountry(countryCode);
+    const country = countries.find((c) => c.code === countryCode);
+    if (country) {
+      setSelectedPhoneCode(country.phoneCode);
     }
+    // Update FormData to reflect the selected country immediately
+    setDonateFormData((prev) => ({
+      ...prev,
+      country: countryCode, // Update the country field in FormData (using the value itself not the selected country state)
+      phoneCode: country ? country.phoneCode : prev.phoneCode, // Update the phone code in FormData
+    }));
+  };
+
+  // Fetch Banking details
+  useEffect(() => {
+    // Replace with your actual API endpoint
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const accountDetailsDoc = await getDoc(
+          doc(db, "FoundationInfo", "X4Z4PkcNt2C0L1mFUXdj")
+        );
+        if (accountDetailsDoc.exists()) {
+          console.log("Exists");
+          setBankDetails([accountDetailsDoc.data()]);
+        }
+        if (!accountDetailsDoc.exists()) {
+          console.warn("Document does not exist!");
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
+
   // Handles the copy buttons for the account numbers
   const handleCopy = (index, accountNumber) => {
     navigator.clipboard.writeText(accountNumber);
@@ -91,8 +151,17 @@ export default function DonatePage() {
     }, 2000);
   };
 
+  // For storing the previous page
+  useEffect(() => {
+    // Store the previous page URL when the component mounts (Browser method)
+    if (typeof window !== "undefined") {
+      setPreviousPage(document.referrer);
+    }
+  }, []);
+
   // Handles logic of going to next stage only after selecting a donation to give
   const handleNext = () => {
+    console.log("The Whole FormData:", donateFormData);
     if (selectedAmount) {
       setCurrentStep(currentStep + 1);
     }
@@ -104,7 +173,7 @@ export default function DonatePage() {
     }
   };
 
-  // Handles getting data from input fields and populating the formData
+  // Handles getting data from input fields and populating the donateFormData
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "email") {
@@ -115,18 +184,22 @@ export default function DonatePage() {
         setEmailErrorMessage(false);
       } else setEmailValid(false);
     }
-    setFormData((prev) => ({
+    setDonateFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
     setInputMade(true);
   };
+
+  // references for input fields
+  const inputRef = useRef(null);
+
   // UseEffect to ensure the setAmount is updated properly as the state changes
   useEffect(() => {
     if (inputMade) {
       inputRef.current.value === "" && !selectedAmount
         ? setSelectedAmount("")
-        : setSelectedAmount(formData.amount);
+        : setSelectedAmount(donateFormData.amount);
     }
   });
 
@@ -137,12 +210,8 @@ export default function DonatePage() {
       setSelectedAmount("");
     }
   };
-
-  // references for input fields
-  const inputRef = useRef(null);
-
   // Create a single ref object
-  const formDataRefs = useRef({});
+  const donateFormDataRefs = useRef({});
 
   // Clears input field
   const clearInput = (e) => {
@@ -154,24 +223,109 @@ export default function DonatePage() {
     }
   };
 
-  // Prevents default submission of forms
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission (e.g., send data to Firestore or an API)
+  const reRoutePage = () => {
+    //redirect to the previous or home page
+    if (returnTo) {
+      router.push(decodeURIComponent(returnTo));
+    } else {
+      router.push("/");
+    }
+
+    // // This uses the browser method to get the last visited page
+    // if (previousPage) {
+    //   router.push(previousPage);
+    // } else {
+    //   // Fallback to home page if no previous page
+    //   router.push("/");
+    // }
+  };
+  // Function to show thank you message and reset the form data
+  const successfullySubmittedTestimony = () => {
+    console.log("successfullySubmittedTestimony");
+
+    setShowThankYou(true); // Show thank you message
+
+    // Set a timeout for thank you message
+    setTimeout(() => {
+      setShowThankYou(false);
+      reRoutePage();
+    }, 3000);
+
+    // Reset Testimony data.
+    setDonateFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      phoneCode: "",
+      paymentMethod: "",
+      amount: "",
+      city: "",
+      country: "",
+      newsletter: false,
+      approved: false,
+      date: serverTimestamp(),
+    });
+  };
+
+  // Handles form submission on clicking share button
+  const handleDonateFormSubmit = async (e) => {
+    e.preventDefault(); //Prevent default i.e form reloading
+    setIsSubmitting(true); // Show loading indicator
+    setSubmissionError(""); // Reset error state
+
+    try {
+      // Send a POST request to the api with testimony data object as payload
+      console.log("try block");
+      const response = await fetch("api/sendDonationEmail", {
+        //1
+        method: "POST",
+        headers: {
+          "content-Type": "application/json",
+        },
+        body: JSON.stringify(donateFormData), //2
+      });
+
+      // If the mail did not send succesfully
+      if (!response.ok) {
+        console.log("response not ok");
+        console.log("donationFormData", donateFormData);
+        console.log("Error: ", response.error);
+        setSubmissionError("Failed to send email. Please try again.");
+        return;
+      }
+
+      // Add to firestore
+      const collectionRef = collection(db, "Donations"); //get the testimonial collection //3
+      const docRef = await addDoc(collectionRef, donateFormData); //add a new document to the collection //4
+
+      // Add the new user to the Users Collection
+      await addUserDocument(donateFormData);
+
+      // Call a success function
+      successfullySubmittedTestimony();
+    } catch (error) {
+      console.log("Error sending form: ", error); //5
+      setSubmissionError(
+        "An error occurred while submitting your form details. Please try again." //6
+      );
+    } finally {
+      setIsSubmitting(false); //Hide loading indicator
+    }
   };
 
   return (
     // <form onSubmit={handleFormSubmit}>
-    <div className="">
+    <div className="relative">
       {/* Hero Section */}
-      <div className="relative w-full">
+      <div className="relative w-full overflow-hidden">
         <HeroSection
-          title={"Donate Now"}
           imageUrl={"/achievements-image-1.jpg"}
+          bottomRightWidget={false}
         />
         {/* Maybe make this "Donate Now" text animated from right to left on the screen */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-white flex items-center gap-2">
+        <div className="absolute inset-0 flex items-center justify-center ">
+          <h1 className="slide-text text-4xl md:text-6xl font-bold text-white flex items-center gap-2  whitespace-nowrap">
             Donate Now
           </h1>
         </div>
@@ -274,7 +428,7 @@ export default function DonatePage() {
                                 clearInput(); //Clear the input field
                                 setSelectedAmount(amount.value); //set that buttons amount
                                 // Set the value of the button into the form data
-                                setFormData((prev) => ({
+                                setDonateFormData((prev) => ({
                                   ...prev,
                                   amount: amount.value,
                                 }));
@@ -327,7 +481,7 @@ export default function DonatePage() {
                                 value={FormData.firstName}
                                 onChange={handleInputChange}
                                 ref={(el) =>
-                                  (formDataRefs.current.firstName = el)
+                                  (donateFormDataRefs.current.firstName = el)
                                 }
                                 required
                                 placeholder="First Name * "
@@ -343,7 +497,7 @@ export default function DonatePage() {
                                 onChange={handleInputChange}
                                 // ref={lastNameRef}
                                 ref={(el) =>
-                                  (formDataRefs.current.lastName = el)
+                                  (donateFormDataRefs.current.lastName = el)
                                 }
                                 required
                                 placeholder="Last Name * "
@@ -363,7 +517,9 @@ export default function DonatePage() {
                               onBlur={(e) =>
                                 setEmailErrorMessage(handleEmailValidation(e))
                               } // Use arrow function so you can pass the event as a parameter
-                              ref={(el) => (formDataRefs.current.email = el)}
+                              ref={(el) =>
+                                (donateFormDataRefs.current.email = el)
+                              }
                               required
                               placeholder="Email * "
                               className="input-field"
@@ -377,18 +533,7 @@ export default function DonatePage() {
                               </div>
                             )}
                           </div>
-                          <div>
-                            <input
-                              type="tel"
-                              id="phoneNumber"
-                              name="phoneNumber"
-                              value={FormData.phoneNumber}
-                              onChange={handleInputChange}
-                              required
-                              placeholder="Phone Number * "
-                              className="input-field"
-                            />
-                          </div>
+                          {/* City */}
                           <div>
                             <input
                               type="text"
@@ -396,22 +541,87 @@ export default function DonatePage() {
                               name="city"
                               value={FormData.city}
                               onChange={handleInputChange}
-                              required
                               placeholder="City "
                               className="input-field"
                             />
                           </div>
+                          {/* Country */}
                           <div>
-                            <input
-                              type="text"
+                            <select
                               id="country"
                               name="country"
-                              value={FormData.country}
-                              onChange={handleInputChange}
-                              required
-                              placeholder="Country "
+                              value={FormData.selectedCountry}
+                              onChange={handleCountryChange}
                               className="input-field"
+                              required
+                            >
+                              <option value="">Select a country *</option>
+                              {countries.map((country) => (
+                                <option key={country.code} value={country.code}>
+                                  {country.name}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          {/* PhoneNumber */}
+                          <div className="flex w-1/2">
+                            <div className=" w-1/8">
+                              <select
+                                id="phoneCode"
+                                name="phoneCode"
+                                value={selectedPhoneCode}
+                                onChange={(e) => {
+                                  const newPhoneCode = e.target.value;
+                                  setSelectedPhoneCode(newPhoneCode);
+                                  // console.log(selectedPhoneCode);
+                                  setDonateFormData((prev) => ({
+                                    ...prev,
+                                    phoneCode: newPhoneCode, //Use the value gotten directly from the field (and not the updated state)to avoid logging older values, due to Reacts asynchronus state variables
+                                  }));
+                                }}
+                                className="input-field"
+                              >
+                                <option value="">Code</option>
+                                {countries.map((country) => (
+                                  <option
+                                    key={country.code}
+                                    value={country.phoneCode}
+                                  >
+                                    {country.phoneCode}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                            <div className="flex-1 mx-2">
+                              <input
+                                type="tel"
+                                id="phoneNumber"
+                                name="phoneNumber"
+                                value={donateFormData.phoneNumber}
+                                onChange={handleInputChange}
+                                placeholder="Enter phone number"
+                                className="input-field"
+                              />
+                            </div>
+                          </div>
+                          {/* Newsletter */}
+                          <div className="">
+                            <Checkbox
+                              id="newsletter"
+                              checked={FormData.newsletter}
+                              onCheckedChange={(checked) => {
+                                setDonateFormData((prev) => ({
+                                  ...prev,
+                                  newsletter: checked,
+                                }));
+                              }}
                             />
+                            <Label
+                              htmlFor="newsletter"
+                              className="mx-2 text-sm"
+                            >
+                              Receive updates/notifications about dbf
+                            </Label>
                           </div>
                         </div>
 
@@ -428,9 +638,10 @@ export default function DonatePage() {
                             className="flex-1 h-12 bg-sky-800 hover:bg-sky-700"
                             onClick={handleNext}
                             disabled={
-                              !formDataRefs.current.firstName?.value ||
-                              !formDataRefs.current.lastName?.value ||
-                              !formDataRefs.current.email?.value ||
+                              !donateFormDataRefs.current.firstName?.value ||
+                              !donateFormDataRefs.current.lastName?.value ||
+                              !donateFormDataRefs.current.email?.value ||
+                              !donateFormData.country ||
                               emailErrorMessage ||
                               !emailValid
                             }
@@ -456,15 +667,15 @@ export default function DonatePage() {
                         <div className="space-y-4">
                           <Button
                             variant={`${
-                              formData.paymentMethod === "card"
+                              donateFormData.paymentMethod === "card"
                             } ? "default" : "outline"`}
                             className={`w-full justify-center text-left h-auto p-4 bg-sky-800 hover:bg-sky-950 ${
-                              formData.paymentMethod === "card"
+                              donateFormData.paymentMethod === "card"
                                 ? "bg-sky-600"
                                 : ""
                             }`}
                             onClick={() => {
-                              setFormData((prev) => ({
+                              setDonateFormData((prev) => ({
                                 ...prev,
                                 paymentMethod: "card",
                               }));
@@ -484,15 +695,15 @@ export default function DonatePage() {
                           {/* Transfer Payment Method  */}
                           <Button
                             variant={`${
-                              formData.paymentMethod === "transfer"
+                              donateFormData.paymentMethod === "transfer"
                             } ? "default" : "outline"`}
                             className={`w-full justify-center text-left h-auto p-4 bg-sky-800 hover:bg-sky-950 ${
-                              formData.paymentMethod === "transfer"
+                              donateFormData.paymentMethod === "transfer"
                                 ? "bg-sky-600"
                                 : ""
                             }`}
                             onClick={() => {
-                              setFormData((prev) => ({
+                              setDonateFormData((prev) => ({
                                 ...prev,
                                 paymentMethod: "transfer",
                               }));
@@ -511,25 +722,25 @@ export default function DonatePage() {
 
                         {/* Account Numbers Display */}
                         {/* Conditional Content Display */}
-                        {formData.paymentMethod && (
-                          // <Card className="p-4 bg-sky-900/50 border-sky-700">
+                        {donateFormData.paymentMethod && (
                           <Card className="p-4 bg-white">
-                            {formData.paymentMethod === "transfer" ? (
+                            {donateFormData.paymentMethod === "transfer" ? (
                               <>
                                 <h3 className="text-center text-sky-900 font-semibold mb-4">
                                   Bank Account Details
                                 </h3>
                                 <div className="space-y-4">
-                                  {bankAccounts.map((account, index) => (
+                                  {bankDetails.map((account, index) => (
                                     <div
                                       key={index}
                                       className="p-3 rounded-lg "
                                     >
-                                      <p className="text-black font-medium">
-                                        {account.bank}
+                                      <p className="text-black text-lg font-medium">
+                                        Bank: {account.bankName}
                                       </p>
                                       <div className="flex justify-start items-center space-x-2">
-                                        <p className="text-black text-lg font-mono">
+                                        <p className="text-black text-lg font-medium">
+                                          Account Number:{" "}
                                           {account.accountNumber}
                                         </p>
                                         <Button
@@ -539,7 +750,7 @@ export default function DonatePage() {
                                             handleCopy(
                                               index,
                                               account.accountNumber
-                                            ); // Function to copy and display copied message
+                                            ); // Function to copy and display "Account Number copied"
                                           }}
                                         >
                                           Copy
@@ -550,8 +761,8 @@ export default function DonatePage() {
                                           </div>
                                         )}
                                       </div>
-                                      <p className="text-black font-medium">
-                                        {account.accountName}
+                                      <p className="text-black text-lg font-medium">
+                                        Account Name: {account.accountName}
                                       </p>
                                     </div>
                                   ))}
@@ -570,51 +781,39 @@ export default function DonatePage() {
                           </Card>
                         )}
                         {/* Payment confirmation buttons */}
-                        <div className="flex gap-4">
+                        <div className="flex flex-col gap-4">
                           <Button
                             variant="outline"
                             className="flex-1 h-12 text-white bg-sky-600"
-                            onClick={() => {
-                              handleNext;
-
-                              setShowThankYou(thankYouMessage(true)); // Call the function to Show thank you message
-                              // thankYouMessage(false);
-
-                              // Set a timeout for thank you message and close the form in the parent page
-                              setTimeout(() => {
-                                setShowThankYou(thankYouMessage(false)); // Call the function to hide thank you message
-
-                                //redirect to the previous or home page
-                                if (returnTo) {
-                                  router.push(decodeURIComponent(returnTo));
-                                } else {
-                                  router.push("/");
-                                }
-                              }, 3000);
-
-                              // This uses the browser method to get the last visited page
-                              // if (previousPage) {
-                              //   router.push(previousPage);
-                              // } else {
-                              //   // Fallback to home page if no previous page
-                              //   router.push("/");
-                              // }
+                            onClick={(e) => {
+                              handleDonateFormSubmit(e);
                             }}
                             // Disable the button until transfer method is selected
-                            disabled={!(formData.paymentMethod === "transfer")}
+                            disabled={
+                              !(donateFormData.paymentMethod === "transfer") ||
+                              isSubmitting
+                            }
                           >
-                            I have made payment
+                            {/* I have made payment */}
+                            {isSubmitting
+                              ? "Processing..."
+                              : "I have made payment"}
                           </Button>
                           {/* <Button
                             variant="outline"
                             className="flex-1 h-12 border-red-800 text-red-800"
-                            // onClick={handleNext;}
-                            // disabled={!formData.paymentMethod}
+                            // disabled={!donateFormData.paymentMethod}
                           >
                             Payment did not go through
                           </Button> */}
+                          {submissionError && (
+                            <div className="flex justify-center">
+                              <p className="text-lg text-red-600 p-1 my-1">
+                                {submissionError}
+                              </p>
+                            </div>
+                          )}
                         </div>
-
                         {/* Navigation Buttons */}
                         <div className="flex gap-4">
                           <Button
@@ -624,27 +823,9 @@ export default function DonatePage() {
                           >
                             Back
                           </Button>
-
-                          {/* <Button
-                            className="flex-1 h-12 bg-sky-800 text-white hover:bg-sky-950"
-                            onClick={handleNext}
-                            disabled={!formData.paymentMethod}
-                          >
-                            Next
-                          </Button> */}
                         </div>
                       </div>
                     </div>
-                    {/* Card-step-4 Last Page (IF WE IMPLEMENT TRANSFER MANUALLY)*/}
-                    {/* <div>
-                      <Button
-                        variant="outline"
-                        className="w-full h-12 border-sky-800 text-sky-800"
-                        onClick={handleBack}
-                      >
-                        Back
-                      </Button>
-                    </div> */}
                   </div>
                 </div>
               </Card>
