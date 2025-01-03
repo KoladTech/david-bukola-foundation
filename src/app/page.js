@@ -8,6 +8,7 @@ import MeetOurTeam from "@/components/MeetOurTeam";
 import ProjectCard from "@/components/ProjectCard";
 import { useApiData } from "@/context/ApiStatsContext";
 import LoadingSpinner from "@/components/loadingSpinner";
+import Achievement from "@/components/Achievement";
 
 // Imports for testing Firebase analytics using a custom event
 // import { logEvent } from "firebase/analytics";
@@ -45,7 +46,7 @@ export default function Home() {
             imageUrl={`/images/dbf-home-achievements-image.jpg`}
             darkenImage={"absolute inset-0 bg-black bg-opacity-50"}
             alt={`achievement image`}
-            atTop={false}
+            bottomRightWidget="achievements"
             showStats={true}
             stats={stats}
             statsLoading={loading_stats}

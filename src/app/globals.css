@@ -147,3 +147,18 @@ footer {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes slideRightToLeft {
+  0% {
+    transform: translateX(230%); /* Start from right side */
+  }
+  100% {
+    transform: translateX(-230%); /* Move to the left side */
+  }
+}
+
+.slide-text {
+  /* display: inline-block; */
+  white-space: nowrap; /* Prevent text from wrapping */
+  animation: slideRightToLeft 5s linear infinite; /* Adjust time (10s) to control speed */
+}
