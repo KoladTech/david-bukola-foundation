@@ -2,37 +2,34 @@ import db from "./firebaseConfig.js";
 import { collection, getDocs } from "firebase/firestore";
 import { z } from "zod";
 
-// Data to be gotten from the database
-const projectSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  description: z.string().optional(),
-});
-
-// Function to fetch available projects.
-export async function fetchedData(collectionData) {
+// Define a generic schema to validate data dynamically
+export async function fetchedData(collectionName, schema = null) {
   try {
-    // Get the collection and documents from db
-    // const projectsCollection = collection(db, "Projects");
-    const projectsCollection = collection(db, `${collectionData}`);
-    const snapshot = await getDocs(projectsCollection);
+    if (!collectionName) {
+      throw new Error("Collection name is required");
+    }
 
-    // Debugging
-    // snapshot.forEach((doc) => {
-    //   // doc.data() is never undefined for query doc snapshots
-    //   console.log(doc.id, " => ", doc.data());
-    // });
+    // Get the collection and documents from Firestore
+    const targetCollection = collection(db, collectionName);
+    const snapshot = await getDocs(targetCollection);
 
-    // Maps the received document data from firestore into an array of js objects
-    const projects = snapshot.docs.map((doc) => ({
+    // Map Firestore data to an array of objects
+    const data = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
 
-    //   validate the data received from database
-    // return projects.forEach((project) => projectSchema.parse(project));
-    return projects;
+    // Validate the data using the provided schema, if available
+    if (schema) {
+      return data.map((item) => schema.parse(item));
+    }
+
+    return data; // Return data object as it is if no schema is provided
   } catch (error) {
-    console.error("Error fetching projects:", error);
+    console.error(
+      `Error fetching data from collection '${collectionName}':`,
+      error
+    );
+    throw new Error("Failed to fetch data");
   }
 }

@@ -35,3 +35,9 @@ export function formatCurrency(amount) {
     maximumFractionDigits: 0,
   }).format(amount);
 }
+
+export const formatKey = (key) => {
+  return key
+    .replace(/([a-z])([A-Z])/g, "$1 $2") // Add space before capital letters
+    .replace(/^[a-z]/, (char) => char.toUpperCase()); // Capitalize the first letter
+};

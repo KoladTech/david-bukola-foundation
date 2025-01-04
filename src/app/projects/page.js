@@ -5,7 +5,6 @@ import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
 import { Calendar, Target, Clock, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { fetchProjects } from "@/firebase/projectPage";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
 
@@ -42,6 +41,7 @@ export default function ProjectsPage() {
   useEffect(() => {
     const loadProjects = async () => {
       try {
+        setLoading(true);
         // Get the fetched data
         const fetchedProjects = await fetchedData("Projects");
 
