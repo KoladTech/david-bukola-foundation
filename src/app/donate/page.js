@@ -32,12 +32,7 @@ const donationAmounts = [
   { value: 200000, label: "₦200,000" },
 ];
 
-const otherWays = [
-  "Coming soon .",
-  "Coming soon ..",
-  "Coming soon ...",
-  "Coming soon ....",
-];
+const otherWays = ["Donate Clothes", "Donate Foodstuff", "Others"];
 
 // Number of card steps for donation process
 const totalSteps = 3;
@@ -542,7 +537,7 @@ export default function DonatePage() {
                             </select>
                           </div>
                           {/* PhoneNumber */}
-                          <div className="flex w-1/2">
+                          <div className="flex md:w-1/2 w-full">
                             <div className=" w-1/8">
                               <select
                                 id="phoneCode"
