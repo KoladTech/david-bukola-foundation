@@ -22,14 +22,6 @@ import addUserDocument from "@/firebase/createUser";
 import { formatTimestamp } from "@/lib/utils";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 
-const volunteerOptions = [
-  { value: "orphanage-visits", label: "Orphanage Visits" },
-  { value: "food-drives", label: "Food Drives" },
-  { value: "community-cleanups", label: "Community Cleanups" },
-  { value: "education-support", label: "Education Support" },
-  { value: "medical-outreach", label: "Medical Outreach" },
-];
-
 const daysOfWeek = [
   { value: "monday", label: "Monday" },
   { value: "tuesday", label: "Tuesday" },
@@ -41,8 +33,9 @@ const daysOfWeek = [
 ];
 
 export default function Page() {
-  let content = `Join us in making a difference. At DavidBukola Development Foundation, we believe everyone has the power to bring positive change. Whether you are looking to donate, volunteer, explore a meaningful career or participate in our events, there are countless ways to support our mission. 
-Together, we can make a world of difference. Get involved today!
+  let content = `Make a lasting impact by volunteering with DavidBukola Development Foundation. We believe that everyone has unique skills and talents to contribute, and your time and effort can bring positive change to countless lives. Whether you're passionate about community outreach, event support, or lending a helping hand where it's needed most, your involvement matters.
+
+Together, we can create meaningful change. Join our team of dedicated volunteers and start making a difference today!
 `;
 
   const [formData, setFormData] = useState({

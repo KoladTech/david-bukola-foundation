@@ -332,25 +332,6 @@ export default function DonatePage() {
       <div className="full-width-div">
         <div className="max-w-6xl mx-auto px-4 py-12 bg-sky-800">
           <div className="flex flex-col md:flex-row gap-8 py-12">
-            {/* Thank You message when "I have made payment is clicked". (Placed here so it'll display on the whole page) */}
-            {showThankYou && (
-              <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
-                <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
-                  <div
-                    // ref={closeForm}
-                    className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
-                  >
-                    <h2 className="text-2xl font-semibold text-gray-900">
-                      Thank you for your donation
-                    </h2>
-                    <p className="text-gray-700">
-                      Your generosity helps us make a difference.
-                    </p>
-                  </div>
-                </Card>
-              </div>
-            )}
-
             {/* Main Form Area */}
             <div className="flex-1">
               <Card className="bg-white p-8">
@@ -846,6 +827,24 @@ export default function DonatePage() {
           </div>
         </div>
       </div>
+      {/* Thank You message when "I have made payment is clicked". (Placed here so it'll display on the whole page) */}
+      {showThankYou && (
+        <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
+          <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
+            <div
+              // ref={closeForm}
+              className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
+            >
+              <h2 className="text-2xl font-semibold text-gray-900">
+                Thank you for your donation
+              </h2>
+              <p className="text-gray-700">
+                Your generosity helps us make a difference.
+              </p>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
     // </form>
   );
