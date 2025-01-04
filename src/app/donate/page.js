@@ -21,6 +21,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { useApiData } from "@/context/ApiBankDetailsContext";
+import { countries } from "@/constants";
 
 const donationAmounts = [
   { value: 5000, label: "₦5,000" },
@@ -36,13 +37,6 @@ const otherWays = [
   "Coming soon ..",
   "Coming soon ...",
   "Coming soon ....",
-];
-
-const countries = [
-  { name: "United States", code: "US", phoneCode: "+1" },
-  { name: "United Kingdom", code: "GB", phoneCode: "+44" },
-  { name: "Nigeria", code: "NG", phoneCode: "+234" },
-  // Add more countries as needed
 ];
 
 // Number of card steps for donation process
@@ -320,7 +314,7 @@ export default function DonatePage() {
       {/* Hero Section */}
       <div className="relative w-full overflow-hidden">
         <HeroSection
-          imageUrl={"/achievements-image-1.jpg"}
+          imageUrl={"/images/donate-image.jpg"}
           bottomRightWidget={false}
         />
         {/* Maybe make this "Donate Now" text animated from right to left on the screen */}
