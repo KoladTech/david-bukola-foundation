@@ -9,17 +9,18 @@ import LoadingSpinner from "@/components/loadingSpinner";
 import ImageModal from "@/components/ImageModal";
 import EventCard from "./EventCard";
 import VolunteerForm from "./VolunteerForm";
+import { Card } from "@/components/ui/card";
 
 export default function Page() {
   // variables to store and set states for data and errors asynchronously
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
-  // const [showVolunteerForm, setShowVolunteerForm] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
   const [volunteerEvent, setVolunteerEvent] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Fetch projects on component mount (Using a variable to store the function)
+  // Fetch events on component mount (Using a variable to store the function)
   useEffect(() => {
     const loadEvents = async () => {
       try {
@@ -157,8 +158,23 @@ export default function Page() {
         <VolunteerForm
           closeForm={formRef}
           event={volunteerEvent}
+          thankYou={setShowThankYou}
           onClose={() => setVolunteerEvent(null)}
         />
+      )}
+      {showThankYou && (
+        <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
+          <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
+            <div className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center">
+              <h2 className="text-2xl font-semibold text-white">
+                Thank you for volunteering!
+              </h2>
+              <p className="text-gray-900">
+                Your support helps us make a difference.
+              </p>
+            </div>
+          </Card>
+        </div>
       )}
     </>
   );

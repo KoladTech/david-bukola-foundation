@@ -11,8 +11,9 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { X } from "lucide-react";
+import addUserDocument from "@/firebase/createUser";
 
-export default function VolunteerForm({ onClose, event, closeForm }) {
+export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -89,8 +90,16 @@ export default function VolunteerForm({ onClose, event, closeForm }) {
         // Add to firestore
         const collectionRef = collection(db, "Volunteers"); //get the testimonial collection
         const docRef = await addDoc(collectionRef, formData); //add a new document to the collection
+
+        await addUserDocument({ ...formData, roles: ["volunteer"] });
         // check for existence of that volunteer
         // Call a success function
+        thankYou(true); // Show thank you message
+
+        // Set a timeout for thank you message
+        setTimeout(() => {
+          thankYou(false);
+        }, 3000);
       } catch (error) {
         console.log("Error adding volunteer: ", error);
       } finally {

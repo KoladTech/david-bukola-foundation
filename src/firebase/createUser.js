@@ -10,14 +10,14 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const addUserDocument = async (data) => {
   // Ensure required fields are present
-  const { firstName, lastName, email, newsletter } = data;
+  const { firstName, lastName, email, newsletter, roles } = data;
   if (!firstName || !lastName || !email || newsletter === undefined) {
     throw new Error(
       "Missing required fields: firstName, lastName, email, or newsletter."
     );
   }
 
-  const usersCollectionRef = collection(db, "AllUsers"); //Get the Users collection
+  const usersCollectionRef = collection(db, "Users"); //Get the Users collection
 
   try {
     //Create a userData here to add a timestamp for when the document was created
@@ -26,6 +26,7 @@ const addUserDocument = async (data) => {
       lastName: lastName,
       email: email,
       newsletter: newsletter,
+      roles: roles,
       createdAt: serverTimestamp(),
     };
 
