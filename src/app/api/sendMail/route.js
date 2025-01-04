@@ -31,14 +31,15 @@ export async function POST(req) {
         "event_name",
         "event_id",
       ],
-
-      donateForm: ["firstName", "lastName", "email", "phone", "country"],
+      donateForm: [
+        "firstName",
+        "lastName",
+        "email",
+        "paymentMethod",
+        "amount",
+        "country",
+      ],
       // Add more forms here
-    };
-
-    const email_titles = {
-      volunteerForm: "Constant Volunteer Form Submission",
-      eventVolunteerForm: "Event Volunteer Form",
     };
 
     const requiredFields = validationRules[formType];
@@ -84,29 +85,52 @@ export async function POST(req) {
 
     // Generate dynamic email content
     const emailSubject = ``;
+    // const emailBody = `
+    //   <html>
+    //     <body>
+    //       <h2>${formatKey(formType)} Submission</h2>
+    //       <ul>
+    //         ${Object.entries(formData)
+    //           .map(([key, value]) => {
+    //             const formattedValue =
+    //               typeof value === "object" ? formatTimestamp(value) : value;
+    //             return `
+    //               <li>
+    //                 <strong>${formatKey(key)}:</strong> ${
+    //               Array.isArray(formattedValue)
+    //                 ? formattedValue.join(", ")
+    //                 : formattedValue
+    //             }
+    //               </li>`;
+    //           })
+    //           .join("")}
+    //       </ul>
+    //     </body>
+    //   </html>
+    // `;
     const emailBody = `
-      <html>
-        <body>
-          <h2>${formatKey(formType)} Submission</h2>
-          <ul>
-            ${Object.entries(formData)
-              .map(([key, value]) => {
-                const formattedValue =
-                  value && value.seconds ? formatTimestamp(value) : value;
-                return `
-                  <li>
-                    <strong>${formatKey(key)}:</strong> ${
-                  Array.isArray(formattedValue)
-                    ? formattedValue.join(", ")
-                    : formattedValue
-                }
-                  </li>`;
-              })
-              .join("")}
-          </ul>
-        </body>
-      </html>
-    `;
+  <html>
+    <body>
+      <h2>${formatKey(formType)} Submission</h2>
+      <ul>
+        ${Object.entries(formData)
+          .filter(
+            ([key, value]) =>
+              !(value && value._methodName === "serverTimestamp")
+          ) // Skip serverTimestamp objects
+          .map(([key, value]) => {
+            return `
+              <li>
+                <strong>${formatKey(key)}:</strong>
+                ${Array.isArray(value) ? value.join(", ") : value}
+              </li>
+            `;
+          })
+          .join("")}
+      </ul>
+    </body>
+  </html>
+`;
 
     // Configure the email options
     const mailOptions = {

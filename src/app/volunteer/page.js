@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HeroSection from "@/components/HeroSection";
 import ContentCard from "@/components/ContentCard";
 import { ChevronsUpDown, X } from "lucide-react";
@@ -18,6 +18,9 @@ import {
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
+import addUserDocument from "@/firebase/createUser";
+import { formatTimestamp } from "@/lib/utils";
+import { fetchedData } from "@/firebase/fetchFirebaseData";
 
 const volunteerOptions = [
   { value: "orphanage-visits", label: "Orphanage Visits" },
@@ -58,8 +61,29 @@ Together, we can make a world of difference. Get involved today!
   const [isInterestsOpen, setIsInterestsOpen] = useState(false);
   const [isDaysOpen, setIsDaysOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [showVolunteerForm, setShowVolunteerForm] = useState(true);
+  const [showThankYou, setShowThankYou] = useState(false);
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [activities, setActivities] = useState([]);
+
+  useEffect(() => {
+    const loadActivities = async () => {
+      try {
+        // Get the fetched data
+        const fetchedActivities = await fetchedData("Activities");
+
+        // Set the fetched data
+        setActivities(fetchedActivities);
+
+        // log error if failed
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadActivities();
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -132,13 +156,14 @@ Together, we can make a world of difference. Get involved today!
             "content-Type": "application/json",
           },
           body: JSON.stringify({
-            formType: "constantVolunteerForm",
+            formType: "volunteerForm",
             formData: formData,
           }),
         });
 
         // If the mail did not send succesfully
         if (!response.ok) {
+          console.log(JSON.stringify(response.json));
           console.log("Error while sending email");
           return;
         }
@@ -146,8 +171,16 @@ Together, we can make a world of difference. Get involved today!
         // Add to firestore
         const collectionRef = collection(db, "Volunteers"); //get the testimonial collection
         const docRef = await addDoc(collectionRef, formData); //add a new document to the collection
-        // check for existence of that volunteer
+
+        await addUserDocument({ ...formData, roles: ["volunteer"] });
+        // TODO: check for existence of that volunteer
         // Call a success function
+        setShowThankYou(true); // Show thank you message
+
+        // Set a timeout for thank you message
+        setTimeout(() => {
+          setShowThankYou(false);
+        }, 3000);
       } catch (error) {
         console.log("Error adding volunteer: ", error);
       } finally {
@@ -236,198 +269,234 @@ Together, we can make a world of difference. Get involved today!
             <CardTitle className="text-2xl">Volunteer Form</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid grid-cols-2 gap-4">
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="firstName">First Name*</Label>
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                    />
+                    {errors.firstName && (
+                      <p className="text-red-500 text-sm">{errors.firstName}</p>
+                    )}
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName">Last Name</Label>
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="firstName">First Name*</Label>
+                  <Label className="text-gray-600" htmlFor="email">
+                    Email
+                  </Label>
                   <Input
-                    id="firstName"
-                    name="firstName"
-                    value={formData.firstName}
+                    id="email"
+                    name="email"
+                    value={formData.email}
                     onChange={handleInputChange}
                   />
-                  {errors.firstName && (
-                    <p className="text-red-500 text-sm">{errors.firstName}</p>
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">{errors.email}</p>
                   )}
                 </div>
+
                 <div className="space-y-2">
-                  <Label htmlFor="lastName">Last Name</Label>
+                  <Label htmlFor="phone">Phone Number*</Label>
                   <Input
-                    id="lastName"
-                    name="lastName"
-                    value={formData.lastName}
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
                     onChange={handleInputChange}
                   />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm">{errors.phone}</p>
+                  )}
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label className="text-gray-600" htmlFor="email">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                />
-                {errors.email && (
-                  <p className="text-red-500 text-sm">{errors.email}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phone">Phone Number*</Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                />
-                {errors.phone && (
-                  <p className="text-red-500 text-sm">{errors.phone}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label>Volunteer opportunities you're interested in</Label>
-                {errors.interests && (
-                  <p className="text-red-500 text-sm">{errors.interests}</p>
-                )}
-                <div className="relative">
-                  <div className="flex items-center p-2 border rounded-md">
-                    <Collapsible
-                      open={isInterestsOpen}
-                      onOpenChange={setIsInterestsOpen}
-                    >
-                      <CollapsibleTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 px-2">
-                          {formData.interests.length === 0
-                            ? "Select opportunities"
-                            : "Add more"}
-                          <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
-                        </Button>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                        {volunteerOptions.map((option) => (
-                          <div
-                            key={option.value}
-                            className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                <div className="space-y-2">
+                  <Label>Volunteer opportunities you're interested in</Label>
+                  {errors.interests && (
+                    <p className="text-red-500 text-sm">{errors.interests}</p>
+                  )}
+                  <div className="relative">
+                    <div className="flex items-center p-2 border rounded-md">
+                      <Collapsible
+                        open={isInterestsOpen}
+                        onOpenChange={setIsInterestsOpen}
+                      >
+                        <CollapsibleTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 px-2"
                           >
-                            <Checkbox
-                              id={option.value}
-                              checked={formData.interests.includes(
-                                option.value
-                              )}
-                              onCheckedChange={() =>
-                                toggleInterest(option.value)
-                              }
-                            />
-                            <Label htmlFor={option.value}>{option.label}</Label>
-                          </div>
-                        ))}
-                      </CollapsibleContent>
-                    </Collapsible>
-                    <div className="flex flex-wrap gap-2 ml-2">
-                      {renderPills(
-                        volunteerOptions,
-                        formData.interests,
-                        toggleInterest
-                      )}
+                            {formData.interests.length === 0
+                              ? "Select opportunities"
+                              : "Add more"}
+                            <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
+                          {activities.map((option) => (
+                            <div
+                              key={option.value}
+                              className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                            >
+                              <Checkbox
+                                id={option.value}
+                                checked={formData.interests.includes(
+                                  option.value
+                                )}
+                                onCheckedChange={() =>
+                                  toggleInterest(option.value)
+                                }
+                              />
+                              <Label htmlFor={option.value}>
+                                {option.label}
+                              </Label>
+                            </div>
+                          ))}
+                        </CollapsibleContent>
+                      </Collapsible>
+                      <div className="flex flex-wrap gap-2 ml-2">
+                        {renderPills(
+                          activities,
+                          formData.interests,
+                          toggleInterest
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label>Available Days</Label>
-                {errors.availableDays && (
-                  <p className="text-red-500 text-sm">{errors.availableDays}</p>
-                )}
-                <div className="relative">
-                  <div className="flex items-center p-2 border rounded-md">
-                    <Collapsible open={isDaysOpen} onOpenChange={setIsDaysOpen}>
-                      <CollapsibleTrigger asChild>
-                        <Button variant="ghost" size="sm" className="h-8 px-2">
-                          {formData.availableDays.length === 0
-                            ? "Select days"
-                            : "Add more"}
-                          <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
-                        </Button>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                        {daysOfWeek.map((day) => (
-                          <div
-                            key={day.value}
-                            className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                <div className="space-y-2">
+                  <Label>Available Days</Label>
+                  {errors.availableDays && (
+                    <p className="text-red-500 text-sm">
+                      {errors.availableDays}
+                    </p>
+                  )}
+                  <div className="relative">
+                    <div className="flex items-center p-2 border rounded-md">
+                      <Collapsible
+                        open={isDaysOpen}
+                        onOpenChange={setIsDaysOpen}
+                      >
+                        <CollapsibleTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 px-2"
                           >
-                            <Checkbox
-                              id={day.value}
-                              checked={formData.availableDays.includes(
-                                day.value
-                              )}
-                              onCheckedChange={() => toggleDay(day.value)}
-                            />
-                            <Label htmlFor={day.value}>{day.label}</Label>
-                          </div>
-                        ))}
-                      </CollapsibleContent>
-                    </Collapsible>
-                    <div className="flex flex-wrap gap-2 ml-2">
-                      {renderPills(
-                        daysOfWeek,
-                        formData.availableDays,
-                        toggleDay
-                      )}
+                            {formData.availableDays.length === 0
+                              ? "Select days"
+                              : "Add more"}
+                            <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
+                          {daysOfWeek.map((day) => (
+                            <div
+                              key={day.value}
+                              className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                            >
+                              <Checkbox
+                                id={day.value}
+                                checked={formData.availableDays.includes(
+                                  day.value
+                                )}
+                                onCheckedChange={() => toggleDay(day.value)}
+                              />
+                              <Label htmlFor={day.value}>{day.label}</Label>
+                            </div>
+                          ))}
+                        </CollapsibleContent>
+                      </Collapsible>
+                      <div className="flex flex-wrap gap-2 ml-2">
+                        {renderPills(
+                          daysOfWeek,
+                          formData.availableDays,
+                          toggleDay
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="comments">Additional Comments (If any)</Label>
-                <Textarea
-                  id="comments"
-                  name="comments"
-                  value={formData.comments}
-                  onChange={handleInputChange}
-                  rows={4}
-                  className="focus-visible:ring-blue-500"
-                />
-              </div>
+                <div className="space-y-2">
+                  <Label htmlFor="comments">Additional Comments (If any)</Label>
+                  <Textarea
+                    id="comments"
+                    name="comments"
+                    value={formData.comments}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="focus-visible:ring-blue-500"
+                  />
+                </div>
 
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="newsletter"
-                  checked={formData.newsletter}
-                  onCheckedChange={(checked) =>
-                    setFormData((prev) => ({ ...prev, newsletter: checked }))
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id="newsletter"
+                    checked={formData.newsletter}
+                    onCheckedChange={(checked) =>
+                      setFormData((prev) => ({ ...prev, newsletter: checked }))
+                    }
+                  />
+                  <Label htmlFor="newsletter" className="text-sm">
+                    Receive updates/notifications about dbf
+                  </Label>
+                </div>
+
+                <Button
+                  type="submit"
+                  disabled={
+                    !formData.firstName ||
+                    !formData.phone ||
+                    !formData.email ||
+                    !formData.availableDays.length ||
+                    !formData.interests.length ||
+                    submitting
                   }
-                />
-                <Label htmlFor="newsletter" className="text-sm">
-                  Receive updates/notifications about dbf
-                </Label>
-              </div>
-
-              <Button
-                type="submit"
-                disabled={
-                  !formData.firstName ||
-                  !formData.phone ||
-                  !formData.email ||
-                  !formData.availableDays.length ||
-                  !formData.interests.length ||
-                  submitting
-                }
-                className="w-full bg-blue-500 hover:bg-blue-700"
-              >
-                Submit
-              </Button>
-            </form>
+                  className="w-full bg-blue-500 hover:bg-blue-700"
+                >
+                  Submit
+                </Button>
+              </form>
+            )}
           </CardContent>
         </Card>
       </div>
+      {showThankYou && (
+        <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
+          <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
+            <div
+              // ref={closeForm}
+              className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
+            >
+              <h2 className="text-2xl font-semibold text-white">
+                Thank you for your volunteering
+              </h2>
+              <p className="text-gray-900">
+                Your support helps us make a difference.
+              </p>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

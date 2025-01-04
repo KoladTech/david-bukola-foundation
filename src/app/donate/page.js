@@ -277,13 +277,16 @@ export default function DonatePage() {
     try {
       // Send a POST request to the api with testimony data object as payload
       console.log("try block");
-      const response = await fetch("api/sendDonationEmail", {
+      const response = await fetch("api/sendMail", {
         //1
         method: "POST",
         headers: {
           "content-Type": "application/json",
         },
-        body: JSON.stringify(donateFormData), //2
+        body: JSON.stringify({
+          formType: "donateForm",
+          formData: donateFormData,
+        }), //2
       });
 
       // If the mail did not send succesfully
@@ -300,7 +303,7 @@ export default function DonatePage() {
       const docRef = await addDoc(collectionRef, donateFormData); //add a new document to the collection //4
 
       // Add the new user to the Users Collection
-      await addUserDocument(donateFormData);
+      await addUserDocument({ ...donateFormData, roles: ["donor"] });
 
       // Call a success function
       successfullySubmittedTestimony();
