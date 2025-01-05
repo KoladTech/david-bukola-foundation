@@ -28,7 +28,9 @@ Together, we can make a world of difference. Get involved today!
         <div>
           <ContentCard content={content} />
         </div>
+        {/* Cards for Ways to get involved  */}
         <div className="grid grid-rows-2:md md:grid-cols-2 md:gap-10">
+          {/* Volunteers Card  */}
           <div className="relative aspect-[4/3] w-full">
             <PictureCard
               className=""
@@ -45,6 +47,7 @@ Together, we can make a world of difference. Get involved today!
             <NewPageButton buttonText="Volunteer" href="/volunteer" />
           </div>
         </div>
+        {/* Careers Card  */}
         <div className="grid grid-rows-2:md md:grid-cols-2 md:gap-10">
           <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center order-2 md:order-1 gap-4">
             <ContentCard title="Careers" content={careers_content} />
@@ -58,6 +61,7 @@ Together, we can make a world of difference. Get involved today!
             />
           </div>
         </div>
+        {/* Events Card */}
         <div className="grid grid-rows-2:md md:grid-cols-2 md:gap-10">
           <div className="relative aspect-[4/3] w-full">
             <PictureCard

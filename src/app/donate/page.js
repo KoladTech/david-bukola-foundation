@@ -20,9 +20,9 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { useApiData } from "@/context/ApiBankDetailsContext";
 import { countries } from "@/constants";
 
+// Donation constants
 const donationAmounts = [
   { value: 5000, label: "₦5,000" },
   { value: 10000, label: "₦10,000" },
@@ -32,22 +32,16 @@ const donationAmounts = [
   { value: 200000, label: "₦200,000" },
 ];
 
+// Other ways to give constants
 const otherWays = ["Donate Clothes", "Donate Foodstuff", "Others"];
 
-// Number of card steps for donation process
+// Number of card steps for payment flow
 const totalSteps = 3;
 
 export default function DonatePage() {
   // Form states
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState("");
-
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedAmount, setSelectedAmount] = useState(null);
-  const [otherAmount, setOtherAmount] = useState(false);
-  const [inputMade, setInputMade] = useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState(false);
-  const [emailValid, setEmailValid] = useState(false);
   const [donateFormData, setDonateFormData] = useState({
     firstName: "",
     lastName: "",
@@ -62,13 +56,22 @@ export default function DonatePage() {
     approved: false,
     date: serverTimestamp(),
   });
+
+  // Monetary States
+  const [selectedAmount, setSelectedAmount] = useState("");
+  const [otherAmount, setOtherAmount] = useState(false);
+
+  // Email states
+  const [emailErrorMessage, setEmailErrorMessage] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+
   // router for going back to a previous page
   const router = useRouter();
   // Next js router for storing the search parameters of pages visited
   const searchParams = useSearchParams();
+  // routing states
   const returnTo = searchParams.get("returnTo");
   const [previousPage, setPreviousPage] = useState("/");
-  const [showThankYou, setShowThankYou] = useState("");
 
   // Getting bank details
   const [bankDetails, setBankDetails] = useState([]);
@@ -82,12 +85,22 @@ export default function DonatePage() {
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedPhoneCode, setSelectedPhoneCode] = useState("");
 
+  // Other states
+  const [currentStep, setCurrentStep] = useState(0);
+  const [showThankYou, setShowThankYou] = useState("");
+
+  // Functionsssssssssssssssssssssssssssssssssssssss
+
   const handleCountryChange = (e) => {
+    // Get the country selected and set it
     const countryCode = e.target.value;
     setSelectedCountry(countryCode);
+    // Check if country code is available and set it
     const country = countries.find((c) => c.code === countryCode);
     if (country) {
       setSelectedPhoneCode(country.phoneCode);
+    } else {
+      setSelectedPhoneCode("");
     }
     // Update FormData to reflect the selected country immediately
     setDonateFormData((prev) => ({
@@ -125,7 +138,9 @@ export default function DonatePage() {
 
   // Handles the copy buttons for the account numbers
   const handleCopy = (index, accountNumber) => {
+    // copy the number to clipboard
     navigator.clipboard.writeText(accountNumber);
+    // Set the variable with the copied value
     setCopiedStates((prev) => {
       const newState = [...prev];
       newState[index] = true;
@@ -150,20 +165,20 @@ export default function DonatePage() {
 
   // Handles logic of going to next stage only after selecting a donation to give
   const handleNext = () => {
-    console.log("The Whole FormData:", donateFormData);
-    if (selectedAmount) {
+    // If an amount is selected
+    if (donateFormData.amount) {
       setCurrentStep(currentStep + 1);
     }
+    console.log("Input change Form Data", donateFormData);
   };
   // Back Navigation on payment flow
   const handleBack = () => {
-    if (selectedAmount) {
-      setCurrentStep(Math.max(0, currentStep - 1));
-    }
+    setCurrentStep(Math.max(0, currentStep - 1));
   };
 
   // Handles getting data from input fields and populating the donateFormData
   const handleInputChange = (e) => {
+    // Get the name and value of the field
     const { name, value } = e.target;
     if (name === "email") {
       setEmailErrorMessage(false); // allow user type, without constant error message
@@ -177,20 +192,12 @@ export default function DonatePage() {
       ...prev,
       [name]: value,
     }));
-    setInputMade(true);
+    // Solely for to the Amount selection part
+    console.log("Input change Form Data", donateFormData);
   };
 
   // references for input fields
   const inputRef = useRef(null);
-
-  // UseEffect to ensure the setAmount is updated properly as the state changes
-  useEffect(() => {
-    if (inputMade) {
-      inputRef.current.value === "" && !selectedAmount
-        ? setSelectedAmount("")
-        : setSelectedAmount(donateFormData.amount);
-    }
-  });
 
   // Set the input field to be used to get the amount
   const useOtherAmount = () => {
@@ -199,18 +206,19 @@ export default function DonatePage() {
       setSelectedAmount("");
     }
   };
-  // Create a single ref object
-  const donateFormDataRefs = useRef({});
 
   // Clears input field
   const clearInput = (e) => {
-    setInputMade(false); // Make the input made button false (To disable next)
     setOtherAmount(false); // disable otherAmount field
     // clear the amount input field via the ref of the field
     if (inputRef.current) {
       inputRef.current.value = "";
     }
   };
+
+  // TODO: Clean up all form refs
+  // Create a single ref object
+  const donateFormDataRefs = useRef({});
 
   const reRoutePage = () => {
     //redirect to the previous or home page
@@ -228,6 +236,7 @@ export default function DonatePage() {
     //   router.push("/");
     // }
   };
+  // TODO: Make it a component entirely
   // Function to show thank you message and reset the form data
   const successfullySubmittedTestimony = () => {
     console.log("successfullySubmittedTestimony");
@@ -257,6 +266,7 @@ export default function DonatePage() {
     });
   };
 
+  // TODO: Make a reuable function
   // Handles form submission on clicking share button
   const handleDonateFormSubmit = async (e) => {
     e.preventDefault(); //Prevent default i.e form reloading
@@ -265,7 +275,6 @@ export default function DonatePage() {
 
     try {
       // Send a POST request to the api with testimony data object as payload
-      console.log("try block");
       const response = await fetch("api/sendMail", {
         //1
         method: "POST",
@@ -310,12 +319,12 @@ export default function DonatePage() {
     // <form onSubmit={handleFormSubmit}>
     <div className="relative">
       {/* Hero Section */}
-      <div className="relative w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden p-4">
         <HeroSection
           imageUrl={"/images/donate-image.jpg"}
           bottomRightWidget={false}
         />
-        {/* Maybe make this "Donate Now" text animated from right to left on the screen */}
+        {/* Donate Now Text */}
         <div className="absolute inset-0 flex items-center justify-center ">
           <h1 className="slide-text text-4xl md:text-6xl font-bold text-white flex items-center gap-2  whitespace-nowrap">
             Donate Now
@@ -395,8 +404,9 @@ export default function DonatePage() {
                                   ? "bg-sky-800"
                                   : "border-white/40 text-white hover:bg-sky-800"
                               }`}
-                              // Onclciking any amount button
+                              // Oncliking any amount button
                               onClick={() => {
+                                console.log("Button Form Data", donateFormData);
                                 // alert([selectedAmount, otherAmount]);
                                 clearInput(); //Clear the input field
                                 setSelectedAmount(amount.value); //set that buttons amount
@@ -430,7 +440,10 @@ export default function DonatePage() {
                         <Button
                           className="w-full h-12 bg-sky-800 hover:bg-sky-700"
                           onClick={handleNext}
-                          disabled={!selectedAmount}
+                          disabled={
+                            !donateFormData.amount ||
+                            (otherAmount && inputRef.current.value === "")
+                          }
                         >
                           Next
                         </Button>

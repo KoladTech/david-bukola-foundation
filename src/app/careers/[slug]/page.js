@@ -8,8 +8,8 @@ import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 
 export default function JobDetailsPage({ params }) {
+  // Get page slug
   let slug = params.slug;
-  console.log(slug);
   const [loading, setLoading] = useState(true);
   const [job, setJob] = useState(null);
 
@@ -97,6 +97,7 @@ export default function JobDetailsPage({ params }) {
   return (
     <div className="bg-gray-50 mb-5">
       <div className="container mx-auto px-4 py-12">
+        {/* Back Button */}
         <Link
           href="/careers"
           className="inline-flex items-center text-blue-500 hover:text-blue-600 mb-6"
@@ -153,6 +154,7 @@ export default function JobDetailsPage({ params }) {
               </li>
             ))}
           </ul>
+          {/* How to apply section*/}
           <div className="mt-10">
             <h3 className="text-xl font-bold mb-2">How to Apply:</h3>
             <p className="text-gray-600 mb-6">

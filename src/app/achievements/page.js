@@ -8,7 +8,6 @@ import Image from "next/image";
 import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
 import ImageModal from "@/components/ImageModal";
-import { NAIRA_SYMBOL } from "@/constants";
 import { useApiData } from "@/context/ApiStatsContext";
 import { formatCurrency, formatTimestamp } from "@/lib/utils";
 
@@ -16,8 +15,11 @@ export default function Page() {
   const [loading, setLoading] = useState(true);
   const [achievements, setAchievements] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  // Use context api to get site statistics
   const { stats, loading_stats, error } = useApiData();
 
+  // TODO: Make this use the reusable fetchData function
+  // Get achievement collection
   useEffect(() => {
     async function fetchData() {
       try {
@@ -42,10 +44,6 @@ export default function Page() {
 
     fetchData();
   }, []);
-
-  // if (loading) {
-  //   return <LoadingSpinner />; // Display a loading indicator while data is being fetched
-  // }
 
   return (
     <>
@@ -79,18 +77,23 @@ export default function Page() {
                   {achievement.category}
                 </span>
                 <h2 className="text-2xl font-bold mb-4">{achievement.title}</h2>
+                {/* Allows extension to show more text */}
                 <TruncatedText text={achievement.description} limit={150} />
 
                 <div className="grid grid-cols-2 gap-4 mt-6">
+                  {/* Loop through all the "achievement details" */}
                   {Object.entries(achievement.details)
+                    // sort the achievement details alphabetically
                     .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+                    // loop through the achievement details
                     .map(([key, value], i) => {
                       if (typeof value === "object" && !Array.isArray(value))
-                        return null;
+                        return null; // Handle objects found separately
                       if (key === "schools") return null; // Handle schools separately
                       return (
                         <div key={i} className="bg-gray-50 p-3 rounded-lg">
                           <h3 className="text-sm text-gray-500 mb-1">
+                            {/* Format the "Key" from db to a heading */}
                             {key
                               .replace(/([A-Z])/g, " $1")
                               .replace(/^./, function (str) {
@@ -98,6 +101,7 @@ export default function Page() {
                               })}
                           </h3>
                           <p className="font-semibold">
+                            {/* Show the monetary support given, or list the support items provided */}
                             {key === "totalFinancialSupport"
                               ? formatCurrency(value)
                               : Array.isArray(value)
@@ -109,6 +113,7 @@ export default function Page() {
                     })}
                 </div>
 
+                {/* Allows extension to show more schools  */}
                 {achievement.details.schools && (
                   <SchoolsList schools={achievement.details.schools} />
                 )}
@@ -117,6 +122,7 @@ export default function Page() {
                 <div className="mt-6 grid grid-cols-2 gap-2">
                   <div
                     className="relative aspect-[4/3] cursor-pointer"
+                    // Set selected image to full screen
                     onClick={() =>
                       setSelectedImage(`${achievement.details.images.image1}`)
                     }
@@ -131,6 +137,7 @@ export default function Page() {
                   </div>
                   <div
                     className="relative aspect-[4/3] cursor-pointer"
+                    // Set selected image to full screen
                     onClick={() =>
                       setSelectedImage(`${achievement.details.images.image2}`)
                     }
@@ -142,7 +149,6 @@ export default function Page() {
                       objectFit="cover"
                       className="rounded-lg"
                     />
-                    console.log({achievement.details.images.image2})
                   </div>
                 </div>
               )}
@@ -150,6 +156,7 @@ export default function Page() {
           ))}
         </div>
       </div>
+      {/*Set selected image to full screen */}
       {selectedImage && (
         <ImageModal
           src={selectedImage}

@@ -60,6 +60,8 @@ export default function TestimonialsPage() {
         // Set the fetched data
         setTestimonials(fetchedTestimonials);
 
+        // TODO: Add user data to Users
+
         // log error if failed
       } catch (err) {
         setError("Failed to load projects");
@@ -71,7 +73,7 @@ export default function TestimonialsPage() {
     loadTestimonials();
   }, []);
 
-  // Close form page on Clicking outside the form
+  // Close form page on Clicking outside the form (TODO: Add the x button to the form)
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target)) {
@@ -94,6 +96,7 @@ export default function TestimonialsPage() {
   const closeForm = () => {
     setShowTestimonyForm(false);
   };
+
   return (
     <div className="container mx-auto px-4 py-8 my-8">
       {/* Featured Video Section */}
@@ -133,6 +136,7 @@ export default function TestimonialsPage() {
         <SkeletonProject />
       ) : (
         <div>
+          {/* TODO: Take out error */}
           {/* If the data fetch has an error */}
           {error ? (
             <p className="text-red-500">{error}</p>
@@ -232,7 +236,11 @@ export default function TestimonialsPage() {
       {/* Display Testimony form on clicking the share testimony button*/}
       {showTestimonyForm && (
         <div>
-          <ShareTestimony clickCloseForm={formRef} closeForm={closeForm} />
+          <ShareTestimony
+            clickCloseForm={formRef}
+            closeForm={closeForm}
+            setShowTestimonyForm={setShowTestimonyForm}
+          />
         </div>
       )}
     </div>
