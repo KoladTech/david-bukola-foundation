@@ -20,6 +20,7 @@ export async function POST(req) {
     const validationRules = {
       volunteerForm: [
         "firstName",
+        "lastName",
         "email",
         "phone",
         "interests",
@@ -27,6 +28,7 @@ export async function POST(req) {
       ],
       eventVolunteerForm: [
         "firstName",
+        "lastName",
         "email",
         "phone",
         "event_name",
@@ -85,7 +87,9 @@ export async function POST(req) {
     });
 
     // Generate dynamic email content
-    const emailSubject = ``;
+    const emailSubject = `New ${formatObjectKeyToTitle(
+      formType
+    )} Submission</h2>`;
     // const emailBody = `
     //   <html>
     //     <body>

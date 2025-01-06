@@ -120,6 +120,10 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
       newErrors.firstName = "First name is required.";
     }
 
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required.";
+    }
+
     if (!formData.email.trim() || !validateEmail(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
@@ -283,7 +287,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                     )}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
+                    <Label htmlFor="lastName">Last Name*</Label>
                     <Input
                       id="lastName"
                       name="lastName"
@@ -461,10 +465,12 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   type="submit"
                   disabled={
                     !formData.firstName ||
+                    !formData.lastName ||
                     !formData.phone ||
                     !formData.email ||
                     !formData.availableDays.length ||
                     !formData.interests.length ||
+                    !validateEmail(formData.email) ||
                     submitting
                   }
                   className="w-full bg-blue-500 hover:bg-blue-700"
