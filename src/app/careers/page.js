@@ -7,6 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import { collection, getDocs } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
+import { fetchedData } from "@/firebase/fetchFirebaseData";
 
 export default function CareersPage() {
   const [loading, setLoading] = useState(true);
@@ -15,15 +16,11 @@ export default function CareersPage() {
   useEffect(() => {
     async function fetchJobs() {
       try {
-        // get a snapshot of the collection data
-        const jobsSnapshot = await getDocs(collection(db, "Careers"));
+        // fetch all the careers from firestore
+        const fetchedJobs = await fetchedData("Careers");
 
-        // process jobs
-        const jobsData = jobsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setJobs(jobsData);
+        // Set the fetched data
+        setJobs(fetchedJobs);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {

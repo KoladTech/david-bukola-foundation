@@ -10,6 +10,7 @@ import SchoolsList from "./SchoolsList";
 import ImageModal from "@/components/ImageModal";
 import { useApiData } from "@/context/ApiStatsContext";
 import { formatCurrency, formatTimestamp } from "@/lib/utils";
+import { fetchedData } from "@/firebase/fetchFirebaseData";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -23,17 +24,10 @@ export default function Page() {
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch achievements and site stats concurrently
-        const achievementsSnapshot = await getDocs(
-          collection(db, "Achievements")
-        );
+        // Fetch achievements from firestore
+        const achievementsData = await fetchedData("Achievements");
 
-        // Process achievements
-        const achievementsData = achievementsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
+        // set the achievements data with the fetched data
         setAchievements(achievementsData);
       } catch (error) {
         console.error("Error fetching data:", error);
