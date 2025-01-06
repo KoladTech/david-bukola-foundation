@@ -10,13 +10,14 @@ export default function SchoolsList({ schools }) {
   if (!schools || schools.length === 0) {
     return null;
   }
-
+  // Function to toggle expand
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   return (
     <div className="mt-4">
       <h3 className="text-sm text-gray-500 mb-2">Schools</h3>
       <div className="flex flex-wrap gap-2">
+        {/* Display full list of schools if expanded or Display up to the limit if not */}
         {(isExpanded ? schools : schools.slice(0, limit)).map((school, idx) => (
           <span
             key={idx}
@@ -38,6 +39,7 @@ export default function SchoolsList({ schools }) {
   );
 }
 
+// Using javascript propType library to implement type checking
 SchoolsList.propTypes = {
   schools: PropTypes.arrayOf(PropTypes.string).isRequired,
 };

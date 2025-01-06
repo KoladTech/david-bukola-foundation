@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
 import { Calendar, Target, Clock, Wallet } from "lucide-react";
@@ -12,6 +11,7 @@ function SkeletonHeroSection() {
   return <div className="h-96 bg-gray-200 animate-pulse rounded-md"></div>;
 }
 
+// Skeleton Outline for when data is loading
 function SkeletonProject() {
   return (
     <div className="p-4 animate-pulse rounded-md">
@@ -89,6 +89,7 @@ export default function ProjectsPage() {
         <SkeletonProject />
       ) : (
         <div className="flex flex-col space-y-10 mb-24">
+          {/* TODO: Remove error fro beind displayed */}
           {/* Data from backend */}
           {error ? (
             <p className="text-red-500">{error}</p>
@@ -112,42 +113,6 @@ export default function ProjectsPage() {
 
                 {/* Description */}
                 <p>{project.description || "No Description Available"}</p>
-                {/* <h1 className="text-xl font-semibold text-gray-700 mt-2 sm:mt-0">
-                  Planned Start Date:{" "}
-                  <span>
-                    {" "}
-                    {project.plannedStartDate
-                      ? new Date(
-                          project.plannedStartDate.seconds * 1000
-                        ).toLocaleDateString()
-                      : "No Timestamp Available"}{" "}
-                  </span>
-                </h1>
-                <p></p>
-                <h1 className="text-xl font-semibold text-gray-700 mt-2 sm:mt-0">
-                  Expected Completion Date:{" "}
-                  <span>
-                    {" "}
-                    {project.expectedCompletionDate
-                      ? new Date(
-                          project.expectedCompletionDate.seconds * 1000
-                        ).toLocaleDateString()
-                      : "No Timestamp Available"}{" "}
-                  </span>
-                </h1> */}
-
-                {/* Text Budget Written as header */}
-                <div className="">
-                  {/* <h2 className="text-2xl font-bold">
-                    Planned Budget:{" "}
-                    {project.plannedBudget
-                      ? `${NAIRA_SYMBOL} ${new Intl.NumberFormat("en-NG", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }).format(project.plannedBudget)}`
-                      : "No Budget Yet"}
-                  </h2> */}
-                </div>
 
                 {/* Details Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
@@ -205,17 +170,13 @@ export default function ProjectsPage() {
                 {/* Goals */}
                 <h2 className="text-3xl font-bold">Goals</h2>
                 {/* Check if goal is an array and map over it */}
-                {Array.isArray(project.goals) ? (
-                  <ul className="ml-5">
-                    {project.goals.map((goal, index) => (
-                      <li key={index} className="list-disc	">
-                        {goal}
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p> {project.goal || "No Goal Available"} </p>
-                )}
+                <ul className="ml-5">
+                  {project.goals.map((goal, index) => (
+                    <li key={index} className="list-disc">
+                      {goal}
+                    </li>
+                  ))}
+                </ul>
 
                 {/* Picture Grid */}
                 <div className="grid grid-cols-2 gap-6">

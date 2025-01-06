@@ -20,11 +20,12 @@ export default function EventCard({
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-14">
       <div className="grid md:grid-cols-2 gap-6">
+        {/* Changes order of appearance for event images (Left or right) */}
         <div
           className={`relative aspect-[4/5] md:aspect-auto md:${
             isImageFirst ? "order-2" : ""
           }`}
-          onClick={() => onImageClick(`${event.image}`)}
+          onClick={() => onImageClick(`${event.image}`)} //Sets image to full screen
         >
           <Image
             src={event.image}
@@ -124,7 +125,7 @@ export default function EventCard({
           {event.requiresVolunteers && (
             <Button
               onClick={() => {
-                onVolunteer(event);
+                onVolunteer(event); //displays event volunteer form
               }}
               className="inline-flex items-center justify-center w-full px-6 py-3 mt-auto text-white font-medium bg-blue-500 rounded-full hover:bg-blue-600 transition-colors"
             >

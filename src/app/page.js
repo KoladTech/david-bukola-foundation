@@ -6,8 +6,6 @@ import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
 import ProjectCard from "@/components/ProjectCard";
-import { useApiData } from "@/context/ApiStatsContext";
-import LoadingSpinner from "@/components/loadingSpinner";
 import Achievement from "@/components/Achievement";
 
 // Imports for testing Firebase analytics using a custom event
@@ -21,7 +19,7 @@ export default function Home() {
   //     key: "Custom-event-works",
   //   });
   // }
-  const { stats, loading_stats, error } = useApiData();
+
   return (
     <main>
       {/* Main home page div */}
@@ -39,18 +37,10 @@ export default function Home() {
         <div>
           <AboutUs />
         </div>
-        <div>
-          {/* <Achievement /> */}
 
-          <HeroSection
-            imageUrl={`/images/dbf-home-achievements-image.jpg`}
-            darkenImage={"absolute inset-0 bg-black bg-opacity-50"}
-            alt={`achievement image`}
-            bottomRightWidget="achievements"
-            showStats={true}
-            stats={stats}
-            statsLoading={loading_stats}
-          />
+        {/* <Achievement /> */}
+        <div>
+          <Achievement />
         </div>
 
         {/* Testimonies Section */}

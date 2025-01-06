@@ -78,6 +78,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     loadActivities();
   }, []);
 
+  // Handles form fields input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -86,6 +87,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     }));
   };
 
+  // Populate the interests array in the formData
   const toggleInterest = (value) => {
     setFormData((prev) => ({
       ...prev,
@@ -95,6 +97,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     }));
   };
 
+  // Populate the days array in the formData
   const toggleDay = (value) => {
     setFormData((prev) => ({
       ...prev,

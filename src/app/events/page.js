@@ -42,8 +42,10 @@ export default function Page() {
   }, []);
 
   const formRef = useRef(null);
+  // To close form on clicking outside the form
   useEffect(() => {
     function handleClickOutside(event) {
+      // Close form on clicking anywhere not the form
       if (formRef.current && !formRef.current.contains(event.target)) {
         setVolunteerEvent(null);
       }
@@ -57,12 +59,12 @@ export default function Page() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [volunteerEvent]);
 
+  // Separate events into either Upcoming or Pasts
   const upcomingEvents = events.filter((event) => event.status === "upcoming");
   const pastEvents = events.filter((event) => event.status === "past");
 
   return (
     <>
-      {/* <div className="p-4" onClick={() => setVolunteerEvent(null)}> */}
       <div className="p-4">
         <HeroSection
           imageUrl={`/images/events_hero_section.jpg`}
@@ -90,6 +92,7 @@ export default function Page() {
       ) : (
         <div className="bg-gray-50">
           <div className="container mx-auto px-4 py-12 mb-20">
+            {/* TODO: More events ish */}
             {/* Upcoming Events Section */}
             <h1 className="text-4xl md:text-5xl font-bold mb-14 text-center">
               Upcoming Events
@@ -107,6 +110,8 @@ export default function Page() {
                       key={index}
                       event={event}
                       isImageFirst={index % 2 === 0}
+                      onImageClick={setSelectedImage} // Shows the image full screen
+                      onVolunteer={setVolunteerEvent} // Displays Volunteer form
                     />
                   ))}
                 </div>
@@ -126,10 +131,9 @@ export default function Page() {
                     <EventCard
                       key={index}
                       event={event}
-                      isImageFirst={index % 2 === 0}
-                      onImageClick={setSelectedImage}
-                      // onVolunteer={setShowVolunteerForm}
-                      onVolunteer={setVolunteerEvent}
+                      isImageFirst={index % 2 === 0} // Swaps Poster display
+                      onImageClick={setSelectedImage} // Shows the image full screen
+                      onVolunteer={setVolunteerEvent} // Displays Volunteer form
                     />
                   ))}
                 </div>
@@ -147,6 +151,7 @@ export default function Page() {
           </div>
         </div>
       )}
+      {/* Modal to display image full screen */}
       {selectedImage && (
         <ImageModal
           src={selectedImage}
@@ -154,14 +159,16 @@ export default function Page() {
           onClose={() => setSelectedImage(null)}
         />
       )}
+      {/* Display Volunteer form */}
       {volunteerEvent && (
         <VolunteerForm
           closeForm={formRef}
           event={volunteerEvent}
           thankYou={setShowThankYou}
-          onClose={() => setVolunteerEvent(null)}
+          onClose={() => setVolunteerEvent(null)} // Close volunteer form
         />
       )}
+      {/* Thank you message */}
       {showThankYou && (
         <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
           <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">

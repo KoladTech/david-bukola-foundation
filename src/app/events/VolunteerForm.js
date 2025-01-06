@@ -88,7 +88,7 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
         }
 
         // Add to firestore
-        const collectionRef = collection(db, "Volunteers"); //get the testimonial collection
+        const collectionRef = collection(db, "Volunteers"); //get the volunteer collection
         const docRef = await addDoc(collectionRef, formData); //add a new document to the collection
 
         await addUserDocument({ ...formData, roles: ["volunteer"] });

@@ -3,6 +3,7 @@ import { formatKey } from "@/lib/utils";
 
 export async function POST(req) {
   try {
+    // Get the request body from the request
     const body = await req.json();
 
     // Extract form type and form data
@@ -143,6 +144,7 @@ export async function POST(req) {
     // Send the email
     await transporter.sendMail(mailOptions);
 
+    // Return responses
     return new Response(
       JSON.stringify({ message: "Email sent successfully" }),
       { status: 200 }

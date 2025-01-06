@@ -9,14 +9,18 @@ import handleEmailValidation from "@/lib/emailVerification";
 import addUserDocument from "@/firebase/createUser";
 import { FaLessThan } from "react-icons/fa6";
 
-export default function ShareTestimony({ clickCloseForm, closeForm }) {
+export default function ShareTestimony({
+  clickCloseForm,
+  closeForm,
+  setShowTestimonyForm,
+}) {
   const [testimonial, setTestimonial] = useState("");
   const [showThankYou, setShowThankYou] = useState("");
   const [submissionError, setSubmissionError] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showTestimonyForm, setShowTestimonyForm] = useState(true);
+  // const [showTestimonyForm, setShowTestimonyForm] = useState(true);
   const [testimonyData, setTestimonyData] = useState({
     firstName: "",
     lastName: "",
@@ -49,18 +53,6 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
       [name]: value,
     }));
   };
-
-  // DELETE THIS ONCE THE EXTERNAL FUNCTION IMPORTED FROM UTILS when IS WORKING PERFECTLY FINE
-  // // Email validation with a regex
-  // const handleEmailValidation = (e) => {
-  //   const { name, value } = e.target;
-  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email regex
-  //   if (name === "email") {
-  //     if (!emailPattern.test(value)) {
-  //       setEmailErrorMessage(true);
-  //     }
-  //   }
-  // };
 
   // Function to show thank you message and reset the form data
   const successfullySubmittedTestimony = () => {
@@ -132,149 +124,150 @@ export default function ShareTestimony({ clickCloseForm, closeForm }) {
 
   return (
     <div>
-      {showTestimonyForm && (
-        <Card>
-          <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-            <div
-              ref={clickCloseForm}
-              className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg text-center"
+      <Card>
+        <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+          <div
+            ref={clickCloseForm}
+            className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg text-center"
+          >
+            <form
+              // onSubmit={handleTestimonialFormSubmit}
+              className="w-full max-w-md mx-auto"
             >
-              <form
-                // onSubmit={handleTestimonialFormSubmit}
-                className="w-full max-w-md mx-auto"
-              >
-                <h2 className="text-2xl font-bold mb-4">
-                  Fill Testimonial Below
-                </h2>
-                <div className="p-2">
-                  <div className="flex flex-col space-y-6">
-                    {/* Form Input Fields  */}
-                    <div className="flex flex-row gap-4">
-                      <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={testimonyData.firstName}
-                        placeholder="First Name *"
-                        ref={(el) => (formDataRefs.current.firstName = el)}
-                        required
-                        className="input-field"
-                        onChange={handleInputChange}
-                      ></input>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={testimonyData.lastName}
-                        ref={(el) => (formDataRefs.current.lastName = el)}
-                        placeholder="Last Name *"
-                        required
-                        className="input-field"
-                        onChange={handleInputChange}
-                      ></input>
-                    </div>
-
-                    {/* Email Field */}
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={testimonyData.email}
-                      ref={(el) => (formDataRefs.current.email = el)}
-                      placeholder="Email *"
-                      required
-                      className="input-field"
-                      onChange={handleInputChange}
-                      onBlur={(e) =>
-                        setEmailErrorMessage(handleEmailValidation(e))
-                      } // Use arrow function so you can pass the event as a parameter
-                    ></input>
-                    {emailErrorMessage && (
-                      <div>
-                        <p className="text-red-500 text-md mt-2">
-                          Please enter a valid email address{" "}
-                          <p>e.g example@domain.com</p>
-                        </p>
-                      </div>
-                    )}
-
+              <h2 className="text-2xl font-bold mb-4">
+                Fill Testimonial Below
+              </h2>
+              <div className="p-2">
+                <div className="flex flex-col space-y-6">
+                  {/* Form Input Fields  */}
+                  <div className="flex flex-row gap-4">
+                    {/* First Name */}
                     <input
                       type="text"
-                      id="occupation"
-                      name="occupation"
-                      value={testimonyData.occupation}
-                      ref={(el) => (formDataRefs.current.occupation = el)}
-                      placeholder="Occupation *"
+                      id="firstName"
+                      name="firstName"
+                      value={testimonyData.firstName}
+                      placeholder="First Name *"
+                      ref={(el) => (formDataRefs.current.firstName = el)}
                       required
                       className="input-field"
                       onChange={handleInputChange}
                     ></input>
-
-                    {/* Testimonial TextArea */}
-                    <textarea
-                      id="testimonial"
-                      name="testimonial"
-                      maxLength={maxLength}
-                      value={testimonyData.testimony}
-                      ref={(el) => (formDataRefs.current.testimonial = el)}
-                      placeholder={`Write your testimonial here... \n(Maximum of 250 characters)`}
+                    {/* Last Name */}
+                    <input
+                      type="text"
+                      id="lastName"
+                      name="lastName"
+                      value={testimonyData.lastName}
+                      ref={(el) => (formDataRefs.current.lastName = el)}
+                      placeholder="Last Name *"
                       required
-                      className="input-field h-48"
-                      onInput={(e) => setTestimonial(e.target.value)}
+                      className="input-field"
                       onChange={handleInputChange}
-                    ></textarea>
-
-                    {/* Testimonial Character Count */}
-                    <p className="text-sm text-gray-500 mb-4">
-                      {testimonial.length}/{maxLength} characters used
-                    </p>
-                    {/* Newsletter */}
-                    <div className="">
-                      <Checkbox
-                        id="newsletter"
-                        checked={testimonyData.newsletter}
-                        onCheckedChange={(checked) => {
-                          setTestimonyData((prev) => ({
-                            ...prev,
-                            newsletter: checked,
-                          }));
-                        }}
-                      />
-                      <Label htmlFor="newsletter" className="mx-2 text-sm">
-                        Receive updates/notifications about dbf
-                      </Label>
-                    </div>
-                    {/* Submit Button */}
-                    <Button
-                      onClick={handleTestimonialFormSubmit}
-                      disabled={
-                        !formDataRefs.current.firstName?.value ||
-                        !formDataRefs.current.lastName?.value ||
-                        !formDataRefs.current.email?.value ||
-                        !emailValid ||
-                        !formDataRefs.current.occupation?.value ||
-                        !formDataRefs.current.testimonial?.value ||
-                        emailErrorMessage ||
-                        isSubmitting
-                      }
-                    >
-                      {isSubmitting ? "Submitting..." : "Submit"}
-                    </Button>
-
-                    {submissionError && (
-                      <div className="flex justify-center">
-                        <p className="text-lg text-red-600 p-1 my-1">
-                          {submissionError}
-                        </p>
-                      </div>
-                    )}
+                    ></input>
                   </div>
+
+                  {/* Email Field */}
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={testimonyData.email}
+                    ref={(el) => (formDataRefs.current.email = el)}
+                    placeholder="Email *"
+                    required
+                    className="input-field"
+                    onChange={handleInputChange}
+                    onBlur={(e) =>
+                      setEmailErrorMessage(handleEmailValidation(e))
+                    } // Use arrow function so you can pass the event as a parameter
+                  ></input>
+                  {emailErrorMessage && (
+                    <div>
+                      <p className="text-red-500 text-md mt-2">
+                        Please enter a valid email address{" "}
+                        <p>e.g example@domain.com</p>
+                      </p>
+                    </div>
+                  )}
+                  {/* Occupation Field */}
+                  <input
+                    type="text"
+                    id="occupation"
+                    name="occupation"
+                    value={testimonyData.occupation}
+                    ref={(el) => (formDataRefs.current.occupation = el)}
+                    placeholder="Occupation *"
+                    required
+                    className="input-field"
+                    onChange={handleInputChange}
+                  ></input>
+
+                  {/* Testimonial TextArea */}
+                  <textarea
+                    id="testimonial"
+                    name="testimonial"
+                    maxLength={maxLength}
+                    value={testimonyData.testimony}
+                    ref={(el) => (formDataRefs.current.testimonial = el)}
+                    placeholder={`Write your testimonial here... \n(Maximum of 300 characters)`}
+                    required
+                    className="input-field h-48"
+                    onInput={(e) => setTestimonial(e.target.value)}
+                    onChange={handleInputChange}
+                  ></textarea>
+
+                  {/* Testimonial Character Count */}
+                  <p className="text-sm text-gray-500 mb-4">
+                    {testimonial.length}/{maxLength} characters used
+                  </p>
+                  {/* Newsletter */}
+                  <div className="">
+                    <Checkbox
+                      id="newsletter"
+                      checked={testimonyData.newsletter}
+                      onCheckedChange={(checked) => {
+                        setTestimonyData((prev) => ({
+                          ...prev,
+                          newsletter: checked,
+                        }));
+                      }}
+                    />
+                    <Label htmlFor="newsletter" className="mx-2 text-sm">
+                      Receive updates/notifications about dbf
+                    </Label>
+                  </div>
+                  {/* Submit Button */}
+                  <Button
+                    onClick={handleTestimonialFormSubmit}
+                    disabled={
+                      !formDataRefs.current.firstName?.value ||
+                      !formDataRefs.current.lastName?.value ||
+                      !formDataRefs.current.email?.value ||
+                      !emailValid ||
+                      !formDataRefs.current.occupation?.value ||
+                      !formDataRefs.current.testimonial?.value ||
+                      emailErrorMessage ||
+                      isSubmitting
+                    }
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit"}
+                  </Button>
+
+                  {submissionError && (
+                    <div className="flex justify-center">
+                      <p className="text-lg text-red-600 p-1 my-1">
+                        {submissionError}
+                      </p>
+                    </div>
+                  )}
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
-        </Card>
-      )}
+        </div>
+      </Card>
+      {/* Thank You Message */}
       {showThankYou && (
         <Card>
           <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
