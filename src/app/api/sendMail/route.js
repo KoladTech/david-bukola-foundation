@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer";
-import { formatKey } from "@/lib/utils";
+import { formatObjectKeyToTitle } from "@/lib/utils";
 
 export async function POST(req) {
   try {
@@ -89,7 +89,7 @@ export async function POST(req) {
     // const emailBody = `
     //   <html>
     //     <body>
-    //       <h2>${formatKey(formType)} Submission</h2>
+    //       <h2>${formatObjectKeyToTitle(formType)} Submission</h2>
     //       <ul>
     //         ${Object.entries(formData)
     //           .map(([key, value]) => {
@@ -97,7 +97,7 @@ export async function POST(req) {
     //               typeof value === "object" ? formatTimestamp(value) : value;
     //             return `
     //               <li>
-    //                 <strong>${formatKey(key)}:</strong> ${
+    //                 <strong>${formatObjectKeyToTitle(key)}:</strong> ${
     //               Array.isArray(formattedValue)
     //                 ? formattedValue.join(", ")
     //                 : formattedValue
@@ -112,7 +112,7 @@ export async function POST(req) {
     const emailBody = `
   <html>
     <body>
-      <h2>${formatKey(formType)} Submission</h2>
+      <h2>${formatObjectKeyToTitle(formType)} Submission</h2>
       <ul>
         ${Object.entries(formData)
           .filter(
@@ -122,7 +122,7 @@ export async function POST(req) {
           .map(([key, value]) => {
             return `
               <li>
-                <strong>${formatKey(key)}:</strong>
+                <strong>${formatObjectKeyToTitle(key)}:</strong>
                 ${Array.isArray(value) ? value.join(", ") : value}
               </li>
             `;

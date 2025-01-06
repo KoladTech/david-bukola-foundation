@@ -9,7 +9,11 @@ import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
 import ImageModal from "@/components/ImageModal";
 import { useApiData } from "@/context/ApiStatsContext";
-import { formatCurrency, formatTimestamp } from "@/lib/utils";
+import {
+  formatCurrency,
+  formatObjectKeyToTitle,
+  formatTimestamp,
+} from "@/lib/utils";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 
 export default function Page() {
@@ -88,11 +92,7 @@ export default function Page() {
                         <div key={i} className="bg-gray-50 p-3 rounded-lg">
                           <h3 className="text-sm text-gray-500 mb-1">
                             {/* Format the "Key" from db to a heading */}
-                            {key
-                              .replace(/([A-Z])/g, " $1")
-                              .replace(/^./, function (str) {
-                                return str.toUpperCase();
-                              })}
+                            {formatObjectKeyToTitle(key)}
                           </h3>
                           <p className="font-semibold">
                             {/* Show the monetary support given, or list the support items provided */}
