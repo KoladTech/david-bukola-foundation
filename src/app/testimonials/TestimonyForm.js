@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
@@ -13,6 +14,7 @@ export default function ShareTestimony({
   clickCloseForm,
   closeForm,
   setShowTestimonyForm,
+  onClose,
 }) {
   const [testimonial, setTestimonial] = useState("");
   const [showThankYou, setShowThankYou] = useState("");
@@ -89,12 +91,15 @@ export default function ShareTestimony({
 
     try {
       // Send a POST request to the api with testimony data object as payload
-      const response = await fetch("api/sendEmail", {
+      const response = await fetch("api/sendMail", {
         method: "POST",
         headers: {
           "content-Type": "application/json",
         },
-        body: JSON.stringify(testimonyData),
+        body: JSON.stringify({
+          formType: "testimonyForm",
+          formData: testimonyData,
+        }),
       });
 
       // If the mail did not send succesfully
@@ -108,7 +113,7 @@ export default function ShareTestimony({
       const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
 
       // Add the new user to the Users Collection
-      await addUserDocument(testimonyData);
+      await addUserDocument({ ...testimonyData, roles: ["Testifier"] });
 
       // Call a success function
       successfullySubmittedTestimony();
@@ -128,7 +133,7 @@ export default function ShareTestimony({
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
           <div
             ref={clickCloseForm}
-            className="bg-white rounded-lg p-6 w-full max-w-md shadow-lg text-center"
+            className="relative bg-white rounded-lg p-6 w-full max-w-md shadow-lg text-center"
           >
             <form
               // onSubmit={handleTestimonialFormSubmit}
@@ -136,6 +141,12 @@ export default function ShareTestimony({
             >
               <h2 className="text-2xl font-bold mb-4">
                 Fill Testimonial Below
+                <button
+                  onClick={onClose}
+                  className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-opacity"
+                >
+                  <X size={24} />
+                </button>
               </h2>
               <div className="p-2">
                 <div className="flex flex-col space-y-6">

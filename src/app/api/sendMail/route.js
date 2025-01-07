@@ -40,6 +40,13 @@ export async function POST(req) {
         "amount",
         "country",
       ],
+      testimonyForm: [
+        "firstName",
+        "lastName",
+        "email",
+        "occupation",
+        "testimonial",
+      ],
       // Add more forms here
     };
 

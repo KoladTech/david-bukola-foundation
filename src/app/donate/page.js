@@ -196,13 +196,13 @@ export default function DonatePage() {
     console.log("Input change Form Data", donateFormData);
   };
 
-  // references for input fields
-  const inputRef = useRef(null);
+  // references for other amount input field
+  const otherAmountInputRef = useRef(null);
 
   // Set the input field to be used to get the amount
   const useOtherAmount = () => {
     setOtherAmount(true);
-    if (inputRef.current.value === "") {
+    if (otherAmountInputRef.current.value === "") {
       setSelectedAmount("");
     }
   };
@@ -211,14 +211,10 @@ export default function DonatePage() {
   const clearInput = (e) => {
     setOtherAmount(false); // disable otherAmount field
     // clear the amount input field via the ref of the field
-    if (inputRef.current) {
-      inputRef.current.value = "";
+    if (otherAmountInputRef.current) {
+      otherAmountInputRef.current.value = "";
     }
   };
-
-  // TODO: Clean up all form refs
-  // Create a single ref object
-  const donateFormDataRefs = useRef({});
 
   const reRoutePage = () => {
     //redirect to the previous or home page
@@ -430,7 +426,7 @@ export default function DonatePage() {
                             name="amount"
                             placeholder="Other Amount"
                             value={FormData.amount}
-                            ref={inputRef}
+                            ref={otherAmountInputRef}
                             onClick={useOtherAmount} //Enable otherAmount field
                             onInput={(e) => {
                               handleInputChange(e); //Call function to Handle input data
@@ -442,7 +438,8 @@ export default function DonatePage() {
                           onClick={handleNext}
                           disabled={
                             !donateFormData.amount ||
-                            (otherAmount && inputRef.current.value === "")
+                            (otherAmount &&
+                              otherAmountInputRef.current.value === "")
                           }
                         >
                           Next
@@ -466,9 +463,6 @@ export default function DonatePage() {
                                 name="firstName"
                                 value={FormData.firstName}
                                 onChange={handleInputChange}
-                                ref={(el) =>
-                                  (donateFormDataRefs.current.firstName = el)
-                                }
                                 required
                                 placeholder="First Name * "
                                 className="input-field"
@@ -481,10 +475,6 @@ export default function DonatePage() {
                                 name="lastName"
                                 value={FormData.lastName}
                                 onChange={handleInputChange}
-                                // ref={lastNameRef}
-                                ref={(el) =>
-                                  (donateFormDataRefs.current.lastName = el)
-                                }
                                 required
                                 placeholder="Last Name * "
                                 className="input-field"
@@ -499,12 +489,8 @@ export default function DonatePage() {
                               name="email"
                               value={FormData.email}
                               onChange={handleInputChange}
-                              // ref={emailRef}
                               onBlur={(e) =>
                                 setEmailErrorMessage(handleEmailValidation(e))
-                              } // Use arrow function so you can pass the event as a parameter
-                              ref={(el) =>
-                                (donateFormDataRefs.current.email = el)
                               }
                               required
                               placeholder="Email * "
@@ -624,9 +610,9 @@ export default function DonatePage() {
                             className="flex-1 h-12 bg-sky-800 hover:bg-sky-700"
                             onClick={handleNext}
                             disabled={
-                              !donateFormDataRefs.current.firstName?.value ||
-                              !donateFormDataRefs.current.lastName?.value ||
-                              !donateFormDataRefs.current.email?.value ||
+                              !donateFormData.firstName ||
+                              !donateFormData.lastName ||
+                              !donateFormData.email ||
                               !donateFormData.country ||
                               emailErrorMessage ||
                               !emailValid
