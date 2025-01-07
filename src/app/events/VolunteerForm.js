@@ -137,7 +137,7 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
       //     newsletter: false,
       //     date: serverTimestamp(),
       //   });
-      onClose(true);
+      onClose();
       setSubmitting(false);
     }
   };
