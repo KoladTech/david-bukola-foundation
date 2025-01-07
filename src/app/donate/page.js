@@ -9,7 +9,6 @@ import { ChevronLeft } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import HeroSection from "@/components/HeroSection";
-import thankYouMessage from "@/lib/thankYouMessage";
 import handleEmailValidation from "@/lib/emailVerification";
 import db from "@/firebase/firebaseConfig";
 import addUserDocument from "@/firebase/createUser";
@@ -21,6 +20,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { countries } from "@/constants";
+import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 
 // Donation constants
 const donationAmounts = [
@@ -87,7 +87,7 @@ export default function DonatePage() {
 
   // Other states
   const [currentStep, setCurrentStep] = useState(0);
-  const [showThankYou, setShowThankYou] = useState("");
+  const [showThankYou, setShowThankYou] = useState(false);
 
   // Functionsssssssssssssssssssssssssssssssssssssss
 
@@ -234,33 +234,33 @@ export default function DonatePage() {
   };
   // TODO: Make it a component entirely
   // Function to show thank you message and reset the form data
-  const successfullySubmittedTestimony = () => {
-    console.log("successfullySubmittedTestimony");
+  // const successfullySubmittedTestimony = () => {
+  //   console.log("successfullySubmittedTestimony");
 
-    setShowThankYou(true); // Show thank you message
+  //   setShowThankYou(true); // Show thank you message
 
-    // Set a timeout for thank you message
-    setTimeout(() => {
-      setShowThankYou(false);
-      reRoutePage();
-    }, 3000);
+  //   // Set a timeout for thank you message
+  //   setTimeout(() => {
+  //     setShowThankYou(false);
+  //     reRoutePage();
+  //   }, 3000);
 
-    // Reset Testimony data.
-    setDonateFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      phoneNumber: "",
-      phoneCode: "",
-      paymentMethod: "",
-      amount: "",
-      city: "",
-      country: "",
-      newsletter: false,
-      approved: false,
-      date: serverTimestamp(),
-    });
-  };
+  //   // Reset Testimony data.
+  //   setDonateFormData({
+  //     firstName: "",
+  //     lastName: "",
+  //     email: "",
+  //     phoneNumber: "",
+  //     phoneCode: "",
+  //     paymentMethod: "",
+  //     amount: "",
+  //     city: "",
+  //     country: "",
+  //     newsletter: false,
+  //     approved: false,
+  //     date: serverTimestamp(),
+  //   });
+  // };
 
   // TODO: Make a reuable function
   // Handles form submission on clicking share button
@@ -293,14 +293,35 @@ export default function DonatePage() {
       }
 
       // Add to firestore
-      const collectionRef = collection(db, "Donations"); //get the testimonial collection //3
+      const collectionRef = collection(db, "TestCollection"); //get the testimonial collection //3
       const docRef = await addDoc(collectionRef, donateFormData); //add a new document to the collection //4
 
       // Add the new user to the Users Collection
       await addUserDocument({ ...donateFormData, roles: ["donor"] });
 
-      // Call a success function
-      successfullySubmittedTestimony();
+      // Set the Thank You component with thank you message
+      setShowThankYou(true);
+
+      // Reset Testimony data.
+      setDonateFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNumber: "",
+        phoneCode: "",
+        paymentMethod: "",
+        amount: "",
+        city: "",
+        country: "",
+        newsletter: false,
+        approved: false,
+        date: serverTimestamp(),
+      });
+
+      // Redirect to home page after 3 seconds
+      setTimeout(() => {
+        reRoutePage();
+      }, 3000);
     } catch (error) {
       console.log("Error sending form: ", error); //5
       setSubmissionError(
@@ -821,23 +842,17 @@ export default function DonatePage() {
           </div>
         </div>
       </div>
-      {/* Thank You message when "I have made payment is clicked". (Placed here so it'll display on the whole page) */}
+      {/* Thank You message */}
       {showThankYou && (
-        <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
-          <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
-            <div
-              // ref={closeForm}
-              className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
-            >
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Thank you for your donation
-              </h2>
-              <p className="text-gray-700">
-                Your generosity helps us make a difference.
-              </p>
-            </div>
-          </Card>
-        </div>
+        <ThankYouMessageOnFormSuccess
+          showThankYou={showThankYou}
+          // Sends a function to set show thank you back to false)
+          closeThankYou={() => {
+            setShowThankYou(false);
+          }}
+          message={"Thank you for your donation!"}
+          extraMessage={"Your generosity helps us make a difference."}
+        />
       )}
     </div>
     // </form>

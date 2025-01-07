@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ShareTestimony from "@/app/testimonials/TestimonyForm";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
+import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 
 // const testimonials = [
 //   {
@@ -48,6 +49,7 @@ export default function TestimonialsPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showTestimonyForm, setShowTestimonyForm] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
   const formRef = useRef(null);
 
   // Fetch Testimonials on component mount (Using a variable (loadTestimonials) to store the function)
@@ -71,6 +73,7 @@ export default function TestimonialsPage() {
     loadTestimonials();
   }, []);
 
+  // Click anywhere outside the form to close the form
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target)) {
@@ -88,11 +91,6 @@ export default function TestimonialsPage() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showTestimonyForm]); //dependencies (list of all reactive code in the effect setup)
-
-  // Function to close the form
-  const closeForm = () => {
-    setShowTestimonyForm(false);
-  };
 
   return (
     <div className="container mx-auto px-4 py-8 my-8">
@@ -227,11 +225,30 @@ export default function TestimonialsPage() {
         <div>
           <ShareTestimony
             clickCloseForm={formRef}
-            closeForm={closeForm}
+            // Uses form ref to close the form
+            closeForm={() => {
+              setShowTestimonyForm(false);
+            }}
+            // Close testimony form and display thank you message
+            onClose={() => {
+              setShowTestimonyForm(false);
+              setShowThankYou(true);
+            }}
             setShowTestimonyForm={setShowTestimonyForm}
-            onClose={() => setShowTestimonyForm(false)} // Close volunteer form
           />
         </div>
+      )}
+      {/* Show thank you message on successfully submitting testimony and onClosing the form */}
+      {showThankYou && (
+        <ThankYouMessageOnFormSuccess
+          showThankYou={showThankYou}
+          // Sends a function to set show thank you back to false)
+          closeThankYou={() => {
+            setShowThankYou(false);
+          }}
+          message={"Thank you for sharing your Testimony with us."}
+          extraMessage={"It will be reviewed by our team!"}
+        />
       )}
     </div>
   );

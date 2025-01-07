@@ -89,11 +89,7 @@ export default function ProjectsPage() {
         <SkeletonProject />
       ) : (
         <div className="flex flex-col space-y-10 mb-24">
-          {/* TODO: Remove error fro beind displayed */}
-          {/* Data from backend */}
-          {error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
+          {
             // Each project displayed
             projects.map((project, index) => (
               <div
@@ -197,7 +193,7 @@ export default function ProjectsPage() {
                 </div>
               </div>
             ))
-          )}
+          }
         </div>
       )}
     </div>

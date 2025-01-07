@@ -1,28 +1,20 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import db from "@/firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import handleEmailValidation from "@/lib/emailVerification";
 import addUserDocument from "@/firebase/createUser";
-import { FaLessThan } from "react-icons/fa6";
 
-export default function ShareTestimony({
-  clickCloseForm,
-  closeForm,
-  setShowTestimonyForm,
-  onClose,
-}) {
+export default function ShareTestimony({ clickCloseForm, closeForm, onClose }) {
   const [testimonial, setTestimonial] = useState("");
-  const [showThankYou, setShowThankYou] = useState("");
   const [submissionError, setSubmissionError] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // const [showTestimonyForm, setShowTestimonyForm] = useState(true);
   const [testimonyData, setTestimonyData] = useState({
     firstName: "",
     lastName: "",
@@ -50,37 +42,11 @@ export default function ShareTestimony({
         setEmailErrorMessage(false);
       } else setEmailValid(false);
     }
+    // Populate testimony form
     setTestimonyData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  };
-
-  // Function to show thank you message and reset the form data
-  const successfullySubmittedTestimony = () => {
-    // Upon form submission and mail success
-    setShowTestimonyForm(false); // Remove form display
-
-    setShowThankYou(true); // Show thank you message
-
-    // Set a timeout for thank you message and close the form in the parent page
-    setTimeout(() => {
-      setShowThankYou(false);
-      closeForm();
-    }, 3000);
-
-    // Reset Testimony data.
-    setTestimonyData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      occupation: "",
-      testimonial: "",
-      type: "text",
-      newsletter: false,
-      approved: false,
-      date: serverTimestamp(),
-    });
   };
 
   // Handles form submission on clicking share button
@@ -108,15 +74,26 @@ export default function ShareTestimony({
         return;
       }
 
-      // Add to firestore
       const collectionRef = collection(db, "Testimonials"); //get the testimonial collection
       const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
 
       // Add the new user to the Users Collection
       await addUserDocument({ ...testimonyData, roles: ["Testifier"] });
 
-      // Call a success function
-      successfullySubmittedTestimony();
+      onClose(); // Call a success function that sets the Thank You component with thank you message
+
+      // Reset Testimony data.
+      setTestimonyData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        occupation: "",
+        testimonial: "",
+        type: "text",
+        newsletter: false,
+        approved: false,
+        date: serverTimestamp(),
+      });
     } catch (error) {
       console.log("Error adding testimony: ", error);
       setSubmissionError(
@@ -142,7 +119,7 @@ export default function ShareTestimony({
               <h2 className="text-2xl font-bold mb-4">
                 Fill Testimonial Below
                 <button
-                  onClick={onClose}
+                  onClick={closeForm}
                   className="absolute top-4 right-4 text-white bg-black bg-opacity-50 rounded-full p-2 hover:bg-opacity-75 transition-opacity"
                 >
                   <X size={24} />
@@ -278,22 +255,6 @@ export default function ShareTestimony({
           </div>
         </div>
       </Card>
-      {/* Thank You Message */}
-      {showThankYou && (
-        <Card>
-          <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
-            <div
-              // ref={closeForm}
-              className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
-            >
-              <h2 className="text-lg font-semibold">
-                Thank you for sharing your Testimony with us. It will be
-                reviewed by our team!
-              </h2>
-            </div>
-          </div>
-        </Card>
-      )}
     </div>
   );
 }
