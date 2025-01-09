@@ -311,6 +311,19 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={(e) => {
+                      //TODO: convert this to function???
+                      //check if the value in the form is a valid email
+                      if (!validateEmail(e.target.value)) {
+                        setErrors({
+                          ...errors,
+                          email: "Please enter a valid email", //set an error for invalid emails
+                        });
+                      } else {
+                        const { email, ...restErrors } = errors;
+                        setErrors(restErrors); //set the original state of the error without the email error
+                      }
+                    }}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-sm">{errors.email}</p>
