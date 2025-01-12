@@ -1,5 +1,5 @@
 "use client";
-
+import { mediaBaseUrl } from "@/constants";
 import React from "react";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 import { useState, useEffect, useRef } from "react";
@@ -67,7 +67,7 @@ export default function Page() {
     <>
       <div className="p-4">
         <HeroSection
-          imageUrl={`/images/events_hero_section.jpg`}
+          imageUrl={`${mediaBaseUrl}/images/events_hero_section.jpg`}
           title={`Events`}
         />
         <div className="flex flex-col space-y-10 mb-8">

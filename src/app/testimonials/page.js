@@ -7,9 +7,10 @@ import VideoPlayer from "@/components/VideoPlayer";
 import { Play, MessageSquarePlus, VideoIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import ShareTestimony from "@/app/testimonials/TestimonyForm";
+import TestimonyForm from "@/app/testimonials/TestimonyForm";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
+import { mediaBaseUrl } from "@/constants";
 
 // const testimonials = [
 //   {
@@ -19,7 +20,7 @@ import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSucc
 //     role: "Student volunteer",
 //     content:
 //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis. ",
-//     image: "/images/person placeholder.png",
+//     image: {`${mediaBaseUrl}/images/person placeholder.png`},
 //     type: "text",
 //   },
 //   {
@@ -223,18 +224,13 @@ export default function TestimonialsPage() {
       {/* Display Testimony form on clicking the share testimony button*/}
       {showTestimonyForm && (
         <div>
-          <ShareTestimony
+          <TestimonyForm
             clickCloseForm={formRef}
             // Uses form ref to close the form
             closeForm={() => {
               setShowTestimonyForm(false);
             }}
-            // Close testimony form and display thank you message
-            onClose={() => {
-              setShowTestimonyForm(false);
-              setShowThankYou(true);
-            }}
-            setShowTestimonyForm={setShowTestimonyForm}
+            setShowThankYou={setShowThankYou}
           />
         </div>
       )}

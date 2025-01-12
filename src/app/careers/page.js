@@ -7,6 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import { collection, getDocs } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
+import { mediaBaseUrl } from "@/constants";
 
 export default function CareersPage() {
   const [loading, setLoading] = useState(true);
@@ -39,7 +40,7 @@ export default function CareersPage() {
         {/* Hero Section */}
         <HeroSection
           //   imageUrl={`https://media.istockphoto.com/id/1278834781/photo/group-of-happy-african-children-orphanage-in-nairobi-kenya-east-africa.jpg?s=612x612&w=0&k=20&c=CN_l88pra-m9Q0h8Gzwpv1TTCFwxVqPmarOSt8OlVtk=`}
-          imageUrl={`/images/careers_page_hero_section_image.png`}
+          imageUrl={`${mediaBaseUrl}/images/careers_page_hero_section_image.png`}
         />
 
         {/* Introduction */}

@@ -1,5 +1,5 @@
 "use client";
-
+import { mediaBaseUrl } from "@/constants";
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
@@ -12,6 +12,7 @@ import HeroSection from "@/components/HeroSection";
 import handleEmailValidation from "@/lib/emailVerification";
 import db from "@/firebase/firebaseConfig";
 import addUserDocument from "@/firebase/createUser";
+import { handleFormSubmit } from "@/firebase/handleFormSubmission";
 import {
   collection,
   addDoc,
@@ -262,6 +263,39 @@ export default function DonatePage() {
   //   });
   // };
 
+  // Reset Donate data.
+  const resetFormData = () => {
+    setDonateFormData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      phoneCode: "",
+      paymentMethod: "",
+      amount: "",
+      city: "",
+      country: "",
+      newsletter: false,
+      approved: false,
+      date: serverTimestamp(),
+    });
+  };
+
+  // Handles form submission on clicking share button
+  const handleSubmit = (e) => {
+    handleFormSubmit({
+      e,
+      formType: "donateForm",
+      formData: donateFormData,
+      yourCollection: "TestCollection",
+      userRole: "donor",
+      setSubmissionError,
+      setIsSubmitting,
+      setShowThankYou,
+      resetFormData,
+      reRoutePage,
+    });
+  };
   // TODO: Make a reuable function
   // Handles form submission on clicking share button
   const handleDonateFormSubmit = async (e) => {
@@ -272,7 +306,6 @@ export default function DonatePage() {
     try {
       // Send a POST request to the api with testimony data object as payload
       const response = await fetch("api/sendMail", {
-        //1
         method: "POST",
         headers: {
           "content-Type": "application/json",
@@ -285,14 +318,10 @@ export default function DonatePage() {
 
       // If the mail did not send succesfully
       if (!response.ok) {
-        console.log("response not ok");
-        console.log("donationFormData", donateFormData);
-        console.log("Error: ", response.error);
         setSubmissionError("Failed to send email. Please try again.");
         return;
       }
 
-      // Add to firestore
       const collectionRef = collection(db, "TestCollection"); //get the testimonial collection //3
       const docRef = await addDoc(collectionRef, donateFormData); //add a new document to the collection //4
 
@@ -338,7 +367,7 @@ export default function DonatePage() {
       {/* Hero Section */}
       <div className="relative w-full overflow-hidden p-4">
         <HeroSection
-          imageUrl={"/images/donate-image.jpg"}
+          imageUrl={`${mediaBaseUrl}/images/donate-image.jpg`}
           bottomRightWidget={false}
         />
         {/* Donate Now Text */}
@@ -779,7 +808,7 @@ export default function DonatePage() {
                             variant="outline"
                             className="flex-1 h-12 text-white bg-sky-600"
                             onClick={(e) => {
-                              handleDonateFormSubmit(e);
+                              handleSubmit(e);
                             }}
                             // Disable the button until transfer method is selected
                             disabled={

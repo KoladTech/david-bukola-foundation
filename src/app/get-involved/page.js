@@ -2,6 +2,7 @@ import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
 import NewPageButton from "@/components/NewPageButton";
+import { mediaBaseUrl } from "@/constants";
 
 export default function Page() {
   let content = `Join us in making a difference. At DavidBukola Development Foundation, we believe everyone has the power to bring positive change. Whether you are looking to donate, volunteer, explore a meaningful career or participate in our events, there are countless ways to support our mission. 
@@ -19,7 +20,7 @@ Together, we can make a world of difference. Get involved today!
           className=""
           title="Get Involved"
           description=""
-          imageUrl="/images/get_involved_hero_section_image.jpeg"
+          imageUrl={`${mediaBaseUrl}/images/get_involved_hero_section_image.jpeg`}
           alt="Get Involved image"
         />
       </div>
@@ -34,7 +35,7 @@ Together, we can make a world of difference. Get involved today!
           <div className="relative aspect-[4/3] w-full">
             <PictureCard
               className=""
-              imageSrc="/images/get_involved_volunteer_image.png"
+              imageSrc={`${mediaBaseUrl}/images/get_involved_volunteer_image.png`}
               altText=""
             />
           </div>
@@ -56,7 +57,7 @@ Together, we can make a world of difference. Get involved today!
           <div className="relative aspect-[4/3] w-full order-1 md:order-2">
             <PictureCard
               className=""
-              imageSrc="/images/get_involved_careers_image.png"
+              imageSrc={`${mediaBaseUrl}/images/get_involved_careers_image.png`}
               altText=""
             />
           </div>
@@ -66,7 +67,7 @@ Together, we can make a world of difference. Get involved today!
           <div className="relative aspect-[4/3] w-full">
             <PictureCard
               className=""
-              imageSrc="/images/get_involved_events_image.png"
+              imageSrc={`${mediaBaseUrl}/images/get_involved_events_image.png`}
               altText=""
             />
           </div>

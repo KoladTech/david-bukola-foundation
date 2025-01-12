@@ -8,8 +8,14 @@ import db from "@/firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import handleEmailValidation from "@/lib/emailVerification";
 import addUserDocument from "@/firebase/createUser";
+import { handleFormSubmit } from "@/firebase/handleFormSubmission";
+import React from "react";
 
-export default function ShareTestimony({ clickCloseForm, closeForm, onClose }) {
+export default function TestimonyForm({
+  clickCloseForm,
+  closeForm,
+  setShowThankYou,
+}) {
   const [testimonial, setTestimonial] = useState("");
   const [submissionError, setSubmissionError] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState(false);
@@ -49,59 +55,35 @@ export default function ShareTestimony({ clickCloseForm, closeForm, onClose }) {
     }));
   };
 
+  // Reset Testimony data.
+  const resetFormData = () => {
+    setTestimonyData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      occupation: "",
+      testimonial: "",
+      type: "text",
+      newsletter: false,
+      approved: false,
+      date: serverTimestamp(),
+    });
+  };
+
   // Handles form submission on clicking share button
-  const handleTestimonialFormSubmit = async (e) => {
-    e.preventDefault(); //Prevent default i.e form reloading
-    setIsSubmitting(true); // Show loading indicator
-    setSubmissionError(""); // Reset error state
-
-    try {
-      // Send a POST request to the api with testimony data object as payload
-      const response = await fetch("api/sendMail", {
-        method: "POST",
-        headers: {
-          "content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          formType: "testimonyForm",
-          formData: testimonyData,
-        }),
-      });
-
-      // If the mail did not send succesfully
-      if (!response.ok) {
-        setSubmissionError("Failed to send email. Please try again.");
-        return;
-      }
-
-      const collectionRef = collection(db, "Testimonials"); //get the testimonial collection
-      const docRef = await addDoc(collectionRef, testimonyData); //add a new document to the collection
-
-      // Add the new user to the Users Collection
-      await addUserDocument({ ...testimonyData, roles: ["Testifier"] });
-
-      onClose(); // Call a success function that sets the Thank You component with thank you message
-
-      // Reset Testimony data.
-      setTestimonyData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        occupation: "",
-        testimonial: "",
-        type: "text",
-        newsletter: false,
-        approved: false,
-        date: serverTimestamp(),
-      });
-    } catch (error) {
-      console.log("Error adding testimony: ", error);
-      setSubmissionError(
-        "An error occurred while submitting your testimony. Please try again."
-      );
-    } finally {
-      setIsSubmitting(false); //Hide loading indicator
-    }
+  const handleSubmit = (e) => {
+    handleFormSubmit({
+      e,
+      formType: "testimonyForm",
+      formData: testimonyData,
+      yourCollection: "TestCollection",
+      userRole: "testifier",
+      closeForm,
+      setShowThankYou,
+      setSubmissionError,
+      setIsSubmitting,
+      resetFormData,
+    });
   };
 
   return (
@@ -227,7 +209,7 @@ export default function ShareTestimony({ clickCloseForm, closeForm, onClose }) {
                   </div>
                   {/* Submit Button */}
                   <Button
-                    onClick={handleTestimonialFormSubmit}
+                    onClick={handleSubmit}
                     disabled={
                       !formDataRefs.current.firstName?.value ||
                       !formDataRefs.current.lastName?.value ||

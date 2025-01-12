@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import PictureCard from "./PictureCard";
 import ContentCard from "./ContentCard";
+import { mediaBaseUrl } from "@/constants";
 
 export default function ProjectCard() {
   return (
@@ -12,7 +13,7 @@ export default function ProjectCard() {
           {/* Project Image */}
           <div className="w-full md:w-1/2 aspect-[4/3] flex justify-center mb-6">
             <PictureCard
-              imageSrc="/images/project-page-image.png"
+              imageSrc={`${mediaBaseUrl}/images/project-page-image.png`}
               altText="DBF Projects"
             />
           </div>
