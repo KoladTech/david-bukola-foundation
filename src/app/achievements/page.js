@@ -45,7 +45,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex flex-col gap-2 my-4 p-4">
+      <div className="flex flex-col gap-10 my-4">
         {/* Hero Section */}
         <div className="flex flex-col">
           {loading ? (
@@ -64,7 +64,7 @@ export default function Page() {
           )}
         </div>
         {/* Content Sections */}
-        <div className="grid gap-8 md:grid-cols-2 pb-5">
+        <div className="grid gap-8 md:grid-cols-2 pb-5 content-div">
           {achievements.map((achievement, index) => (
             <div
               key={index}
