@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="bg-white full-width-div">
+        <header className="bg-white sticky top-0 z-50 shadow-sm">
           <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between text-sm lg:text-base">
             <Link href="/" className="flex items-center space-x-2">
               <Image
@@ -63,7 +63,7 @@ export default function RootLayout({ children }) {
                 DAVIDBUKOLA DEVELOPMENT FOUNDATION
               </span>
             </Link>
-            <nav className="hidden md:flex space-x-6 md-lg:space-x-0 md-lg:text-xs">
+            <nav className="hidden md:flex space-x-6 md-lg:space-x-0 md-lg:text-xs sticky top-0">
               <Link
                 href="/"
                 className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"

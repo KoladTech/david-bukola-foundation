@@ -9,7 +9,12 @@ import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
 import ImageModal from "@/components/ImageModal";
 import { useApiData } from "@/context/ApiStatsContext";
-import { formatCurrency, formatTimestamp } from "@/lib/utils";
+import {
+  formatCurrency,
+  formatObjectKeyToTitle,
+  formatTimestamp,
+} from "@/lib/utils";
+import { fetchedData } from "@/firebase/fetchFirebaseData";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -23,17 +28,10 @@ export default function Page() {
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch achievements and site stats concurrently
-        const achievementsSnapshot = await getDocs(
-          collection(db, "Achievements")
-        );
+        // Fetch achievements from firestore
+        const achievementsData = await fetchedData("Achievements");
 
-        // Process achievements
-        const achievementsData = achievementsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-
+        // set the achievements data with the fetched data
         setAchievements(achievementsData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -47,7 +45,7 @@ export default function Page() {
 
   return (
     <>
-      <div className="flex flex-col gap-2 my-4 p-4">
+      <div className="flex flex-col gap-10 my-4">
         {/* Hero Section */}
         <div className="flex flex-col">
           {loading ? (
@@ -66,7 +64,7 @@ export default function Page() {
           )}
         </div>
         {/* Content Sections */}
-        <div className="grid gap-8 md:grid-cols-2 pb-5">
+        <div className="grid gap-8 md:grid-cols-2 pb-5 content-div">
           {achievements.map((achievement, index) => (
             <div
               key={index}
@@ -94,11 +92,7 @@ export default function Page() {
                         <div key={i} className="bg-gray-50 p-3 rounded-lg">
                           <h3 className="text-sm text-gray-500 mb-1">
                             {/* Format the "Key" from db to a heading */}
-                            {key
-                              .replace(/([A-Z])/g, " $1")
-                              .replace(/^./, function (str) {
-                                return str.toUpperCase();
-                              })}
+                            {formatObjectKeyToTitle(key)}
                           </h3>
                           <p className="font-semibold">
                             {/* Show the monetary support given, or list the support items provided */}

@@ -51,6 +51,10 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
       newErrors.firstName = "First name is required.";
     }
 
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required.";
+    }
+
     if (!formData.email.trim() || !validateEmail(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
@@ -133,7 +137,7 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
       //     newsletter: false,
       //     date: serverTimestamp(),
       //   });
-      onClose(true);
+      onClose();
       setSubmitting(false);
     }
   };
@@ -188,6 +192,19 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
+                  onBlur={(e) => {
+                    //TODO: convert this to function???
+                    //check if the value in the form is a valid email
+                    if (!validateEmail(e.target.value)) {
+                      setErrors({
+                        ...errors,
+                        email: "Please enter a valid email", //set an error for invalid emails
+                      });
+                    } else {
+                      const { email, ...restErrors } = errors;
+                      setErrors(restErrors); //set the original state of the error without the email error
+                    }
+                  }}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm">{errors.email}</p>
@@ -237,8 +254,10 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
                 type="submit"
                 disabled={
                   !formData.firstName ||
+                  !formData.lastName ||
                   !formData.phone ||
                   !formData.email ||
+                  !validateEmail(formData.email) ||
                   submitting
                 }
                 className="w-full bg-blue-500 hover:bg-blue-700"

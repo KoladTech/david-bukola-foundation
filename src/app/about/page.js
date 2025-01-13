@@ -36,16 +36,15 @@ export default function AboutPage() {
   return (
     <div className="bg-white">
       {/* Hero Section */}
-      <section className="container mx-auto p-4">
+      {/* <section className="container mx-auto p-4"> */}
+      <section className="mx-auto">
         {/* TODO: Make the hero section span full width */}
-        {/* <div className="full-width-div"> */}
         <HeroSection
           title={"ABOUT US"}
           description={"Learn about the Foundation"}
           imageUrl={"/images/about-us-image.jpg"}
           alt={"about foundation image"}
         />
-        {/* </div> */}
       </section>
 
       {/* About us content */}
