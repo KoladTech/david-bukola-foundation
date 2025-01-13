@@ -205,7 +205,9 @@ export default function HeroSection({
               </div>
             )
           )}
+          {/* Hero Section Widgets */}
         </div>
+        {/* If it is donations */}
         {bottomRightWidget === "donate" ? (
           <div className="absolute bottom-4 right-3 md:right-4 ">
             <DonationWidget />
