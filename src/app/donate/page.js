@@ -363,23 +363,23 @@ export default function DonatePage() {
 
   return (
     // <form onSubmit={handleFormSubmit}>
-    <div className="relative">
+    <div className="">
       {/* Hero Section */}
-      <div className="relative w-full overflow-hidden p-4">
+      <div className="relative w-full overflow-hidden">
         <HeroSection
           imageUrl={`${mediaBaseUrl}/images/donate-image.jpg`}
           bottomRightWidget={false}
         />
         {/* Donate Now Text */}
         <div className="absolute inset-0 flex items-center justify-center ">
-          <h1 className="slide-text text-4xl md:text-6xl font-bold text-white flex items-center gap-2  whitespace-nowrap">
+          <h1 className="slide-text text-4xl md:text-6xl font-bold text-white flex gap-2  whitespace-nowrap">
             Donate Now
           </h1>
         </div>
       </div>
 
       {/* Form Section */}
-      <div className="full-width-div">
+      <div className="">
         <div className="max-w-6xl mx-auto px-4 py-12 bg-sky-800">
           <div className="flex flex-col md:flex-row gap-8 py-12">
             {/* Main Form Area */}

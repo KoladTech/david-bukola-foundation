@@ -61,9 +61,9 @@ export default function ProjectsPage() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 my-4 p-4">
+    <div className="flex flex-col gap-2 my-4 ">
       {/* Hero Section */}
-      <div className="flex flex-col">
+      <div className="flex flex-col mb-14">
         <HeroSection
           className=""
           title="PROJECTS"

@@ -24,18 +24,19 @@ export default function Home() {
   return (
     <main>
       {/* Main home page div */}
-      <div className="m-4 space-y-4">
+      <div className="space-y-4">
         <HeroSection
-          className=""
-          title="DAVIDBUKOLA"
-          title2="DEVELOPMENT FOUNDATION"
+          className="object-[50%_65%]"
+          title="DAVIDBUKOLA DEVELOPMENT FOUNDATION"
+          title2=""
           description="Where care meets community"
           imageUrl={`${mediaBaseUrl}/images/dbf-home-page-image.jpg`}
           alt="foundation welcome image"
         />
 
         {/* About us section */}
-        <div>
+        {/* the content div restricts the max width to 1140px */}
+        <div className="content-div">
           <AboutUs />
         </div>
 
@@ -43,28 +44,23 @@ export default function Home() {
         <div>
           <Achievement />
         </div>
-
-        {/* Testimonies Section */}
-        <div>
+        {/* the content div restricts the max width to 1140px */}
+        <div className="content-div">
+          {/* Testimonies Section */}
           <TestimonyCards />
-        </div>
 
-        {/* Projects Section */}
-        <div>
+          {/* Projects Section */}
           <ProjectCard />
-        </div>
 
-        {/* Get Involved Section */}
-        <GetInvolved />
+          {/* Get Involved Section */}
+          <GetInvolved />
 
-        {/* Meet our team section */}
-        <MeetOurTeam />
+          {/* Meet our team section */}
+          <MeetOurTeam />
 
-        {/* Frequently asked questions section */}
-        <div>
+          {/* Frequently asked questions section */}
           <FAQ />
         </div>
-
         {/* Main div closing tag */}
       </div>
     </main>

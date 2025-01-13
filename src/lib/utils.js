@@ -46,7 +46,7 @@ export function formatCurrency(amount, currency = "NGN") {
   // Return the formatted currency string.
 }
 
-export const formatKey = (key) => {
+export const formatObjectKeyToTitle = (key) => {
   // Format a camelCase or PascalCase string into a human-readable format.
   return (
     key

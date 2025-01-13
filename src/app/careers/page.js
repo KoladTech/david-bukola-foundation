@@ -8,6 +8,7 @@ import { collection, getDocs } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { mediaBaseUrl } from "@/constants";
+import { fetchedData } from "@/firebase/fetchFirebaseData";
 
 export default function CareersPage() {
   const [loading, setLoading] = useState(true);
@@ -16,15 +17,11 @@ export default function CareersPage() {
   useEffect(() => {
     async function fetchJobs() {
       try {
-        // get a snapshot of the collection data
-        const jobsSnapshot = await getDocs(collection(db, "Careers"));
+        // fetch all the careers from firestore
+        const fetchedJobs = await fetchedData("Careers");
 
-        // process jobs
-        const jobsData = jobsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setJobs(jobsData);
+        // Set the fetched data
+        setJobs(fetchedJobs);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -36,8 +33,13 @@ export default function CareersPage() {
 
   return (
     <div className="bg-gray-50 mb-5">
+      <HeroSection
+        title={"Careers"}
+        //   imageUrl={`https://media.istockphoto.com/id/1278834781/photo/group-of-happy-african-children-orphanage-in-nairobi-kenya-east-africa.jpg?s=612x612&w=0&k=20&c=CN_l88pra-m9Q0h8Gzwpv1TTCFwxVqPmarOSt8OlVtk=`}
+        imageUrl={`/images/careers_page_hero_section_image.png`}
+      />
       <div className="container mx-auto px-4 py-12">
-        {/* Hero Section */}
+        {/* Hero Section */
         <HeroSection
           //   imageUrl={`https://media.istockphoto.com/id/1278834781/photo/group-of-happy-african-children-orphanage-in-nairobi-kenya-east-africa.jpg?s=612x612&w=0&k=20&c=CN_l88pra-m9Q0h8Gzwpv1TTCFwxVqPmarOSt8OlVtk=`}
           imageUrl={`${mediaBaseUrl}/images/careers_page_hero_section_image.png`}
