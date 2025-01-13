@@ -6,6 +6,7 @@ import { Calendar, Target, Clock, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
+import { mediaBaseUrl } from "@/constants";
 
 function SkeletonHeroSection() {
   return <div className="h-96 bg-gray-200 animate-pulse rounded-md"></div>;
@@ -67,7 +68,7 @@ export default function ProjectsPage() {
           className=""
           title="PROJECTS"
           description=""
-          imageUrl="/images/project-page-image.png"
+          imageUrl={`${mediaBaseUrl}/images/project-page-image.png`}
           alt=""
         />
       </div>
@@ -79,7 +80,7 @@ export default function ProjectsPage() {
             className=""
             title="PROJECTS"
             description=""
-            imageUrl="/images/project-page-image.png"
+            imageUrl={`${mediaBaseUrl}/images/project-page-image.png`}
             alt=""
           />
         </div>
@@ -88,12 +89,8 @@ export default function ProjectsPage() {
       {loading ? (
         <SkeletonProject />
       ) : (
-        <div className="flex flex-col space-y-10 mb-24 content-div">
-          {/* TODO: Remove error fro beind displayed */}
-          {/* Data from backend */}
-          {error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
+        <div className="flex flex-col space-y-10 mb-24">
+          {
             // Each project displayed
             projects.map((project, index) => (
               <div
@@ -197,7 +194,7 @@ export default function ProjectsPage() {
                 </div>
               </div>
             ))
-          )}
+          }
         </div>
       )}
     </div>

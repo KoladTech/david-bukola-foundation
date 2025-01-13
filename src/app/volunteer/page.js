@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { mediaBaseUrl } from "@/constants";
 import {
   Collapsible,
   CollapsibleContent,
@@ -243,13 +244,14 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
           className="object-[50%_20%]"
           title="Volunteer"
           description=""
-          imageUrl="/images/get_involved_hero_section_image.jpeg"
+            imageUrl={`${mediaBaseUrl}/images/get_involved_hero_section_image.jpeg`}
           alt="Get Involved image"
         />
       </div>
       {/* Content Sections */}
       <div className="content-div p-4 mb-20">
         <div className="flex flex-col mb-16">
+
           <div>
             {/* <ContentCard content={content} /> */}
             <p className="text-xl text-gray-600 p-4">

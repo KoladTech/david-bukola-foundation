@@ -1,4 +1,5 @@
 "use client";
+import React, { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
@@ -6,9 +7,10 @@ import VideoPlayer from "@/components/VideoPlayer";
 import { Play, MessageSquarePlus, VideoIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import ShareTestimony from "@/components/ShareTestimony";
-import React, { useRef, useEffect, useState } from "react";
+import TestimonyForm from "@/app/testimonials/TestimonyForm";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
+import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
+import { mediaBaseUrl } from "@/constants";
 
 // const testimonials = [
 //   {
@@ -18,7 +20,7 @@ import { fetchedData } from "@/firebase/fetchFirebaseData";
 //     role: "Student volunteer",
 //     content:
 //       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis. ",
-//     image: "/images/person placeholder.png",
+//     image: {`${mediaBaseUrl}/images/person placeholder.png`},
 //     type: "text",
 //   },
 //   {
@@ -48,6 +50,7 @@ export default function TestimonialsPage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showTestimonyForm, setShowTestimonyForm] = useState(false);
+  const [showThankYou, setShowThankYou] = useState(false);
   const formRef = useRef(null);
 
   // Fetch Testimonials on component mount (Using a variable (loadTestimonials) to store the function)
@@ -60,8 +63,6 @@ export default function TestimonialsPage() {
         // Set the fetched data
         setTestimonials(fetchedTestimonials);
 
-        // TODO: Add user data to Users
-
         // log error if failed
       } catch (err) {
         setError("Failed to load projects");
@@ -73,7 +74,7 @@ export default function TestimonialsPage() {
     loadTestimonials();
   }, []);
 
-  // Close form page on Clicking outside the form (TODO: Add the x button to the form)
+  // Click anywhere outside the form to close the form
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target)) {
@@ -91,11 +92,6 @@ export default function TestimonialsPage() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [showTestimonyForm]); //dependencies (list of all reactive code in the effect setup)
-
-  // Function to close the form
-  const closeForm = () => {
-    setShowTestimonyForm(false);
-  };
 
   return (
     <div className="container mx-auto px-4 py-8 my-8">
@@ -136,78 +132,70 @@ export default function TestimonialsPage() {
         <SkeletonProject />
       ) : (
         <div>
-          {/* TODO: Take out error */}
-          {/* If the data fetch has an error */}
-          {error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            // Displaying Testimonials: Filter text testimonies > sort by date > display sorted testimonies
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-              {testimonials
-                .filter(
-                  (testimonial) =>
-                    testimonial.type === "text" && testimonial.approved === true
-                )
-                .sort((a, b) => {
-                  // Ensure both dates are valid before sorting
-                  const dateA = a.date?.seconds
-                    ? new Date(a.date.seconds * 1000)
-                    : new Date(0); // Default to epoch for invalid dates
-                  const dateB = b.date?.seconds
-                    ? new Date(b.date.seconds * 1000)
-                    : new Date(0);
-                  return dateB - dateA; // Sort in descending order (most recent first)
-                })
-                .map((testimonial, index) => (
-                  <Card
-                    key={testimonial.id}
-                    // Give alternating cards blue color by index
-                    className={`relative p-6 h-72 ${
-                      index % 2 === 1 ? "bg-blue-500 text-white" : ""
-                    }`}
-                  >
-                    <div className="flex flex-col">
-                      <div className="flex items-start gap-4">
-                        {/* Not using images currently */}
-                        {/* <Image
+          {/* // Displaying Testimonials: Filter text testimonies > sort by date > display sorted testimonies */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            {testimonials
+              .filter(
+                (testimonial) =>
+                  testimonial.type === "text" && testimonial.approved === true
+              )
+              .sort((a, b) => {
+                // Ensure both dates are valid before sorting
+                const dateA = a.date?.seconds
+                  ? new Date(a.date.seconds * 1000)
+                  : new Date(0); // Default to epoch for invalid dates
+                const dateB = b.date?.seconds
+                  ? new Date(b.date.seconds * 1000)
+                  : new Date(0);
+                return dateB - dateA; // Sort in descending order (most recent first)
+              })
+              .map((testimonial, index) => (
+                <Card
+                  key={testimonial.id}
+                  // Give alternating cards blue color by index
+                  className={`relative p-6 h-72 ${
+                    index % 2 === 1 ? "bg-blue-500 text-white" : ""
+                  }`}
+                >
+                  <div className="flex flex-col">
+                    <div className="flex items-start gap-4">
+                      {/* Not using images currently */}
+                      {/* <Image
                           src={testimonial.image}
                           alt={`${testimonial.name}'s profile picture`}
                           width={48}
                           height={48}
                           className="rounded-full"
                         /> */}
-                        <div>
-                          {/* Testifiers Name */}
-                          <h3 className="font-semibold">
-                            {testimonial.firstName}
-                          </h3>
-                          {/* Testifiers Occupation/Role */}
-                          <p
-                            className={`text-sm ${
-                              index % 2 === 1
-                                ? "text-blue-100"
-                                : "text-gray-500"
-                            } mb-2`}
-                          >
-                            {testimonial.occupation}
-                          </p>
-                          {/* Testimony */}
-                          <p className="text-sm">{testimonial.testimonial}</p>
-                        </div>
-                      </div>
-                      {/* Testimonial Dates */}
-                      <div className="absolute bottom-4 flex items-end">
-                        <p className="text-sm">
-                          {new Date(
-                            testimonial.date.seconds * 1000
-                          ).toLocaleDateString()}
+                      <div>
+                        {/* Testifiers Name */}
+                        <h3 className="font-semibold">
+                          {testimonial.firstName}
+                        </h3>
+                        {/* Testifiers Occupation/Role */}
+                        <p
+                          className={`text-sm ${
+                            index % 2 === 1 ? "text-blue-100" : "text-gray-500"
+                          } mb-2`}
+                        >
+                          {testimonial.occupation}
                         </p>
+                        {/* Testimony */}
+                        <p className="text-sm">{testimonial.testimonial}</p>
                       </div>
                     </div>
-                  </Card>
-                ))}
-            </div>
-          )}
+                    {/* Testimonial Dates */}
+                    <div className="absolute bottom-4 flex items-end">
+                      <p className="text-sm">
+                        {new Date(
+                          testimonial.date.seconds * 1000
+                        ).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+          </div>
         </div>
       )}
 
@@ -236,12 +224,27 @@ export default function TestimonialsPage() {
       {/* Display Testimony form on clicking the share testimony button*/}
       {showTestimonyForm && (
         <div>
-          <ShareTestimony
+          <TestimonyForm
             clickCloseForm={formRef}
-            closeForm={closeForm}
-            setShowTestimonyForm={setShowTestimonyForm}
+            // Uses form ref to close the form
+            closeForm={() => {
+              setShowTestimonyForm(false);
+            }}
+            setShowThankYou={setShowThankYou}
           />
         </div>
+      )}
+      {/* Show thank you message on successfully submitting testimony and onClosing the form */}
+      {showThankYou && (
+        <ThankYouMessageOnFormSuccess
+          showThankYou={showThankYou}
+          // Sends a function to set show thank you back to false)
+          closeThankYou={() => {
+            setShowThankYou(false);
+          }}
+          message={"Thank you for sharing your Testimony with us."}
+          extraMessage={"It will be reviewed by our team!"}
+        />
       )}
     </div>
   );

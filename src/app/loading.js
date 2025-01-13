@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import { mediaBaseUrl } from "@/constants";
 
 export default function Loading() {
   // State to track the progress of the loading indicator.
@@ -53,7 +54,7 @@ export default function Loading() {
       {/* Logo positioned at the bottom-right corner */}
       <div className="absolute bottom-8 right-8">
         <Image
-          src="/images/dbf-logo.svg"
+          src={`${mediaBaseUrl}/images/dbf-logo.svg`}
           alt="Foundation Logo"
           width={60}
           height={60}

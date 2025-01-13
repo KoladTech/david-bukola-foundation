@@ -10,6 +10,7 @@ import { RiFacebookBoxFill } from "react-icons/ri";
 import { RiTwitterXLine } from "react-icons/ri";
 import { GrInstagram } from "react-icons/gr";
 import { ApiStatsProvider } from "@/context/ApiStatsContext";
+import { mediaBaseUrl } from "@/constants";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -47,14 +48,14 @@ export default function RootLayout({ children }) {
             <Link href="/" className="flex items-center space-x-2">
               <Image
                 className="hidden md:block"
-                src="/images/dbf-full-logo.svg"
+                src={`${mediaBaseUrl}/images/dbf-full-logo.svg`}
                 alt="Foundation Logo"
                 width={140}
                 height={110}
               />
               <Image
                 className="md:hidden"
-                src="/images/dbf-full-logo.svg"
+                src={`${mediaBaseUrl}/images/dbf-full-logo.svg`}
                 alt="Foundation Logo"
                 width={140}
                 height={140}
@@ -189,7 +190,7 @@ export default function RootLayout({ children }) {
           <div
             className="absolute bottom-0 left-0 right-0 h-[calc(100%+2rem)] bg-cover bg-center w-full"
             style={{
-              backgroundImage: "url(/images/dbf-footer-image.jpg)",
+              backgroundImage: `url(${mediaBaseUrl}/images/dbf-footer-image.jpg)`,
             }}
           >
             <div className="absolute inset-0 bg-black opacity-50"></div>
@@ -201,7 +202,7 @@ export default function RootLayout({ children }) {
                   {/* Left Section */}
                   <div className="mb-8 md:mb-0 flex flex-col items-start">
                     <img
-                      src="/images/dbf-full-logo.svg"
+                      src={`${mediaBaseUrl}/images/dbf-full-logo.svg`}
                       alt="Foundation Logo"
                       className="w-48 h-36 md-lg:w-40 md-lg:h-32"
                     />

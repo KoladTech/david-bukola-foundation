@@ -7,6 +7,7 @@ import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
 import ProjectCard from "@/components/ProjectCard";
 import Achievement from "@/components/Achievement";
+import { mediaBaseUrl } from "@/constants";
 
 // Imports for testing Firebase analytics using a custom event
 // import { logEvent } from "firebase/analytics";
@@ -29,7 +30,7 @@ export default function Home() {
           title="DAVIDBUKOLA DEVELOPMENT FOUNDATION"
           title2=""
           description="Where care meets community"
-          imageUrl="/images/dbf-home-page-image.jpg"
+          imageUrl={`${mediaBaseUrl}/images/dbf-home-page-image.jpg`}
           alt="foundation welcome image"
         />
 

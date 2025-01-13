@@ -9,6 +9,8 @@ import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
 import ImageModal from "@/components/ImageModal";
 import { useApiData } from "@/context/ApiStatsContext";
+import { formatCurrency, formatTimestamp } from "@/lib/utils";
+import { mediaBaseUrl } from "@/constants";
 import {
   formatCurrency,
   formatObjectKeyToTitle,
@@ -55,7 +57,7 @@ export default function Page() {
               className=""
               title="ACHIEVEMENTS"
               description=""
-              imageUrl="/images/dbf-achievement-page-image1.jpg"
+              imageUrl={`${mediaBaseUrl}/images/dbf-achievement-page-image1.jpg`}
               alt=""
               darkenImage={"absolute inset-0 bg-black bg-opacity-40"}
               showStats={true}

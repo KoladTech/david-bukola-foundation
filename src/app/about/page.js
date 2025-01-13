@@ -6,6 +6,7 @@ import db from "@/firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import LoadingSpinner from "@/components/loadingSpinner";
+import { mediaBaseUrl } from "@/constants";
 
 export default function AboutPage() {
   const [statements, setStatements] = useState(null);
@@ -42,7 +43,7 @@ export default function AboutPage() {
         <HeroSection
           title={"ABOUT US"}
           description={"Learn about the Foundation"}
-          imageUrl={"/images/about-us-image.jpg"}
+          imageUrl={`${mediaBaseUrl}/images/about-us-image.jpg`}
           alt={"about foundation image"}
         />
       </section>
