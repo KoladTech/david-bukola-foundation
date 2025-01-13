@@ -54,7 +54,7 @@ export default function CareersPage() {
         {loading ? (
           <LoadingSpinner />
         ) : (
-          <div className="grid gap-8 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2 p-4">
             {jobs.map((job) => (
               <div
                 key={job.id}

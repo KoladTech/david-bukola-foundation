@@ -61,7 +61,7 @@ export default function Page() {
           )}
         </div>
         {/* Content Sections */}
-        <div className="grid gap-8 md:grid-cols-2 pb-5 content-div">
+        <div className="grid gap-8 md:grid-cols-2 p-4 content-div">
           {achievements.map((achievement, index) => (
             <div
               key={index}

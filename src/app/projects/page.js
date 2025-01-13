@@ -89,7 +89,7 @@ export default function ProjectsPage() {
       {loading ? (
         <SkeletonProject />
       ) : (
-        <div className="flex flex-col space-y-10 mb-24 content-div">
+        <div className="flex flex-col space-y-10 mb-24 content-div p-4">
           {
             // Each project displayed
             projects.map((project, index) => (

@@ -25,7 +25,7 @@ Together, we can make a world of difference. Get involved today!
         />
       </div>
       {/* Content Sections */}
-      <div className="flex flex-col space-y-10 mb-24 content-div mx-auto">
+      <div className="flex flex-col space-y-10 mb-24 content-div mx-auto p-4">
         <div className="my-8">
           {/* <ContentCard content={content} /> */}
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">

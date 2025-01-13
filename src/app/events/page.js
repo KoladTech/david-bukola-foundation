@@ -71,7 +71,7 @@ export default function Page() {
           title={`Events`}
         />
       </div>
-      <div className="content-div">
+      <div className="content-div p-4">
         <div className="flex flex-col space-y-10 mb-8">
           <div className="mb-8">
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
