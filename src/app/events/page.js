@@ -74,14 +74,15 @@ export default function Page() {
       <div className="content-div">
         <div className="flex flex-col space-y-10 mb-8">
           <div className="mb-8">
-            <p className="md:text-xl text-gray-700 p-4">
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               At DavidBukola Development Foundation, we believe in the power of
               community and shared purpose. Our events are designed to bring
               people together, raise awareness, and make a lasting impact on the
               causes we support, each event playing a vital role in driving
               positive change.
             </p>
-            <p className="md:text-xl text-gray-700 p-4">
+            <br />
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Join us as we work hand in hand to build a brighter future.
               Explore our upcoming events, and discover how you can be part of
               our mission to make a difference. Together, we can transform

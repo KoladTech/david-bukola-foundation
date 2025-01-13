@@ -244,17 +244,16 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
           className="object-[50%_20%]"
           title="Volunteer"
           description=""
-            imageUrl={`${mediaBaseUrl}/images/get_involved_hero_section_image.jpeg`}
+          imageUrl={`${mediaBaseUrl}/images/get_involved_hero_section_image.jpeg`}
           alt="Get Involved image"
         />
       </div>
       {/* Content Sections */}
       <div className="content-div p-4 mb-20">
         <div className="flex flex-col mb-16">
-
           <div>
             {/* <ContentCard content={content} /> */}
-            <p className="text-xl text-gray-600 p-4">
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Join us in making a difference. At DavidBukola Development
               Foundation, we believe everyone has the power to bring positive
               change. Whether you are looking to donate, volunteer, explore a

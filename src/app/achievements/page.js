@@ -9,13 +9,8 @@ import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
 import ImageModal from "@/components/ImageModal";
 import { useApiData } from "@/context/ApiStatsContext";
-import { formatCurrency, formatTimestamp } from "@/lib/utils";
 import { mediaBaseUrl } from "@/constants";
-import {
-  formatCurrency,
-  formatObjectKeyToTitle,
-  formatTimestamp,
-} from "@/lib/utils";
+import { formatCurrency, formatObjectKeyToTitle } from "@/lib/utils";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 
 export default function Page() {

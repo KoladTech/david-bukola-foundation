@@ -28,7 +28,7 @@ Together, we can make a world of difference. Get involved today!
       <div className="flex flex-col space-y-10 mb-24 content-div mx-auto">
         <div className="my-8">
           {/* <ContentCard content={content} /> */}
-          <p className="text-xl text-gray-700 p-4">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Join us in making a difference. At DavidBukola Development
             Foundation, we believe everyone has the power to bring positive
             change. Whether you are looking to donate, volunteer, explore a
