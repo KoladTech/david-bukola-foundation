@@ -238,8 +238,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
   };
 
   return (
-    <div className="mb-20">
-      <div className="flex flex-col mb-10">
+    <div className="mb-16">
+      <div className="flex flex-col mb-8">
         <HeroSection
           className="object-[50%_20%]"
           title="Volunteer"
@@ -249,8 +249,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
         />
       </div>
       {/* Content Sections */}
-      <div className="content-div p-4 mb-20">
-        <div className="flex flex-col mb-16">
+      <div className="">
+        <div className="flex flex-col mb-8">
           <div>
             {/* <ContentCard content={content} /> */}
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -265,268 +265,274 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
         </div>
 
         {/* Form section */}
-        <Card
-          className={`shadow-md ${
-            submitting && "blur-sm" //blurs the form while submitting
-          } transition duration-300`}
-        >
-          {submitting && ( //displays loading spinner in the center while submitting
-            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
-              <LoadingSpinner />
-            </div>
-          )}
+        <div className="content-div">
+          <Card
+            className={`shadow-md ${
+              submitting && "blur-sm" //blurs the form while submitting
+            } transition duration-300`}
+          >
+            {submitting && ( //displays loading spinner in the center while submitting
+              <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+                <LoadingSpinner />
+              </div>
+            )}
 
-          <CardHeader>
-            <CardTitle className="text-2xl">Volunteer Form</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading ? ( //Loading spinner before form completely loads
-              <LoadingSpinner />
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
+            <CardHeader>
+              <CardTitle className="text-2xl">Volunteer Form</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {loading ? ( //Loading spinner before form completely loads
+                <LoadingSpinner />
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      {/* First Name Input */}
+                      <Label htmlFor="firstName">First Name*</Label>
+                      <Input
+                        id="firstName"
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleInputChange}
+                      />
+                      {errors.firstName && (
+                        <p className="text-red-500 text-sm">
+                          {errors.firstName}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-2">
+                      {/* First Name Input */}
+                      <Label htmlFor="lastName">Last Name*</Label>
+                      <Input
+                        id="lastName"
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
-                    {/* First Name Input */}
-                    <Label htmlFor="firstName">First Name*</Label>
+                    {/* Email Input */}
+                    <Label className="text-gray-600" htmlFor="email">
+                      Email
+                    </Label>
                     <Input
-                      id="firstName"
-                      name="firstName"
-                      value={formData.firstName}
+                      id="email"
+                      name="email"
+                      value={formData.email}
                       onChange={handleInputChange}
+                      onBlur={(e) => {
+                        //TODO: convert this to function???
+                        //check if the value in the form is a valid email
+                        if (!validateEmail(e.target.value)) {
+                          setErrors({
+                            ...errors,
+                            email: "Please enter a valid email", //set an error for invalid emails
+                          });
+                        } else {
+                          const { email, ...restErrors } = errors;
+                          setErrors(restErrors); //set the original state of the error without the email error
+                        }
+                      }}
                     />
-                    {errors.firstName && (
-                      <p className="text-red-500 text-sm">{errors.firstName}</p>
+                    {errors.email && (
+                      <p className="text-red-500 text-sm">{errors.email}</p>
                     )}
                   </div>
+
                   <div className="space-y-2">
-                    {/* First Name Input */}
-                    <Label htmlFor="lastName">Last Name*</Label>
+                    {/* Phone Number Input */}
+                    <Label htmlFor="phone">Phone Number*</Label>
                     <Input
-                      id="lastName"
-                      name="lastName"
-                      value={formData.lastName}
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
                       onChange={handleInputChange}
                     />
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm">{errors.phone}</p>
+                    )}
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  {/* Email Input */}
-                  <Label className="text-gray-600" htmlFor="email">
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    onBlur={(e) => {
-                      //TODO: convert this to function???
-                      //check if the value in the form is a valid email
-                      if (!validateEmail(e.target.value)) {
-                        setErrors({
-                          ...errors,
-                          email: "Please enter a valid email", //set an error for invalid emails
-                        });
-                      } else {
-                        const { email, ...restErrors } = errors;
-                        setErrors(restErrors); //set the original state of the error without the email error
-                      }
-                    }}
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm">{errors.email}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  {/* Phone Number Input */}
-                  <Label htmlFor="phone">Phone Number*</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
-                  {errors.phone && (
-                    <p className="text-red-500 text-sm">{errors.phone}</p>
-                  )}
-                </div>
-
-                <div className="space-y-2">
-                  {/* Volunteer Interests */}
-                  <Label>Volunteer opportunities you're interested in</Label>
-                  {errors.interests && (
-                    <p className="text-red-500 text-sm">{errors.interests}</p>
-                  )}
-                  <div className="relative">
-                    <div className="flex items-center p-2 border rounded-md">
-                      <Collapsible
-                        open={isInterestsOpen}
-                        onOpenChange={setIsInterestsOpen}
-                      >
-                        <CollapsibleTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 px-2"
-                          >
-                            {formData.interests.length === 0
-                              ? "Select opportunities"
-                              : "Add more"}
-                            <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
-                          </Button>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                          {activities.map(
-                            (
-                              option //maps all the activities as checkboxes
-                            ) => (
-                              <div
-                                key={option.value}
-                                className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
-                              >
-                                <Checkbox //checkbox with each activity
-                                  id={option.value}
-                                  checked={formData.interests.includes(
-                                    option.value
-                                  )}
-                                  onCheckedChange={() =>
-                                    toggleInterest(option.value)
-                                  }
-                                />
-                                <Label htmlFor={option.value}>
-                                  {option.label}
-                                </Label>
-                              </div>
-                            )
-                          )}
-                        </CollapsibleContent>
-                      </Collapsible>
-                      {/* renders all the selected activities as pills */}
-                      <div className="flex flex-wrap gap-2 ml-2">
-                        {renderPills(
-                          activities,
-                          formData.interests,
-                          toggleInterest
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  {/* Days Available */}
-                  <Label>Available Days</Label>
-                  {errors.availableDays && (
-                    <p className="text-red-500 text-sm">
-                      {errors.availableDays}
-                    </p>
-                  )}
-                  <div className="relative">
-                    <div className="flex items-center p-2 border rounded-md">
-                      <Collapsible
-                        open={isDaysOpen}
-                        onOpenChange={setIsDaysOpen}
-                      >
-                        <CollapsibleTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 px-2"
-                          >
-                            {formData.availableDays.length === 0
-                              ? "Select days"
-                              : "Add more"}
-                            <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
-                          </Button>
-                        </CollapsibleTrigger>
-                        <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                          {daysOfWeek.map(
-                            (
-                              day //maps all the days of the week as selectable options in the dropdown
-                            ) => (
-                              <div
-                                key={day.value}
-                                className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
-                              >
-                                <Checkbox // checkbox with each day
-                                  id={day.value}
-                                  checked={formData.availableDays.includes(
-                                    day.value
-                                  )}
-                                  onCheckedChange={() => toggleDay(day.value)}
-                                />
-                                <Label htmlFor={day.value}>{day.label}</Label>
-                              </div>
-                            )
-                          )}
-                        </CollapsibleContent>
-                      </Collapsible>
-                      <div className="flex flex-wrap gap-2 ml-2">
+                  <div className="space-y-2">
+                    {/* Volunteer Interests */}
+                    <Label>Volunteer opportunities you're interested in</Label>
+                    {errors.interests && (
+                      <p className="text-red-500 text-sm">{errors.interests}</p>
+                    )}
+                    <div className="relative">
+                      <div className="flex items-center p-2 border rounded-md">
+                        <Collapsible
+                          open={isInterestsOpen}
+                          onOpenChange={setIsInterestsOpen}
+                        >
+                          <CollapsibleTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 px-2"
+                            >
+                              {formData.interests.length === 0
+                                ? "Select opportunities"
+                                : "Add more"}
+                              <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
+                            </Button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
+                            {activities.map(
+                              (
+                                option //maps all the activities as checkboxes
+                              ) => (
+                                <div
+                                  key={option.value}
+                                  className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                                >
+                                  <Checkbox //checkbox with each activity
+                                    id={option.value}
+                                    checked={formData.interests.includes(
+                                      option.value
+                                    )}
+                                    onCheckedChange={() =>
+                                      toggleInterest(option.value)
+                                    }
+                                  />
+                                  <Label htmlFor={option.value}>
+                                    {option.label}
+                                  </Label>
+                                </div>
+                              )
+                            )}
+                          </CollapsibleContent>
+                        </Collapsible>
                         {/* renders all the selected activities as pills */}
-                        {renderPills(
-                          daysOfWeek,
-                          formData.availableDays,
-                          toggleDay
-                        )}
+                        <div className="flex flex-wrap gap-2 ml-2">
+                          {renderPills(
+                            activities,
+                            formData.interests,
+                            toggleInterest
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  {/* Additional Comments */}
-                  <Label htmlFor="comments">Additional Comments (If any)</Label>
-                  <Textarea
-                    id="comments"
-                    name="comments"
-                    value={formData.comments}
-                    onChange={handleInputChange}
-                    rows={4}
-                    className="focus-visible:ring-blue-500"
-                  />
-                </div>
+                  <div className="space-y-2">
+                    {/* Days Available */}
+                    <Label>Available Days</Label>
+                    {errors.availableDays && (
+                      <p className="text-red-500 text-sm">
+                        {errors.availableDays}
+                      </p>
+                    )}
+                    <div className="relative">
+                      <div className="flex items-center p-2 border rounded-md">
+                        <Collapsible
+                          open={isDaysOpen}
+                          onOpenChange={setIsDaysOpen}
+                        >
+                          <CollapsibleTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 px-2"
+                            >
+                              {formData.availableDays.length === 0
+                                ? "Select days"
+                                : "Add more"}
+                              <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
+                            </Button>
+                          </CollapsibleTrigger>
+                          <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
+                            {daysOfWeek.map(
+                              (
+                                day //maps all the days of the week as selectable options in the dropdown
+                              ) => (
+                                <div
+                                  key={day.value}
+                                  className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                                >
+                                  <Checkbox // checkbox with each day
+                                    id={day.value}
+                                    checked={formData.availableDays.includes(
+                                      day.value
+                                    )}
+                                    onCheckedChange={() => toggleDay(day.value)}
+                                  />
+                                  <Label htmlFor={day.value}>{day.label}</Label>
+                                </div>
+                              )
+                            )}
+                          </CollapsibleContent>
+                        </Collapsible>
+                        <div className="flex flex-wrap gap-2 ml-2">
+                          {/* renders all the selected activities as pills */}
+                          {renderPills(
+                            daysOfWeek,
+                            formData.availableDays,
+                            toggleDay
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
-                <div className="flex items-center space-x-2">
-                  {/* Receive newsletter checkbox */}
-                  <Checkbox
-                    id="newsletter"
-                    checked={formData.newsletter}
-                    onCheckedChange={(checked) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        newsletter: checked,
-                      }))
+                  <div className="space-y-2">
+                    {/* Additional Comments */}
+                    <Label htmlFor="comments">
+                      Additional Comments (If any)
+                    </Label>
+                    <Textarea
+                      id="comments"
+                      name="comments"
+                      value={formData.comments}
+                      onChange={handleInputChange}
+                      rows={4}
+                      className="focus-visible:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="flex items-center space-x-2">
+                    {/* Receive newsletter checkbox */}
+                    <Checkbox
+                      id="newsletter"
+                      checked={formData.newsletter}
+                      onCheckedChange={(checked) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          newsletter: checked,
+                        }))
+                      }
+                    />
+                    <Label htmlFor="newsletter" className="text-sm">
+                      Receive updates/notifications about dbf
+                    </Label>
+                  </div>
+
+                  {/* Submit Button */}
+                  <Button
+                    type="submit"
+                    disabled={
+                      !formData.firstName ||
+                      !formData.lastName ||
+                      !formData.phone ||
+                      !formData.email ||
+                      !formData.availableDays.length ||
+                      !formData.interests.length ||
+                      !validateEmail(formData.email) ||
+                      submitting
                     }
-                  />
-                  <Label htmlFor="newsletter" className="text-sm">
-                    Receive updates/notifications about dbf
-                  </Label>
-                </div>
-
-                {/* Submit Button */}
-                <Button
-                  type="submit"
-                  disabled={
-                    !formData.firstName ||
-                    !formData.lastName ||
-                    !formData.phone ||
-                    !formData.email ||
-                    !formData.availableDays.length ||
-                    !formData.interests.length ||
-                    !validateEmail(formData.email) ||
-                    submitting
-                  }
-                  className="w-full bg-blue-500 hover:bg-blue-700"
-                >
-                  Submit
-                </Button>
-              </form>
-            )}
-          </CardContent>
-        </Card>
+                    className="w-full bg-blue-500 hover:bg-blue-700"
+                  >
+                    Submit
+                  </Button>
+                </form>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
       {showThankYou && ( //Thank you Card after submission
         <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
