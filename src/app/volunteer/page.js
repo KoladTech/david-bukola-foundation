@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import HeroSection from "@/components/HeroSection";
-import ContentCard from "@/components/ContentCard";
 import { ChevronsUpDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,8 +19,8 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 import addUserDocument from "@/firebase/createUser";
-import { formatTimestamp } from "@/lib/utils";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
+import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 
 const daysOfWeek = [
   { value: "monday", label: "Monday" },
@@ -162,7 +161,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
           }),
         });
 
-        // If the mail did not send succesfully
+        // If the mail did not send successfully
         if (!response.ok) {
           console.log(JSON.stringify(response.json));
           console.log("Error while sending email");
@@ -250,43 +249,39 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
       </div>
       {/* Content Sections */}
       <div className="content-div p-4 mb-20">
-        <div className="flex flex-col mb-16">
-          <div>
-            {/* <ContentCard content={content} /> */}
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Join us in making a difference. At DavidBukola Development
-              Foundation, we believe everyone has the power to bring positive
-              change. Whether you are looking to donate, volunteer, explore a
-              meaningful career or participate in our events, there are
-              countless ways to support our mission. Together, we can make a
-              world of difference. Get involved today!
-            </p>
-          </div>
+        <div className="mb-16">
+          {/* <ContentCard content={content} /> */}
+          <p className="text-lg text-gray-600 mx-auto">
+            Join us in making a difference. At DavidBukola Development
+            Foundation, we believe everyone has the power to bring positive
+            change. Whether you are looking to donate, volunteer, explore a
+            meaningful career or participate in our events, there are countless
+            ways to support our mission. Together, we can make a world of
+            difference. Get involved today!
+          </p>
         </div>
 
-        {/* Form section */}
-        <Card
-          className={`shadow-md ${
-            submitting && "blur-sm" //blurs the form while submitting
-          } transition duration-300`}
-        >
-          {submitting && ( //displays loading spinner in the center while submitting
-            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
-              <LoadingSpinner />
-            </div>
-          )}
+        <div className="flex flex-col">
+          {/* Form section */}
+          <Card
+            className={`shadow-md ${
+              submitting && "blur-sm" //blurs the form while submitting
+            } transition duration-300`}
+          >
+            {submitting && ( //displays loading spinner in the center while submitting
+              <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+                <LoadingSpinner />
+              </div>
+            )}
 
-          <CardHeader>
-            <CardTitle className="text-2xl">Volunteer Form</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading ? ( //Loading spinner before form completely loads
-              <LoadingSpinner />
-            ) : (
+            <CardHeader>
+              <CardTitle className="text-2xl">Volunteer Form</CardTitle>
+            </CardHeader>
+            <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
+                  {/* First Name Input */}
                   <div className="space-y-2">
-                    {/* First Name Input */}
                     <Label htmlFor="firstName">First Name*</Label>
                     <Input
                       id="firstName"
@@ -298,8 +293,9 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                       <p className="text-red-500 text-sm">{errors.firstName}</p>
                     )}
                   </div>
+
+                  {/* Last Name Input */}
                   <div className="space-y-2">
-                    {/* First Name Input */}
                     <Label htmlFor="lastName">Last Name*</Label>
                     <Input
                       id="lastName"
@@ -310,8 +306,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   </div>
                 </div>
 
+                {/* Email Input */}
                 <div className="space-y-2">
-                  {/* Email Input */}
                   <Label className="text-gray-600" htmlFor="email">
                     Email
                   </Label>
@@ -379,27 +375,31 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                           </Button>
                         </CollapsibleTrigger>
                         <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                          {activities.map(
-                            (
-                              option //maps all the activities as checkboxes
-                            ) => (
-                              <div
-                                key={option.value}
-                                className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
-                              >
-                                <Checkbox //checkbox with each activity
-                                  id={option.value}
-                                  checked={formData.interests.includes(
-                                    option.value
-                                  )}
-                                  onCheckedChange={() =>
-                                    toggleInterest(option.value)
-                                  }
-                                />
-                                <Label htmlFor={option.value}>
-                                  {option.label}
-                                </Label>
-                              </div>
+                          {loading ? (
+                            <LoadingSpinner />
+                          ) : (
+                            activities.map(
+                              (
+                                option //maps all the activities as checkboxes
+                              ) => (
+                                <div
+                                  key={option.value}
+                                  className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                                >
+                                  <Checkbox //checkbox with each activity
+                                    id={option.value}
+                                    checked={formData.interests.includes(
+                                      option.value
+                                    )}
+                                    onCheckedChange={() =>
+                                      toggleInterest(option.value)
+                                    }
+                                  />
+                                  <Label htmlFor={option.value}>
+                                    {option.label}
+                                  </Label>
+                                </div>
+                              )
                             )
                           )}
                         </CollapsibleContent>
@@ -416,8 +416,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   </div>
                 </div>
 
+                {/* Days Available */}
                 <div className="space-y-2">
-                  {/* Days Available */}
                   <Label>Available Days</Label>
                   {errors.availableDays && (
                     <p className="text-red-500 text-sm">
@@ -476,8 +476,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   </div>
                 </div>
 
+                {/* Additional Comments */}
                 <div className="space-y-2">
-                  {/* Additional Comments */}
                   <Label htmlFor="comments">Additional Comments (If any)</Label>
                   <Textarea
                     id="comments"
@@ -489,8 +489,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   />
                 </div>
 
-                <div className="flex items-center space-x-2">
-                  {/* Receive newsletter checkbox */}
+                {/* Receive newsletter checkbox */}
+                <div className="flex items-center space-x-2 relative">
                   <Checkbox
                     id="newsletter"
                     checked={formData.newsletter}
@@ -524,23 +524,20 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   Submit
                 </Button>
               </form>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-      {showThankYou && ( //Thank you Card after submission
-        <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
-          <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
-            <div className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center">
-              <h2 className="text-2xl font-semibold text-white">
-                Thank you for your volunteering
-              </h2>
-              <p className="text-gray-900">
-                Your support helps us make a difference.
-              </p>
-            </div>
+            </CardContent>
           </Card>
         </div>
+      </div>
+      {showThankYou && ( //Thank you Card after submission
+        <ThankYouMessageOnFormSuccess
+          showThankYou={showThankYou}
+          // Sends a function to set show thank you back to false)
+          closeThankYou={() => {
+            setShowThankYou(false);
+          }}
+          message={"Thank you for volunteering!"}
+          extraMessage={"Your support helps us make a difference."}
+        />
       )}
     </div>
   );

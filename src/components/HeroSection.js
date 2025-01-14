@@ -67,7 +67,7 @@ export default function HeroSection({
         <p className="text-gray-600 md:whitespace-nowrap">{description}</p>
       </div> */}
       {/* <div className="relative rounded-3xl overflow-hidden mb-12 h-[300px] md:h-[533px]"> */}
-      <div className="relative overflow-hidden aspect-[1/1] md:aspect-[2.7/1]">
+      <div className="relative overflow-hidden aspect-[1/1] md:aspect-[2.7/1] flex flex-row justify-center items-center">
         <div className="aspect-w-2 aspect-h-3 md:aspect-w-2 md:aspect-h-1">
           <Image
             src={imageUrl}
