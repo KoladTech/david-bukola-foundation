@@ -17,7 +17,7 @@ const addUserDocument = async (data) => {
     );
   }
 
-  const usersCollectionRef = collection(db, "TestCollection"); //Get the Users collection
+  const usersCollectionRef = collection(db, "Users"); //Get the Users collection
 
   try {
     //Create a userData here to add a timestamp for when the document was created

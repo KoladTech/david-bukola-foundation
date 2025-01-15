@@ -76,7 +76,7 @@ export default function TestimonyForm({
       e,
       formType: "testimonyForm",
       formData: testimonyData,
-      yourCollection: "TestCollection",
+      yourCollection: "Testimonials",
       userRole: "testifier",
       closeForm,
       setShowThankYou,

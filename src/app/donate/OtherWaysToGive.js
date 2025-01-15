@@ -36,7 +36,7 @@ export default function OtherWaysToGive() {
                 <div className="text-left">
                   <div className="font-medium">Material Donations</div>
                   <div className="text-sm text-gray-500">
-                    Clothes, food, supplies
+                    Clothes, food, supplies, others
                   </div>
                 </div>
               </div>
