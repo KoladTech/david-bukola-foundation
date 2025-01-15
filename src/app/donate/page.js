@@ -22,6 +22,7 @@ import {
 } from "firebase/firestore";
 import { countries } from "@/constants";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
+import OtherWaysToGive from "./OtherWaysToGive";
 
 // Donation constants
 const donationAmounts = [
@@ -90,7 +91,7 @@ export default function DonatePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showThankYou, setShowThankYou] = useState(false);
 
-  // Functionsssssssssssssssssssssssssssssssssssssss
+  // Functions
 
   const handleCountryChange = (e) => {
     // Get the country selected and set it
@@ -380,7 +381,7 @@ export default function DonatePage() {
 
       {/* Form Section */}
       <div className="">
-        <div className="max-w-6xl mx-auto px-4 py-12 bg-sky-800">
+        <div className="max-w-6xl mx-auto px-4 py-12 bg-[#20426b]">
           <div className="flex flex-col md:flex-row gap-8 py-12">
             {/* Main Form Area */}
             <div className="flex-1">
@@ -447,8 +448,8 @@ export default function DonatePage() {
                               className={`bg-sky-200 h-12 text-lg ${
                                 selectedAmount === amount.value &&
                                 otherAmount === false
-                                  ? "bg-sky-800"
-                                  : "border-white/40 text-white hover:bg-sky-800"
+                                  ? "bg-[#20426b]"
+                                  : "border-white/40 text-white hover:bg-[#20426b]"
                               }`}
                               // Oncliking any amount button
                               onClick={() => {
@@ -484,7 +485,7 @@ export default function DonatePage() {
                           />
                         </div>
                         <Button
-                          className="w-full h-12 bg-sky-800 hover:bg-sky-700"
+                          className="w-full h-12 bg-[#20426b] hover:bg-sky-700"
                           onClick={handleNext}
                           disabled={
                             !donateFormData.amount ||
@@ -657,7 +658,7 @@ export default function DonatePage() {
                             Back
                           </Button>
                           <Button
-                            className="flex-1 h-12 bg-sky-800 hover:bg-sky-700"
+                            className="flex-1 h-12 bg-[#20426b] hover:bg-sky-700"
                             onClick={handleNext}
                             disabled={
                               !donateFormData.firstName ||
@@ -691,7 +692,7 @@ export default function DonatePage() {
                             variant={`${
                               donateFormData.paymentMethod === "card"
                             } ? "default" : "outline"`}
-                            className={`w-full justify-center text-left h-auto p-4 bg-sky-800 hover:bg-sky-950 ${
+                            className={`w-full justify-center text-left h-auto p-4 bg-[#20426b] hover:bg-sky-950 ${
                               donateFormData.paymentMethod === "card"
                                 ? "bg-sky-600"
                                 : ""
@@ -719,7 +720,7 @@ export default function DonatePage() {
                             variant={`${
                               donateFormData.paymentMethod === "transfer"
                             } ? "default" : "outline"`}
-                            className={`w-full justify-center text-left h-auto p-4 bg-sky-800 hover:bg-sky-950 ${
+                            className={`w-full justify-center text-left h-auto p-4 bg-[#20426b] hover:bg-sky-950 ${
                               donateFormData.paymentMethod === "transfer"
                                 ? "bg-sky-600"
                                 : ""
@@ -757,35 +758,50 @@ export default function DonatePage() {
                                       key={index}
                                       className="p-3 rounded-lg "
                                     >
-                                      <p className="text-black text-lg font-medium">
-                                        Bank: {account.bankName}
-                                      </p>
-                                      <div className="flex justify-start items-center space-x-2">
-                                        <p className="text-black text-lg font-medium">
-                                          Account Number:{" "}
-                                          {account.accountNumber}
+                                      <div className="text-black text-sm md:text-lg font-medium">
+                                        <p className="md:inline-block">Bank:</p>
+                                        <p className="md:inline-block md:ml-2 md:mt-0 mt-1">
+                                          {account.bankName}
                                         </p>
-                                        <Button
-                                          variant="ghost"
-                                          className="h-8 text-sky-800 hover:text-sky-100 hover:bg-sky-800"
-                                          onClick={() => {
-                                            handleCopy(
-                                              index,
-                                              account.accountNumber
-                                            ); // Function to copy and display "Account Number copied"
-                                          }}
-                                        >
-                                          Copy
-                                        </Button>
-                                        {copiedStates[index] && (
-                                          <div className="text-xs text-sky-800 px-4 py-2 rounded-md shadow-lg">
-                                            Account number copied!
-                                          </div>
-                                        )}
                                       </div>
-                                      <p className="text-black text-lg font-medium">
-                                        Account Name: {account.accountName}
-                                      </p>
+                                      <div className="flex justify-start items-center space-x-2">
+                                        <div className="text-black text-sm md:text-lg font-medium mt-2">
+                                          <p className="md:inline-block">
+                                            Account Number:
+                                          </p>
+                                          <p className="md:inline-block md:ml-2 md:mt-0 mt-1">
+                                            {account.accountNumber}
+                                          </p>
+                                        </div>
+                                        <div className="flex justify-start items-center space-x-2 mt-2">
+                                          <Button
+                                            variant="ghost"
+                                            className={`text-sm h-8 ${
+                                              copiedStates[index]
+                                                ? "text-green-600"
+                                                : "text-sky-800"
+                                            } hover:text-sky-100 hover:bg-[#20426b]`}
+                                            onClick={() => {
+                                              handleCopy(
+                                                index,
+                                                account.accountNumber
+                                              );
+                                            }}
+                                          >
+                                            {copiedStates[index]
+                                              ? "Copied"
+                                              : "Copy"}
+                                          </Button>
+                                        </div>
+                                      </div>
+                                      <div className="text-black text-sm md:text-lg font-medium mt-2">
+                                        <p className="md:inline-block">
+                                          Account Name:
+                                        </p>
+                                        <p className="md:inline-block md:ml-2 md:mt-0 mt-1">
+                                          {account.accountName}
+                                        </p>
+                                      </div>
                                     </div>
                                   ))}
                                 </div>
@@ -854,8 +870,14 @@ export default function DonatePage() {
             </div>
 
             {/* Other Ways to Give */}
-            <div className="md:w-72">
-              <h3 className="text-lg font-semibold mb-4">Other ways to give</h3>
+            {/* Other ways to give */}
+            <div className="lg:w-80">
+              <OtherWaysToGive />
+            </div>
+            {/* <div className="md:w-72">
+              <h3 className="text-white text-lg font-semibold mb-4">
+                Other ways to give
+              </h3>
               <div className="space-y-2">
                 {otherWays.map((way) => (
                   <Button
@@ -867,7 +889,7 @@ export default function DonatePage() {
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

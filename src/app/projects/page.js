@@ -180,14 +180,14 @@ export default function ProjectsPage() {
                   <div className="relative aspect-[4/3] w-full">
                     <PictureCard
                       className=""
-                      imageSrc={project.images.image1}
+                      imageSrc={`${mediaBaseUrl}${project.images.image1}`}
                       altText=""
                     />
                   </div>
                   <div className="relative aspect-[4/3] w-full">
                     <PictureCard
                       className=""
-                      imageSrc={project.images.image2}
+                      imageSrc={`${mediaBaseUrl}${project.images.image2}`}
                       altText=""
                     />
                   </div>
