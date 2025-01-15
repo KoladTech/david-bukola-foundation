@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import HeroSection from "@/components/HeroSection";
-import ContentCard from "@/components/ContentCard";
 import { ChevronsUpDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { mediaBaseUrl } from "@/constants";
 import {
   Collapsible,
   CollapsibleContent,
@@ -19,8 +19,8 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 import addUserDocument from "@/firebase/createUser";
-import { formatTimestamp } from "@/lib/utils";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
+import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 
 const daysOfWeek = [
   { value: "monday", label: "Monday" },
@@ -78,6 +78,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     loadActivities();
   }, []);
 
+  // Handles form fields input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -86,6 +87,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     }));
   };
 
+  // Populate the interests array in the formData
   const toggleInterest = (value) => {
     setFormData((prev) => ({
       ...prev,
@@ -95,6 +97,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     }));
   };
 
+  // Populate the days array in the formData
   const toggleDay = (value) => {
     setFormData((prev) => ({
       ...prev,
@@ -115,6 +118,10 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
 
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required.";
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = "Last name is required.";
     }
 
     if (!formData.email.trim() || !validateEmail(formData.email)) {
@@ -154,7 +161,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
           }),
         });
 
-        // If the mail did not send succesfully
+        // If the mail did not send successfully
         if (!response.ok) {
           console.log(JSON.stringify(response.json));
           console.log("Error while sending email");
@@ -209,8 +216,9 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
 
   const renderPills = (options, selectedValues, toggleFunction) => {
     return selectedValues.map((value) => {
-      const option = options.find((o) => o.value === value);
+      const option = options.find((o) => o.value === value); // find the value of every option
       return (
+        //return a blue pill representing a selected value
         <span
           key={value}
           className="inline-flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full"
@@ -229,44 +237,50 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
   };
 
   return (
-    <div className="container mx-auto p-4 py-12 mb-10">
-      <div className="mx-auto">
+    <div className="mb-20">
+      <div className="flex flex-col mb-10">
+        <HeroSection
+          className="object-[50%_20%]"
+          title="Volunteer"
+          description=""
+          imageUrl={`${mediaBaseUrl}/images/get_involved_hero_section_image.jpeg`}
+          alt="Get Involved image"
+        />
+      </div>
+      {/* Content Sections */}
+      <div className="content-div p-4 mb-20">
+        <div className="mb-16">
+          {/* <ContentCard content={content} /> */}
+          <p className="text-lg text-gray-600 mx-auto">
+            Join us in making a difference. At DavidBukola Development
+            Foundation, we believe everyone has the power to bring positive
+            change. Whether you are looking to donate, volunteer, explore a
+            meaningful career or participate in our events, there are countless
+            ways to support our mission. Together, we can make a world of
+            difference. Get involved today!
+          </p>
+        </div>
+
         <div className="flex flex-col">
-          <HeroSection
-            className=""
-            title="Volunteer"
-            description=""
-            imageUrl="/images/get_involved_hero_section_image.jpeg"
-            alt="Get Involved image"
-          />
-        </div>
-        {/* Content Sections */}
-        <div className="flex flex-col space-y-10 mb-28">
-          <div>
-            <ContentCard content={content} />
-          </div>
-        </div>
+          {/* Form section */}
+          <Card
+            className={`shadow-md ${
+              submitting && "blur-sm" //blurs the form while submitting
+            } transition duration-300`}
+          >
+            {submitting && ( //displays loading spinner in the center while submitting
+              <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
+                <LoadingSpinner />
+              </div>
+            )}
 
-        <Card
-          className={`shadow-md ${
-            submitting && "blur-sm"
-          } transition duration-300`}
-        >
-          {submitting && (
-            <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
-              <LoadingSpinner />
-            </div>
-          )}
-
-          <CardHeader>
-            <CardTitle className="text-2xl">Volunteer Form</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {loading ? (
-              <LoadingSpinner />
-            ) : (
+            <CardHeader>
+              <CardTitle className="text-2xl">Volunteer Form</CardTitle>
+            </CardHeader>
+            <CardContent>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
+                  {/* First Name Input */}
                   <div className="space-y-2">
                     <Label htmlFor="firstName">First Name*</Label>
                     <Input
@@ -279,8 +293,10 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                       <p className="text-red-500 text-sm">{errors.firstName}</p>
                     )}
                   </div>
+
+                  {/* Last Name Input */}
                   <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
+                    <Label htmlFor="lastName">Last Name*</Label>
                     <Input
                       id="lastName"
                       name="lastName"
@@ -290,6 +306,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   </div>
                 </div>
 
+                {/* Email Input */}
                 <div className="space-y-2">
                   <Label className="text-gray-600" htmlFor="email">
                     Email
@@ -299,6 +316,19 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    onBlur={(e) => {
+                      //TODO: convert this to function???
+                      //check if the value in the form is a valid email
+                      if (!validateEmail(e.target.value)) {
+                        setErrors({
+                          ...errors,
+                          email: "Please enter a valid email", //set an error for invalid emails
+                        });
+                      } else {
+                        const { email, ...restErrors } = errors;
+                        setErrors(restErrors); //set the original state of the error without the email error
+                      }
+                    }}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-sm">{errors.email}</p>
@@ -306,6 +336,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                 </div>
 
                 <div className="space-y-2">
+                  {/* Phone Number Input */}
                   <Label htmlFor="phone">Phone Number*</Label>
                   <Input
                     id="phone"
@@ -320,6 +351,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                 </div>
 
                 <div className="space-y-2">
+                  {/* Volunteer Interests */}
                   <Label>Volunteer opportunities you're interested in</Label>
                   {errors.interests && (
                     <p className="text-red-500 text-sm">{errors.interests}</p>
@@ -343,27 +375,36 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                           </Button>
                         </CollapsibleTrigger>
                         <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                          {activities.map((option) => (
-                            <div
-                              key={option.value}
-                              className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
-                            >
-                              <Checkbox
-                                id={option.value}
-                                checked={formData.interests.includes(
-                                  option.value
-                                )}
-                                onCheckedChange={() =>
-                                  toggleInterest(option.value)
-                                }
-                              />
-                              <Label htmlFor={option.value}>
-                                {option.label}
-                              </Label>
-                            </div>
-                          ))}
+                          {loading ? (
+                            <LoadingSpinner />
+                          ) : (
+                            activities.map(
+                              (
+                                option //maps all the activities as checkboxes
+                              ) => (
+                                <div
+                                  key={option.value}
+                                  className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                                >
+                                  <Checkbox //checkbox with each activity
+                                    id={option.value}
+                                    checked={formData.interests.includes(
+                                      option.value
+                                    )}
+                                    onCheckedChange={() =>
+                                      toggleInterest(option.value)
+                                    }
+                                  />
+                                  <Label htmlFor={option.value}>
+                                    {option.label}
+                                  </Label>
+                                </div>
+                              )
+                            )
+                          )}
                         </CollapsibleContent>
                       </Collapsible>
+                      {/* renders all the selected activities as pills */}
                       <div className="flex flex-wrap gap-2 ml-2">
                         {renderPills(
                           activities,
@@ -375,6 +416,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   </div>
                 </div>
 
+                {/* Days Available */}
                 <div className="space-y-2">
                   <Label>Available Days</Label>
                   {errors.availableDays && (
@@ -401,24 +443,29 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                           </Button>
                         </CollapsibleTrigger>
                         <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                          {daysOfWeek.map((day) => (
-                            <div
-                              key={day.value}
-                              className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
-                            >
-                              <Checkbox
-                                id={day.value}
-                                checked={formData.availableDays.includes(
-                                  day.value
-                                )}
-                                onCheckedChange={() => toggleDay(day.value)}
-                              />
-                              <Label htmlFor={day.value}>{day.label}</Label>
-                            </div>
-                          ))}
+                          {daysOfWeek.map(
+                            (
+                              day //maps all the days of the week as selectable options in the dropdown
+                            ) => (
+                              <div
+                                key={day.value}
+                                className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                              >
+                                <Checkbox // checkbox with each day
+                                  id={day.value}
+                                  checked={formData.availableDays.includes(
+                                    day.value
+                                  )}
+                                  onCheckedChange={() => toggleDay(day.value)}
+                                />
+                                <Label htmlFor={day.value}>{day.label}</Label>
+                              </div>
+                            )
+                          )}
                         </CollapsibleContent>
                       </Collapsible>
                       <div className="flex flex-wrap gap-2 ml-2">
+                        {/* renders all the selected activities as pills */}
                         {renderPills(
                           daysOfWeek,
                           formData.availableDays,
@@ -429,6 +476,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   </div>
                 </div>
 
+                {/* Additional Comments */}
                 <div className="space-y-2">
                   <Label htmlFor="comments">Additional Comments (If any)</Label>
                   <Textarea
@@ -441,12 +489,16 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   />
                 </div>
 
-                <div className="flex items-center space-x-2">
+                {/* Receive newsletter checkbox */}
+                <div className="flex items-center space-x-2 relative">
                   <Checkbox
                     id="newsletter"
                     checked={formData.newsletter}
                     onCheckedChange={(checked) =>
-                      setFormData((prev) => ({ ...prev, newsletter: checked }))
+                      setFormData((prev) => ({
+                        ...prev,
+                        newsletter: checked,
+                      }))
                     }
                   />
                   <Label htmlFor="newsletter" className="text-sm">
@@ -454,14 +506,17 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   </Label>
                 </div>
 
+                {/* Submit Button */}
                 <Button
                   type="submit"
                   disabled={
                     !formData.firstName ||
+                    !formData.lastName ||
                     !formData.phone ||
                     !formData.email ||
                     !formData.availableDays.length ||
                     !formData.interests.length ||
+                    !validateEmail(formData.email) ||
                     submitting
                   }
                   className="w-full bg-blue-500 hover:bg-blue-700"
@@ -469,26 +524,20 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                   Submit
                 </Button>
               </form>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-      {showThankYou && (
-        <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
-          <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
-            <div
-              // ref={closeForm}
-              className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
-            >
-              <h2 className="text-2xl font-semibold text-white">
-                Thank you for your volunteering
-              </h2>
-              <p className="text-gray-900">
-                Your support helps us make a difference.
-              </p>
-            </div>
+            </CardContent>
           </Card>
         </div>
+      </div>
+      {showThankYou && ( //Thank you Card after submission
+        <ThankYouMessageOnFormSuccess
+          showThankYou={showThankYou}
+          // Sends a function to set show thank you back to false)
+          closeThankYou={() => {
+            setShowThankYou(false);
+          }}
+          message={"Thank you for volunteering!"}
+          extraMessage={"Your support helps us make a difference."}
+        />
       )}
     </div>
   );

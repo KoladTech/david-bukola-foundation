@@ -1,15 +1,15 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
-import { LuArrowLeft, LuSend } from "react-icons/lu";
+import React, { useEffect, useState } from "react";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { doc, getDocs, collection, query, where } from "firebase/firestore";
+import { getDocs, collection, query, where } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 
 export default function JobDetailsPage({ params }) {
+  // Get page slug
   let slug = params.slug;
-  console.log(slug);
   const [loading, setLoading] = useState(true);
   const [job, setJob] = useState(null);
 
@@ -55,10 +55,10 @@ export default function JobDetailsPage({ params }) {
   // const job = jobPostings.find((job) => job.id === Number(id));
   // const job = jobPostings.filter((job) => job.id === id)[0];
 
-  if (!job) {
+  if (!job && !loading) {
     return (
-      <div className="mb-16">
-        <LoadingSpinner />
+      <div className="container mx-auto mb-16">
+        <h1 className="font-semibold text-2xl">No such job Found</h1>
       </div>
     );
   }
@@ -97,79 +97,98 @@ export default function JobDetailsPage({ params }) {
   return (
     <div className="bg-gray-50 mb-5">
       <div className="container mx-auto px-4 py-12">
+        {/* Back Button */}
         <Link
           href="/careers"
           className="inline-flex items-center text-blue-500 hover:text-blue-600 mb-6"
         >
-          <LuArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Careers
         </Link>
-
-        <h1 className="text-4xl font-bold mb-4">{job.title}</h1>
-        <div className="mb-6">
-          <span className="text-blue-500 font-medium">{job.department}</span>
-          <span className="mx-2">•</span>
-          <span className="text-gray-600">{job.location}</span>
-          <span className="mx-2">•</span>
-          <span className="text-gray-600">{job.type}</span>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-          <h2 className="text-2xl font-bold mb-4">Job Description</h2>
-          <p className="text-gray-600 mb-6">{job.description}</p>
-
-          <h3 className="text-xl font-bold mb-2">Responsibilities:</h3>
-          {/* <ul className="list-disc pl-6 mb-6">
-            {job.responsibilities.map((resp, index) => (
-              <li key={index} className="text-gray-600 mb-2">
-                {resp}
-              </li>
-            ))}
-          </ul> */}
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
           <div>
-            {job.responsibilities.map((responsibility, index) => (
-              <div key={index}>
-                {Object.entries(responsibility).map(([title, tasks]) => (
-                  <div key={title} className="mb-6">
-                    <h3 className="text-base font-semibold">{title}</h3>
-                    <ul className="list-inside list-disc ml-6">
-                      {tasks.map((task, idx) => (
-                        <li key={idx} className="text-gray-600">
-                          {task}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
+            <h1 className="text-4xl font-bold mb-4">{job.title}</h1>
+            <div className="mb-6">
+              <span className="text-blue-500 font-medium">
+                {job.department}
+              </span>
+              <span className="mx-2">•</span>
+              <span className="text-gray-600">{job.location}</span>
+              <span className="mx-2">•</span>
+              <span className="text-gray-600">{job.type}</span>
+            </div>
+
+            <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+              <h2 className="text-2xl font-bold mb-4">Job Description</h2>
+              <p className="text-gray-600 mb-6">{job.description}</p>
+
+              <h3 className="text-xl font-bold mb-2">Responsibilities:</h3>
+              <div className="">
+                <ul className="list-inside list-square">
+                  {job.responsibilities.map((responsibility, index) => {
+                    if (typeof responsibility === "string") {
+                      // Render string responsibilities as plain text
+                      return (
+                        <div key={index} className="mb-4">
+                          <p className="text-gray-600">{responsibility}</p>
+                        </div>
+                      );
+                    } else if (typeof responsibility === "object") {
+                      // Render object responsibilities with detailed categories and tasks
+                      return (
+                        <div key={index}>
+                          {Object.entries(responsibility).map(
+                            ([title, tasks]) => (
+                              <div key={title} className="mb-4">
+                                <h3 className="text-base font-semibold">
+                                  {title}
+                                </h3>
+                                <ul className="list-inside list-disc ml-6">
+                                  {tasks.map((task, idx) => (
+                                    <li key={idx} className="text-gray-600">
+                                      {task}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      );
+                    }
+                    return null; // Handle unexpected data types gracefully
+                  })}
+                </ul>
               </div>
-            ))}
-          </div>
 
-          <h3 className="text-xl font-bold mb-2">Requirements:</h3>
-          <ul className="list-disc pl-6">
-            {job.requirements.map((qual, index) => (
-              <li key={index} className="text-gray-600 mb-2">
-                {qual}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-10">
-            <h3 className="text-xl font-bold mb-2">How to Apply:</h3>
-            <p className="text-gray-600 mb-6">
-              Send your CV to
-              <a
-                className="text-blue-700 font-semibold"
-                href="mailto:davidbukolafoundation@gmail.com?subject=Job Application for Project Coordinator"
-              >
-                {" "}
-                davidbukolafoundation@gmail.com{" "}
-              </a>
-              with the job title as the subject.
-            </p>
-          </div>
-        </div>
+              <h3 className="text-xl font-bold mb-2">Requirements:</h3>
+              <ul className="list-disc pl-6">
+                {job.requirements.map((qual, index) => (
+                  <li key={index} className="text-gray-600 mb-2">
+                    {qual}
+                  </li>
+                ))}
+              </ul>
+              {/* How to apply section*/}
+              <div className="mt-10">
+                <h3 className="text-xl font-bold mb-2">How to Apply:</h3>
+                <p className="text-gray-600 mb-6">
+                  Send your CV to
+                  <a
+                    className="text-blue-700 font-semibold"
+                    href="mailto:davidbukolafoundation@gmail.com?subject=Job Application for Project Coordinator"
+                  >
+                    {" "}
+                    davidbukolafoundation@gmail.com{" "}
+                  </a>
+                  with the job title as the subject.
+                </p>
+              </div>
+            </div>
 
-        {/* <div className="bg-white rounded-2xl shadow-lg p-6">
+            {/* <div className="bg-white rounded-2xl shadow-lg p-6">
           <h2 className="text-2xl font-bold mb-6">Apply for this Position</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -265,6 +284,8 @@ export default function JobDetailsPage({ params }) {
             </button>
           </form>
         </div> */}
+          </div>
+        )}
       </div>
     </div>
   );

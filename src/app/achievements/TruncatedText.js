@@ -10,11 +10,13 @@ export default function TruncatedText({ text, limit }) {
     return <p className="text-gray-600">{text}</p>;
   }
 
+  // Function to toggle expand
   const toggleExpand = () => setIsExpanded(!isExpanded);
 
   return (
     <div>
       <p className="text-gray-600">
+        {/* Display full text if expanded or Display up to the limit if not*/}
         {isExpanded ? text : `${text.slice(0, limit)}...`}
         <button
           onClick={toggleExpand}
@@ -27,6 +29,7 @@ export default function TruncatedText({ text, limit }) {
   );
 }
 
+// Using javascript propType library to implement type checking
 TruncatedText.propTypes = {
   text: PropTypes.string.isRequired,
   limit: PropTypes.number.isRequired,

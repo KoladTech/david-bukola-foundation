@@ -1,6 +1,7 @@
 import Link from "next/link";
 import ContentCard from "./ContentCard";
 import PictureCard from "./PictureCard";
+import { mediaBaseUrl } from "@/constants";
 
 export default function GetInvolved() {
   return (
@@ -22,7 +23,7 @@ export default function GetInvolved() {
               </div>
               <div className="relative w-32 h-32 flex-shrink-0">
                 <PictureCard
-                  imageSrc="/images/donate-now-image.png"
+                  imageSrc={`${mediaBaseUrl}/images/donate-now-image.png`}
                   altText=""
                 />
               </div>
@@ -39,7 +40,10 @@ export default function GetInvolved() {
                 />
               </div>
               <div className="relative w-32 h-32 flex-shrink-0">
-                <PictureCard imageSrc="/images/join-us-image.png" altText="" />
+                <PictureCard
+                  imageSrc={`${mediaBaseUrl}/images/join-us-image.png`}
+                  altText=""
+                />
               </div>
             </div>
           </Link>

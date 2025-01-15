@@ -1,18 +1,19 @@
 "use client";
-
+import { mediaBaseUrl } from "@/constants";
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronDown, Search } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import HeroSection from "@/components/HeroSection";
-import thankYouMessage from "@/lib/thankYouMessage";
 import handleEmailValidation from "@/lib/emailVerification";
 import db from "@/firebase/firebaseConfig";
 import addUserDocument from "@/firebase/createUser";
+import { handleFormSubmit } from "@/firebase/handleFormSubmission";
 import {
   collection,
   addDoc,
@@ -20,9 +21,11 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { useApiData } from "@/context/ApiBankDetailsContext";
 import { countries } from "@/constants";
+import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
+import OtherWaysToGive from "./OtherWaysToGive";
 
+// Donation constants
 const donationAmounts = [
   { value: 5000, label: "₦5,000" },
   { value: 10000, label: "₦10,000" },
@@ -32,22 +35,16 @@ const donationAmounts = [
   { value: 200000, label: "₦200,000" },
 ];
 
-const otherWays = ["Donate Clothes", "Donate Foodstuff", "Others"];
+// // Other ways to give constants
+// const otherWays = ["Donate Clothes", "Donate Foodstuff", "Others"];
 
-// Number of card steps for donation process
+// Number of card steps for payment flow
 const totalSteps = 3;
 
 export default function DonatePage() {
   // Form states
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionError, setSubmissionError] = useState("");
-
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedAmount, setSelectedAmount] = useState(null);
-  const [otherAmount, setOtherAmount] = useState(false);
-  const [inputMade, setInputMade] = useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = useState(false);
-  const [emailValid, setEmailValid] = useState(false);
   const [donateFormData, setDonateFormData] = useState({
     firstName: "",
     lastName: "",
@@ -62,13 +59,22 @@ export default function DonatePage() {
     approved: false,
     date: serverTimestamp(),
   });
+
+  // Monetary States
+  const [selectedAmount, setSelectedAmount] = useState("");
+  const [otherAmount, setOtherAmount] = useState(false);
+
+  // Email states
+  const [emailErrorMessage, setEmailErrorMessage] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+
   // router for going back to a previous page
   const router = useRouter();
   // Next js router for storing the search parameters of pages visited
   const searchParams = useSearchParams();
+  // routing states
   const returnTo = searchParams.get("returnTo");
   const [previousPage, setPreviousPage] = useState("/");
-  const [showThankYou, setShowThankYou] = useState("");
 
   // Getting bank details
   const [bankDetails, setBankDetails] = useState([]);
@@ -81,20 +87,68 @@ export default function DonatePage() {
   // Getting countries and phone codes
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedPhoneCode, setSelectedPhoneCode] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState(countries);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
-  const handleCountryChange = (e) => {
-    const countryCode = e.target.value;
-    setSelectedCountry(countryCode);
-    const country = countries.find((c) => c.code === countryCode);
-    if (country) {
-      setSelectedPhoneCode(country.phoneCode);
+  // Other states
+  const [currentStep, setCurrentStep] = useState(0);
+  const [showThankYou, setShowThankYou] = useState(false);
+
+  // Search usefffect to filter by country name, code or phone code
+  useEffect(() => {
+    const filtered = countries.filter(
+      (country) =>
+        country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        country.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        country.phoneCode.includes(searchTerm)
+    );
+    setFilteredCountries(filtered);
+  }, [searchTerm]);
+
+  // Useffect for For closing the search/select dropdown
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
     }
-    // Update FormData to reflect the selected country immediately
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Functions
+  // country change function
+  // const handleCountryChange = (e) => {
+  //   // Get the country selected and set it
+  //   const countryCode = e.target.value;
+  //   setSelectedCountry(countryCode);
+  //   // Check if country code is available and set it
+  //   const country = countries.find((c) => c.code === countryCode);
+  //   if (country) {
+  //     setSelectedPhoneCode(country.phoneCode);
+  //   } else {
+  //     setSelectedPhoneCode("");
+  //   }
+  //   // Update FormData to reflect the selected country immediately
+  //   setDonateFormData((prev) => ({
+  //     ...prev,
+  //     country: countryCode, // Update the country field in FormData (using the value itself not the selected country state)
+  //     phoneCode: country ? country.phoneCode : prev.phoneCode, // Update the phone code in FormData
+  //   }));
+  // };
+
+  // Temp country change function
+  const handleCountryChange = (country) => {
+    setSelectedCountry(country.name);
+    setSelectedPhoneCode(country.phoneCode);
     setDonateFormData((prev) => ({
       ...prev,
-      country: countryCode, // Update the country field in FormData (using the value itself not the selected country state)
-      phoneCode: country ? country.phoneCode : prev.phoneCode, // Update the phone code in FormData
+      country: country.name,
+      phoneCode: country.phoneCode,
     }));
+    setIsDropdownOpen(false);
   };
 
   // Fetch Banking details
@@ -125,7 +179,9 @@ export default function DonatePage() {
 
   // Handles the copy buttons for the account numbers
   const handleCopy = (index, accountNumber) => {
+    // copy the number to clipboard
     navigator.clipboard.writeText(accountNumber);
+    // Set the variable with the copied value
     setCopiedStates((prev) => {
       const newState = [...prev];
       newState[index] = true;
@@ -150,20 +206,20 @@ export default function DonatePage() {
 
   // Handles logic of going to next stage only after selecting a donation to give
   const handleNext = () => {
-    console.log("The Whole FormData:", donateFormData);
-    if (selectedAmount) {
+    // If an amount is selected
+    if (donateFormData.amount) {
       setCurrentStep(currentStep + 1);
     }
+    console.log("Input change Form Data", donateFormData);
   };
   // Back Navigation on payment flow
   const handleBack = () => {
-    if (selectedAmount) {
-      setCurrentStep(Math.max(0, currentStep - 1));
-    }
+    setCurrentStep(Math.max(0, currentStep - 1));
   };
 
   // Handles getting data from input fields and populating the donateFormData
   const handleInputChange = (e) => {
+    // Get the name and value of the field
     const { name, value } = e.target;
     if (name === "email") {
       setEmailErrorMessage(false); // allow user type, without constant error message
@@ -177,38 +233,27 @@ export default function DonatePage() {
       ...prev,
       [name]: value,
     }));
-    setInputMade(true);
+    // Solely for to the Amount selection part
+    console.log("Input change Form Data", donateFormData);
   };
 
-  // references for input fields
-  const inputRef = useRef(null);
-
-  // UseEffect to ensure the setAmount is updated properly as the state changes
-  useEffect(() => {
-    if (inputMade) {
-      inputRef.current.value === "" && !selectedAmount
-        ? setSelectedAmount("")
-        : setSelectedAmount(donateFormData.amount);
-    }
-  });
+  // references for other amount input field
+  const otherAmountInputRef = useRef(null);
 
   // Set the input field to be used to get the amount
   const useOtherAmount = () => {
     setOtherAmount(true);
-    if (inputRef.current.value === "") {
+    if (otherAmountInputRef.current.value === "") {
       setSelectedAmount("");
     }
   };
-  // Create a single ref object
-  const donateFormDataRefs = useRef({});
 
   // Clears input field
   const clearInput = (e) => {
-    setInputMade(false); // Make the input made button false (To disable next)
     setOtherAmount(false); // disable otherAmount field
     // clear the amount input field via the ref of the field
-    if (inputRef.current) {
-      inputRef.current.value = "";
+    if (otherAmountInputRef.current) {
+      otherAmountInputRef.current.value = "";
     }
   };
 
@@ -228,19 +273,38 @@ export default function DonatePage() {
     //   router.push("/");
     // }
   };
+  // TODO: Make it a component entirely
   // Function to show thank you message and reset the form data
-  const successfullySubmittedTestimony = () => {
-    console.log("successfullySubmittedTestimony");
+  // const successfullySubmittedTestimony = () => {
+  //   console.log("successfullySubmittedTestimony");
 
-    setShowThankYou(true); // Show thank you message
+  //   setShowThankYou(true); // Show thank you message
 
-    // Set a timeout for thank you message
-    setTimeout(() => {
-      setShowThankYou(false);
-      reRoutePage();
-    }, 3000);
+  //   // Set a timeout for thank you message
+  //   setTimeout(() => {
+  //     setShowThankYou(false);
+  //     reRoutePage();
+  //   }, 3000);
 
-    // Reset Testimony data.
+  //   // Reset Testimony data.
+  //   setDonateFormData({
+  //     firstName: "",
+  //     lastName: "",
+  //     email: "",
+  //     phoneNumber: "",
+  //     phoneCode: "",
+  //     paymentMethod: "",
+  //     amount: "",
+  //     city: "",
+  //     country: "",
+  //     newsletter: false,
+  //     approved: false,
+  //     date: serverTimestamp(),
+  //   });
+  // };
+
+  // Reset Donate data.
+  const resetFormData = () => {
     setDonateFormData({
       firstName: "",
       lastName: "",
@@ -258,74 +322,41 @@ export default function DonatePage() {
   };
 
   // Handles form submission on clicking share button
-  const handleDonateFormSubmit = async (e) => {
-    e.preventDefault(); //Prevent default i.e form reloading
-    setIsSubmitting(true); // Show loading indicator
-    setSubmissionError(""); // Reset error state
-
-    try {
-      // Send a POST request to the api with testimony data object as payload
-      console.log("try block");
-      const response = await fetch("api/sendMail", {
-        //1
-        method: "POST",
-        headers: {
-          "content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          formType: "donateForm",
-          formData: donateFormData,
-        }), //2
-      });
-
-      // If the mail did not send succesfully
-      if (!response.ok) {
-        console.log("response not ok");
-        console.log("donationFormData", donateFormData);
-        console.log("Error: ", response.error);
-        setSubmissionError("Failed to send email. Please try again.");
-        return;
-      }
-
-      // Add to firestore
-      const collectionRef = collection(db, "Donations"); //get the testimonial collection //3
-      const docRef = await addDoc(collectionRef, donateFormData); //add a new document to the collection //4
-
-      // Add the new user to the Users Collection
-      await addUserDocument({ ...donateFormData, roles: ["donor"] });
-
-      // Call a success function
-      successfullySubmittedTestimony();
-    } catch (error) {
-      console.log("Error sending form: ", error); //5
-      setSubmissionError(
-        "An error occurred while submitting your form details. Please try again." //6
-      );
-    } finally {
-      setIsSubmitting(false); //Hide loading indicator
-    }
+  const handleSubmit = (e) => {
+    handleFormSubmit({
+      e,
+      formType: "donateForm",
+      formData: donateFormData,
+      yourCollection: "Donations",
+      userRole: "donor",
+      setSubmissionError,
+      setIsSubmitting,
+      setShowThankYou,
+      resetFormData,
+      reRoutePage,
+    });
   };
 
   return (
     // <form onSubmit={handleFormSubmit}>
-    <div className="relative">
+    <div className="">
       {/* Hero Section */}
       <div className="relative w-full overflow-hidden">
         <HeroSection
-          imageUrl={"/images/donate-image.jpg"}
+          imageUrl={`${mediaBaseUrl}/images/donate-image.jpg`}
           bottomRightWidget={false}
         />
-        {/* Maybe make this "Donate Now" text animated from right to left on the screen */}
+        {/* Donate Now Text */}
         <div className="absolute inset-0 flex items-center justify-center ">
-          <h1 className="slide-text text-4xl md:text-6xl font-bold text-white flex items-center gap-2  whitespace-nowrap">
+          <h1 className="slide-text text-4xl md:text-6xl font-bold text-white flex gap-2  whitespace-nowrap">
             Donate Now
           </h1>
         </div>
       </div>
 
       {/* Form Section */}
-      <div className="full-width-div">
-        <div className="max-w-6xl mx-auto px-4 py-12 bg-sky-800">
+      <div className="">
+        <div className="max-w-6xl mx-auto px-4 py-12 bg-[#20426b]">
           <div className="flex flex-col md:flex-row gap-8 py-12">
             {/* Main Form Area */}
             <div className="flex-1">
@@ -392,11 +423,12 @@ export default function DonatePage() {
                               className={`bg-sky-200 h-12 text-lg ${
                                 selectedAmount === amount.value &&
                                 otherAmount === false
-                                  ? "bg-sky-800"
-                                  : "border-white/40 text-white hover:bg-sky-800"
+                                  ? "bg-[#20426b]"
+                                  : "border-white/40 text-white hover:bg-[#20426b]"
                               }`}
-                              // Onclciking any amount button
+                              // Oncliking any amount button
                               onClick={() => {
+                                console.log("Button Form Data", donateFormData);
                                 // alert([selectedAmount, otherAmount]);
                                 clearInput(); //Clear the input field
                                 setSelectedAmount(amount.value); //set that buttons amount
@@ -420,7 +452,7 @@ export default function DonatePage() {
                             name="amount"
                             placeholder="Other Amount"
                             value={FormData.amount}
-                            ref={inputRef}
+                            ref={otherAmountInputRef}
                             onClick={useOtherAmount} //Enable otherAmount field
                             onInput={(e) => {
                               handleInputChange(e); //Call function to Handle input data
@@ -428,9 +460,13 @@ export default function DonatePage() {
                           />
                         </div>
                         <Button
-                          className="w-full h-12 bg-sky-800 hover:bg-sky-700"
+                          className="w-full h-12 bg-[#20426b] hover:bg-sky-700"
                           onClick={handleNext}
-                          disabled={!selectedAmount}
+                          disabled={
+                            !donateFormData.amount ||
+                            (otherAmount &&
+                              otherAmountInputRef.current.value === "")
+                          }
                         >
                           Next
                         </Button>
@@ -453,9 +489,6 @@ export default function DonatePage() {
                                 name="firstName"
                                 value={FormData.firstName}
                                 onChange={handleInputChange}
-                                ref={(el) =>
-                                  (donateFormDataRefs.current.firstName = el)
-                                }
                                 required
                                 placeholder="First Name * "
                                 className="input-field"
@@ -468,10 +501,6 @@ export default function DonatePage() {
                                 name="lastName"
                                 value={FormData.lastName}
                                 onChange={handleInputChange}
-                                // ref={lastNameRef}
-                                ref={(el) =>
-                                  (donateFormDataRefs.current.lastName = el)
-                                }
                                 required
                                 placeholder="Last Name * "
                                 className="input-field"
@@ -486,12 +515,8 @@ export default function DonatePage() {
                               name="email"
                               value={FormData.email}
                               onChange={handleInputChange}
-                              // ref={emailRef}
                               onBlur={(e) =>
                                 setEmailErrorMessage(handleEmailValidation(e))
-                              } // Use arrow function so you can pass the event as a parameter
-                              ref={(el) =>
-                                (donateFormDataRefs.current.email = el)
                               }
                               required
                               placeholder="Email * "
@@ -518,23 +543,57 @@ export default function DonatePage() {
                               className="input-field"
                             />
                           </div>
-                          {/* Country */}
-                          <div>
-                            <select
-                              id="country"
-                              name="country"
-                              value={FormData.selectedCountry}
-                              onChange={handleCountryChange}
-                              className="input-field"
-                              required
+                          {/* Custom Country Dropdown............................ */}
+                          {/* Search input and Country*/}
+                          <div className="relative" ref={dropdownRef}>
+                            <Button
+                              type="input"
+                              variant="outline"
+                              className="w-full text-base font-normal justify-between input-field"
+                              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             >
-                              <option value="">Select a country *</option>
-                              {countries.map((country) => (
-                                <option key={country.code} value={country.code}>
-                                  {country.name}
-                                </option>
-                              ))}
-                            </select>
+                              {selectedCountry || "Select a country *"}
+                              <ChevronDown className="ml-2 h-4 w-4" />
+                            </Button>
+                            {isDropdownOpen && (
+                              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+                                <div className="p-2">
+                                  <div className="relative">
+                                    <Input
+                                      type="text"
+                                      placeholder="Search country or code"
+                                      value={searchTerm}
+                                      onChange={(e) =>
+                                        setSearchTerm(e.target.value)
+                                      }
+                                      className="pl-8"
+                                    />
+                                    <Search
+                                      className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                                      size={16}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="max-h-60 overflow-auto">
+                                  {filteredCountries.map((country) => (
+                                    <Button
+                                      key={country.code}
+                                      type="button"
+                                      variant="ghost"
+                                      className="w-full justify-between text-left"
+                                      onClick={() =>
+                                        handleCountryChange(country)
+                                      }
+                                    >
+                                      <span>{country.name}</span>
+                                      <span className="text-gray-500">
+                                        ({country.code}) {country.phoneCode}
+                                      </span>
+                                    </Button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                           {/* PhoneNumber */}
                           <div className="flex md:w-1/2 w-full">
@@ -560,7 +619,7 @@ export default function DonatePage() {
                                     key={country.code}
                                     value={country.phoneCode}
                                   >
-                                    {country.phoneCode}
+                                    {country.code}: {country.phoneCode}
                                   </option>
                                 ))}
                               </select>
@@ -608,12 +667,12 @@ export default function DonatePage() {
                             Back
                           </Button>
                           <Button
-                            className="flex-1 h-12 bg-sky-800 hover:bg-sky-700"
+                            className="flex-1 h-12 bg-[#20426b] hover:bg-sky-700"
                             onClick={handleNext}
                             disabled={
-                              !donateFormDataRefs.current.firstName?.value ||
-                              !donateFormDataRefs.current.lastName?.value ||
-                              !donateFormDataRefs.current.email?.value ||
+                              !donateFormData.firstName ||
+                              !donateFormData.lastName ||
+                              !donateFormData.email ||
                               !donateFormData.country ||
                               emailErrorMessage ||
                               !emailValid
@@ -642,7 +701,7 @@ export default function DonatePage() {
                             variant={`${
                               donateFormData.paymentMethod === "card"
                             } ? "default" : "outline"`}
-                            className={`w-full justify-center text-left h-auto p-4 bg-sky-800 hover:bg-sky-950 ${
+                            className={`w-full justify-center text-left h-auto p-4 bg-[#20426b] hover:bg-sky-950 ${
                               donateFormData.paymentMethod === "card"
                                 ? "bg-sky-600"
                                 : ""
@@ -670,7 +729,7 @@ export default function DonatePage() {
                             variant={`${
                               donateFormData.paymentMethod === "transfer"
                             } ? "default" : "outline"`}
-                            className={`w-full justify-center text-left h-auto p-4 bg-sky-800 hover:bg-sky-950 ${
+                            className={`w-full justify-center text-left h-auto p-4 bg-[#20426b] hover:bg-sky-950 ${
                               donateFormData.paymentMethod === "transfer"
                                 ? "bg-sky-600"
                                 : ""
@@ -708,35 +767,50 @@ export default function DonatePage() {
                                       key={index}
                                       className="p-3 rounded-lg "
                                     >
-                                      <p className="text-black text-lg font-medium">
-                                        Bank: {account.bankName}
-                                      </p>
-                                      <div className="flex justify-start items-center space-x-2">
-                                        <p className="text-black text-lg font-medium">
-                                          Account Number:{" "}
-                                          {account.accountNumber}
+                                      <div className="text-black text-sm md:text-lg font-medium">
+                                        <p className="md:inline-block">Bank:</p>
+                                        <p className="md:inline-block md:ml-2 md:mt-0 mt-1">
+                                          {account.bankName}
                                         </p>
-                                        <Button
-                                          variant="ghost"
-                                          className="h-8 text-sky-800 hover:text-sky-100 hover:bg-sky-800"
-                                          onClick={() => {
-                                            handleCopy(
-                                              index,
-                                              account.accountNumber
-                                            ); // Function to copy and display "Account Number copied"
-                                          }}
-                                        >
-                                          Copy
-                                        </Button>
-                                        {copiedStates[index] && (
-                                          <div className="text-xs text-sky-800 px-4 py-2 rounded-md shadow-lg">
-                                            Account number copied!
-                                          </div>
-                                        )}
                                       </div>
-                                      <p className="text-black text-lg font-medium">
-                                        Account Name: {account.accountName}
-                                      </p>
+                                      <div className="flex justify-start items-center space-x-2">
+                                        <div className="text-black text-sm md:text-lg font-medium mt-2">
+                                          <p className="md:inline-block">
+                                            Account Number:
+                                          </p>
+                                          <p className="md:inline-block md:ml-2 md:mt-0 mt-1">
+                                            {account.accountNumber}
+                                          </p>
+                                        </div>
+                                        <div className="flex justify-start items-center space-x-2 mt-2">
+                                          <Button
+                                            variant="ghost"
+                                            className={`text-sm h-8 ${
+                                              copiedStates[index]
+                                                ? "text-green-600"
+                                                : "text-sky-800"
+                                            } hover:text-sky-100 hover:bg-[#20426b]`}
+                                            onClick={() => {
+                                              handleCopy(
+                                                index,
+                                                account.accountNumber
+                                              );
+                                            }}
+                                          >
+                                            {copiedStates[index]
+                                              ? "Copied"
+                                              : "Copy"}
+                                          </Button>
+                                        </div>
+                                      </div>
+                                      <div className="text-black text-sm md:text-lg font-medium mt-2">
+                                        <p className="md:inline-block">
+                                          Account Name:
+                                        </p>
+                                        <p className="md:inline-block md:ml-2 md:mt-0 mt-1">
+                                          {account.accountName}
+                                        </p>
+                                      </div>
                                     </div>
                                   ))}
                                 </div>
@@ -759,7 +833,7 @@ export default function DonatePage() {
                             variant="outline"
                             className="flex-1 h-12 text-white bg-sky-600"
                             onClick={(e) => {
-                              handleDonateFormSubmit(e);
+                              handleSubmit(e);
                             }}
                             // Disable the button until transfer method is selected
                             disabled={
@@ -804,9 +878,14 @@ export default function DonatePage() {
               </Card>
             </div>
 
-            {/* Other Ways to Give */}
-            <div className="md:w-72">
-              <h3 className="text-lg font-semibold mb-4">Other ways to give</h3>
+            {/* Other ways to give */}
+            <div className="lg:w-80">
+              <OtherWaysToGive />
+            </div>
+            {/* <div className="md:w-72">
+              <h3 className="text-white text-lg font-semibold mb-4">
+                Other ways to give
+              </h3>
               <div className="space-y-2">
                 {otherWays.map((way) => (
                   <Button
@@ -818,27 +897,21 @@ export default function DonatePage() {
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-      {/* Thank You message when "I have made payment is clicked". (Placed here so it'll display on the whole page) */}
+      {/* Thank You message */}
       {showThankYou && (
-        <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
-          <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
-            <div
-              // ref={closeForm}
-              className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center"
-            >
-              <h2 className="text-2xl font-semibold text-gray-900">
-                Thank you for your donation
-              </h2>
-              <p className="text-gray-700">
-                Your generosity helps us make a difference.
-              </p>
-            </div>
-          </Card>
-        </div>
+        <ThankYouMessageOnFormSuccess
+          showThankYou={showThankYou}
+          // Sends a function to set show thank you back to false)
+          closeThankYou={() => {
+            setShowThankYou(false);
+          }}
+          message={"Thank you for your donation!"}
+          extraMessage={"Your generosity helps us make a difference."}
+        />
       )}
     </div>
     // </form>

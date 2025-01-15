@@ -4,15 +4,22 @@
 
 html,
 body {
-  max-width: 1140px;
+  /* max-width: 1140px; */
   height: 100%; /* Make sure the html and body elements take the full height */
+  margin: auto;
+  overflow: auto;
+  /* this allowed the sticky behaviour to work. Don't really understand why */
+}
+
+.content-div {
+  max-width: 1140px;
   margin: auto;
 }
 
 body {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   overflow-x: hidden;
 }
 
@@ -150,10 +157,10 @@ footer {
 
 @keyframes slideRightToLeft {
   0% {
-    transform: translateX(230%); /* Start from right side */
+    transform: translateX(360%); /* Start from right side */
   }
   100% {
-    transform: translateX(-230%); /* Move to the left side */
+    transform: translateX(-360%); /* Move to the left side */
   }
 }
 

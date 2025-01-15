@@ -2,6 +2,7 @@ import PictureCard from "@/components/PictureCard";
 import ContentCard from "@/components/ContentCard";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 import { useEffect, useState } from "react";
+import { mediaBaseUrl } from "@/constants";
 
 export default function MeetOurTeam() {
   // variables to store and set states for data and errors asynchronously
@@ -53,7 +54,10 @@ export default function MeetOurTeam() {
                   .map((member) => (
                     <div key={member.id} className="flex flex-col items-center">
                       <div className=" flex items-center justify-center w-64 h-64 rounded-lg shadow-lg overflow-hidden">
-                        <PictureCard imageSrc={member.image} altText="" />
+                        <PictureCard
+                          imageSrc={`${mediaBaseUrl}${member.image}`}
+                          altText=""
+                        />
                       </div>
                       <div className="flex items-center justify-center">
                         <ContentCard

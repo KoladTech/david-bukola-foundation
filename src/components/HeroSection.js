@@ -3,10 +3,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { Play } from "lucide-react";
-import AchievementWidgets from "./AchievementWidgets";
 import { formatCurrency } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "./loadingSpinner";
+import DonationWidget from "./DonationWidget";
+import AchievementWidgets from "./AchievementWidgets";
 
 const AnimatedCounter = ({ targetValue, statsLoading }) => {
   const [displayValue, setDisplayValue] = useState(0); // Value to display
@@ -58,20 +59,22 @@ export default function HeroSection({
 }) {
   return (
     <>
-      <div className="flex flex-col md:flex-row items-start justify-between md:items-end my-4 space-y-4">
+      {/* <div className="flex flex-col md:flex-row items-start justify-between md:items-end my-4 space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold">
           {title}
           <span className="block">{title2}</span>
         </h1>
         <p className="text-gray-600 md:whitespace-nowrap">{description}</p>
-      </div>
-      <div className="relative rounded-3xl overflow-hidden mb-12 h-[300px] md:h-[533px]">
+      </div> */}
+      {/* <div className="relative rounded-3xl overflow-hidden mb-12 h-[300px] md:h-[533px]"> */}
+      <div className="relative overflow-hidden aspect-[1/1] md:aspect-[2.7/1] flex flex-row justify-center items-center">
         <div className="aspect-w-2 aspect-h-3 md:aspect-w-2 md:aspect-h-1">
           <Image
             src={imageUrl}
             alt={alt}
-            className={`w-full h-full ${className}`}
-            fill={true}
+            className={`${className}`}
+            fill
+            // style={{ objectFit: "cover", objectPosition: "50% 30%" }}
             style={{ objectFit: "cover" }}
           />
           {/* Darken background div */}
@@ -79,7 +82,8 @@ export default function HeroSection({
           {/* Video section for displaying the Testimonials Page featured video */}
           {video && (
             <div>
-              <div className="relative w-full aspect-video mb-6 rounded-lg overflow-hidden bg-gray-100">
+              {/* <div className="relative w-full aspect-video mb-6 rounded-lg overflow-hidden bg-gray-100"> */}
+              <div className="relative w-full aspect-video mb-6 overflow-hidden bg-gray-100">
                 <Image
                   src="/placeholder.svg?height=600&width=1200"
                   alt="Featured testimonial video thumbnail"
@@ -99,6 +103,21 @@ export default function HeroSection({
               </div>
             </div>
           )}
+          <div className="absolute top-0 left-0 w-full p-6 md:p-8 bg-gradient-to-b from-black/50 via-black/30 to-transparent">
+            {/* This styling will darken the top so that the white text looks better */}
+            {/* <div className="flex flex-col md:flex-row justify-between items-start"> */}
+            <div className="flex flex-col justify-start items-center">
+              <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-white">
+                {title}
+                <br />
+                {title2}
+              </h1>
+              <p className="text-lg md:text-xl text-white align-middle">
+                {description}
+              </p>
+            </div>
+          </div>
+
           {/* Section for displaying stats on Achievements page */}
           {statsLoading ? ( //Check if the stats are still loading and display loading spinner as fallback
             <div className="relative h-96">
@@ -204,22 +223,18 @@ export default function HeroSection({
               </div>
             )
           )}
+          {/* Hero Section Widgets */}
         </div>
+        {/* If it is donations */}
         {bottomRightWidget === "donate" ? (
-          <div className="absolute bottom-4 right-3 md:right-4 bg-white p-2 md:p-4 rounded-lg shadow-lg">
-            <p className="text-xs md:text-sm mb-2">Want to make an impact?</p>
-            <Link
-              href="/donate"
-              className="bg-blue-500 text-white px-4 py-2 rounded-md inline-block text-xs md:text-sm hover:bg-blue-600 transition-colors"
-            >
-              Donate Now
-            </Link>
+          <div className="absolute bottom-4 right-3 md:right-4 ">
+            <DonationWidget />
           </div>
-        ) : bottomRightWidget === "achievements" ? (
-          <div className="absolute bottom-6 right-6 md:right-7">
-            <AchievementWidgets />
-          </div>
-        ) : null}
+        ) : // If is is achievements
+        bottomRightWidget === "achievements" ? (
+          <AchievementWidgets />
+        ) : // If its nothing
+        null}
       </div>
     </>
   );

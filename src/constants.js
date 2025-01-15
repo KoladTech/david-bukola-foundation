@@ -1,5 +1,6 @@
-export const NAIRA_SYMBOL = "\u20A6";
-export const DATE_FORMAT = "YYYY-MM-DD";
+export const mediaBaseUrl =
+  "https://davidbukolafoundation.org/dbf-website-media";
+
 export const countries = [
   { name: "Afghanistan", code: "AF", phoneCode: "+93" },
   { name: "Albania", code: "AL", phoneCode: "+355" },
