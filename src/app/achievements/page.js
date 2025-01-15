@@ -115,11 +115,13 @@ export default function Page() {
                     className="relative aspect-[4/3] cursor-pointer"
                     // Set selected image to full screen
                     onClick={() =>
-                      setSelectedImage(`${achievement.details.images.image1}`)
+                      setSelectedImage(
+                        `${mediaBaseUrl}${achievement.details.images.image1}`
+                      )
                     }
                   >
                     <Image
-                      src={achievement.details.images.image1}
+                      src={`${mediaBaseUrl}${achievement.details.images.image1}`}
                       alt={`Image 1 for ${achievement.title}`}
                       layout="fill"
                       objectFit="cover"
@@ -130,11 +132,13 @@ export default function Page() {
                     className="relative aspect-[4/3] cursor-pointer"
                     // Set selected image to full screen
                     onClick={() =>
-                      setSelectedImage(`${achievement.details.images.image2}`)
+                      setSelectedImage(
+                        `${mediaBaseUrl}${achievement.details.images.image2}`
+                      )
                     }
                   >
                     <Image
-                      src={achievement.details.images.image2}
+                      src={`${mediaBaseUrl}${achievement.details.images.image2}`}
                       alt={`Image 2 ${achievement.title}`}
                       layout="fill"
                       objectFit="cover"

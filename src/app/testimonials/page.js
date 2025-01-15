@@ -12,26 +12,6 @@ import { fetchedData } from "@/firebase/fetchFirebaseData";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 import { mediaBaseUrl } from "@/constants";
 
-// const testimonials = [
-//   {
-//   {
-//     id: 1,
-//     name: "Vincent Anderson",
-//     role: "Student volunteer",
-//     content:
-//       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum numquam blanditiis. ",
-//     image: {`${mediaBaseUrl}/images/person placeholder.png`},
-//     type: "text",
-//   },
-//   {
-//     id: 2,
-//     name: "Deyemi Akande",
-//     role: "Partner University of Lagos",
-//     image: "",
-//     type: "video",
-//     videoUrl: "/videos/vid.mp4",
-//   },
-
 function SkeletonProject() {
   return (
     <div className="p-4 animate-pulse rounded-md">
@@ -94,7 +74,7 @@ export default function TestimonialsPage() {
   }, [showTestimonyForm]); //dependencies (list of all reactive code in the effect setup)
 
   return (
-    <div className="container mx-auto px-4 py-8 my-8">
+    <div className="container mx-auto px-4 py-8 my-8 content-div">
       {/* Featured Video Section */}
 
       {/* Featured Video Section */}
@@ -200,16 +180,19 @@ export default function TestimonialsPage() {
       )}
 
       {/* Video Testimonials Grid */}
-      {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
         {testimonials
-          .filter((testimonial) => testimonial.type === "video")
+          .filter(
+            (testimonial) =>
+              testimonial.type === "video" && testimonial.approved === true
+          )
           .map((testimonial) => (
             <div
               key={testimonial.id}
               className="relative aspect-square rounded-lg overflow-hidden bg-gray-100"
             >
               <VideoPlayer
-                src={testimonial.videoUrl}
+                src={`${mediaBaseUrl}${testimonial.videoUrl}`}
                 poster={testimonial.image}
                 className="w-full h-full"
               />
@@ -219,7 +202,7 @@ export default function TestimonialsPage() {
               </div>
             </div>
           ))}
-      </div> */}
+      </div>
 
       {/* Display Testimony form on clicking the share testimony button*/}
       {showTestimonyForm && (

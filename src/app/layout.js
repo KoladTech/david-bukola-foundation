@@ -11,6 +11,7 @@ import { RiTwitterXLine } from "react-icons/ri";
 import { GrInstagram } from "react-icons/gr";
 import { ApiStatsProvider } from "@/context/ApiStatsContext";
 import { mediaBaseUrl } from "@/constants";
+import { Phone, MapPin, Mail } from "lucide-react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -206,6 +207,8 @@ export default function RootLayout({ children }) {
                       alt="Foundation Logo"
                       className="w-48 h-36 md-lg:w-40 md-lg:h-32"
                     />
+                    {/* Contact Us  */}
+                    <p className="text-black font-bold mb-4">Contact Us</p>
                     <div className="flex space-x-4 mb-4">
                       <a
                         href="https://www.instagram.com/davidbukola_foundation/"
@@ -232,12 +235,34 @@ export default function RootLayout({ children }) {
                       <RiTwitterXLine className="w-6 h-6" />
                       {/* </a> */}
                     </div>
-                    <a
-                      href="mailto:davidbukolafoundation@gmail.com"
-                      className="text-black transition-colors font-bold"
-                    >
-                      davidbukolafoundation@gmail.com
-                    </a>
+                    {/* Contact us section */}
+                    <div className="space-y-2">
+                      {/* Mail */}
+                      <div className="flex gap-2">
+                        <Mail className="h-5 w-5" />
+                        <a
+                          href="mailto:davidbukolafoundation@gmail.com"
+                          className="text-sm text-gray-600 transition-colors"
+                        >
+                          davidbukolafoundation@gmail.com
+                        </a>
+                      </div>
+                      {/* Phone Number */}
+                      <div className="flex gap-2">
+                        <Phone className="h-5 w-5" />
+                        <p className="text-sm text-gray-600">
+                          +234 706 528 6910
+                        </p>
+                      </div>
+                      {/* Buisiness address */}
+                      <div className="flex gap-2">
+                        <MapPin className="h-5 w-5" />
+                        <p className="text-sm text-gray-600">
+                          No 2 Karji by Riverfront School, Ungwan waziri,
+                          Kaduna.
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Right Section */}

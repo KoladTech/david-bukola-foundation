@@ -24,9 +24,13 @@ export default function VideoPlayer({ src, poster, className = "" }) {
         videoElement.currentTime = 1; // Extract a frame at 1 second
       });
       videoElement.addEventListener("seeked", () => {
-        context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-        const dataUrl = canvas.toDataURL("image/jpeg");
-        setGeneratedPoster(dataUrl);
+        try {
+          context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+          const dataUrl = canvas.toDataURL("image/jpeg");
+          setGeneratedPoster(dataUrl);
+        } catch (error) {
+          console.error("Error generating poster:", error);
+        }
       });
       return () => {
         videoElement.removeEventListener("loadeddata", () => {});
@@ -48,12 +52,16 @@ export default function VideoPlayer({ src, poster, className = "" }) {
   return (
     <div className={`relative ${className}`}>
       <video
+        controls
         ref={videoRef}
         src={src}
         poster={generatedPoster}
         className="w-full h-full object-cover"
         onClick={togglePlay}
         onError={(e) => console.error("Video playback error", e)}
+        aria-label={"Video testimonial"}
+        loading="lazy"
+        preload="metadata"
       />
       <Button
         size="icon"
