@@ -94,9 +94,7 @@ export async function POST(req) {
     });
 
     // Generate dynamic email content
-    const emailSubject = `New ${formatObjectKeyToTitle(
-      formType
-    )} Submission</h2>`;
+    const emailSubject = `New ${formatObjectKeyToTitle(formType)} Submission`;
     // const emailBody = `
     //   <html>
     //     <body>

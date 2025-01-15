@@ -3,9 +3,10 @@ import { mediaBaseUrl } from "@/constants";
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, ChevronDown, Search } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import HeroSection from "@/components/HeroSection";
@@ -34,8 +35,8 @@ const donationAmounts = [
   { value: 200000, label: "₦200,000" },
 ];
 
-// Other ways to give constants
-const otherWays = ["Donate Clothes", "Donate Foodstuff", "Others"];
+// // Other ways to give constants
+// const otherWays = ["Donate Clothes", "Donate Foodstuff", "Others"];
 
 // Number of card steps for payment flow
 const totalSteps = 3;
@@ -86,30 +87,68 @@ export default function DonatePage() {
   // Getting countries and phone codes
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedPhoneCode, setSelectedPhoneCode] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState(countries);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   // Other states
   const [currentStep, setCurrentStep] = useState(0);
   const [showThankYou, setShowThankYou] = useState(false);
 
-  // Functions
+  // Search usefffect to filter by country name, code or phone code
+  useEffect(() => {
+    const filtered = countries.filter(
+      (country) =>
+        country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        country.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        country.phoneCode.includes(searchTerm)
+    );
+    setFilteredCountries(filtered);
+  }, [searchTerm]);
 
-  const handleCountryChange = (e) => {
-    // Get the country selected and set it
-    const countryCode = e.target.value;
-    setSelectedCountry(countryCode);
-    // Check if country code is available and set it
-    const country = countries.find((c) => c.code === countryCode);
-    if (country) {
-      setSelectedPhoneCode(country.phoneCode);
-    } else {
-      setSelectedPhoneCode("");
+  // Useffect for For closing the search/select dropdown
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
     }
-    // Update FormData to reflect the selected country immediately
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Functions
+  // country change function
+  // const handleCountryChange = (e) => {
+  //   // Get the country selected and set it
+  //   const countryCode = e.target.value;
+  //   setSelectedCountry(countryCode);
+  //   // Check if country code is available and set it
+  //   const country = countries.find((c) => c.code === countryCode);
+  //   if (country) {
+  //     setSelectedPhoneCode(country.phoneCode);
+  //   } else {
+  //     setSelectedPhoneCode("");
+  //   }
+  //   // Update FormData to reflect the selected country immediately
+  //   setDonateFormData((prev) => ({
+  //     ...prev,
+  //     country: countryCode, // Update the country field in FormData (using the value itself not the selected country state)
+  //     phoneCode: country ? country.phoneCode : prev.phoneCode, // Update the phone code in FormData
+  //   }));
+  // };
+
+  // Temp country change function
+  const handleCountryChange = (country) => {
+    setSelectedCountry(country.name);
+    setSelectedPhoneCode(country.phoneCode);
     setDonateFormData((prev) => ({
       ...prev,
-      country: countryCode, // Update the country field in FormData (using the value itself not the selected country state)
-      phoneCode: country ? country.phoneCode : prev.phoneCode, // Update the phone code in FormData
+      country: country.name,
+      phoneCode: country.phoneCode,
     }));
+    setIsDropdownOpen(false);
   };
 
   // Fetch Banking details
@@ -288,7 +327,7 @@ export default function DonatePage() {
       e,
       formType: "donateForm",
       formData: donateFormData,
-      yourCollection: "TestCollection",
+      yourCollection: "Donations",
       userRole: "donor",
       setSubmissionError,
       setIsSubmitting,
@@ -296,70 +335,6 @@ export default function DonatePage() {
       resetFormData,
       reRoutePage,
     });
-  };
-  // TODO: Make a reuable function
-  // Handles form submission on clicking share button
-  const handleDonateFormSubmit = async (e) => {
-    e.preventDefault(); //Prevent default i.e form reloading
-    setIsSubmitting(true); // Show loading indicator
-    setSubmissionError(""); // Reset error state
-
-    try {
-      // Send a POST request to the api with testimony data object as payload
-      const response = await fetch("api/sendMail", {
-        method: "POST",
-        headers: {
-          "content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          formType: "donateForm",
-          formData: donateFormData,
-        }), //2
-      });
-
-      // If the mail did not send succesfully
-      if (!response.ok) {
-        setSubmissionError("Failed to send email. Please try again.");
-        return;
-      }
-
-      const collectionRef = collection(db, "TestCollection"); //get the testimonial collection //3
-      const docRef = await addDoc(collectionRef, donateFormData); //add a new document to the collection //4
-
-      // Add the new user to the Users Collection
-      await addUserDocument({ ...donateFormData, roles: ["donor"] });
-
-      // Set the Thank You component with thank you message
-      setShowThankYou(true);
-
-      // Reset Testimony data.
-      setDonateFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        phoneNumber: "",
-        phoneCode: "",
-        paymentMethod: "",
-        amount: "",
-        city: "",
-        country: "",
-        newsletter: false,
-        approved: false,
-        date: serverTimestamp(),
-      });
-
-      // Redirect to home page after 3 seconds
-      setTimeout(() => {
-        reRoutePage();
-      }, 3000);
-    } catch (error) {
-      console.log("Error sending form: ", error); //5
-      setSubmissionError(
-        "An error occurred while submitting your form details. Please try again." //6
-      );
-    } finally {
-      setIsSubmitting(false); //Hide loading indicator
-    }
   };
 
   return (
@@ -568,23 +543,57 @@ export default function DonatePage() {
                               className="input-field"
                             />
                           </div>
-                          {/* Country */}
-                          <div>
-                            <select
-                              id="country"
-                              name="country"
-                              value={FormData.selectedCountry}
-                              onChange={handleCountryChange}
-                              className="input-field"
-                              required
+                          {/* Custom Country Dropdown............................ */}
+                          {/* Search input and Country*/}
+                          <div className="relative" ref={dropdownRef}>
+                            <Button
+                              type="input"
+                              variant="outline"
+                              className="w-full text-base font-normal justify-between input-field"
+                              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                             >
-                              <option value="">Select a country *</option>
-                              {countries.map((country) => (
-                                <option key={country.code} value={country.code}>
-                                  {country.name}
-                                </option>
-                              ))}
-                            </select>
+                              {selectedCountry || "Select a country *"}
+                              <ChevronDown className="ml-2 h-4 w-4" />
+                            </Button>
+                            {isDropdownOpen && (
+                              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg">
+                                <div className="p-2">
+                                  <div className="relative">
+                                    <Input
+                                      type="text"
+                                      placeholder="Search country or code"
+                                      value={searchTerm}
+                                      onChange={(e) =>
+                                        setSearchTerm(e.target.value)
+                                      }
+                                      className="pl-8"
+                                    />
+                                    <Search
+                                      className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+                                      size={16}
+                                    />
+                                  </div>
+                                </div>
+                                <div className="max-h-60 overflow-auto">
+                                  {filteredCountries.map((country) => (
+                                    <Button
+                                      key={country.code}
+                                      type="button"
+                                      variant="ghost"
+                                      className="w-full justify-between text-left"
+                                      onClick={() =>
+                                        handleCountryChange(country)
+                                      }
+                                    >
+                                      <span>{country.name}</span>
+                                      <span className="text-gray-500">
+                                        ({country.code}) {country.phoneCode}
+                                      </span>
+                                    </Button>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
                           </div>
                           {/* PhoneNumber */}
                           <div className="flex md:w-1/2 w-full">
@@ -610,7 +619,7 @@ export default function DonatePage() {
                                     key={country.code}
                                     value={country.phoneCode}
                                   >
-                                    {country.phoneCode}
+                                    {country.code}: {country.phoneCode}
                                   </option>
                                 ))}
                               </select>
@@ -869,7 +878,6 @@ export default function DonatePage() {
               </Card>
             </div>
 
-            {/* Other Ways to Give */}
             {/* Other ways to give */}
             <div className="lg:w-80">
               <OtherWaysToGive />
