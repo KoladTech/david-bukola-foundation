@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import HeroSection from "@/components/HeroSection";
-import ContentCard from "@/components/ContentCard";
 import { ChevronsUpDown, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,8 +19,8 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import db from "@/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 import addUserDocument from "@/firebase/createUser";
-import { formatTimestamp } from "@/lib/utils";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
+import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 
 const daysOfWeek = [
   { value: "monday", label: "Monday" },
@@ -162,7 +161,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
           }),
         });
 
-        // If the mail did not send succesfully
+        // If the mail did not send successfully
         if (!response.ok) {
           console.log(JSON.stringify(response.json));
           console.log("Error while sending email");
@@ -238,8 +237,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
   };
 
   return (
-    <div className="mb-16">
-      <div className="flex flex-col mb-8">
+    <div className="mb-20">
+      <div className="flex flex-col mb-10">
         <HeroSection
           className="object-[50%_20%]"
           title="Volunteer"
@@ -249,23 +248,21 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
         />
       </div>
       {/* Content Sections */}
-      <div className="">
-        <div className="flex flex-col mb-8">
-          <div>
-            {/* <ContentCard content={content} /> */}
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Join us in making a difference. At DavidBukola Development
-              Foundation, we believe everyone has the power to bring positive
-              change. Whether you are looking to donate, volunteer, explore a
-              meaningful career or participate in our events, there are
-              countless ways to support our mission. Together, we can make a
-              world of difference. Get involved today!
-            </p>
-          </div>
+      <div className="content-div p-4 mb-20">
+        <div className="mb-16">
+          {/* <ContentCard content={content} /> */}
+          <p className="text-lg text-gray-600 mx-auto">
+            Join us in making a difference. At DavidBukola Development
+            Foundation, we believe everyone has the power to bring positive
+            change. Whether you are looking to donate, volunteer, explore a
+            meaningful career or participate in our events, there are countless
+            ways to support our mission. Together, we can make a world of
+            difference. Get involved today!
+          </p>
         </div>
 
-        {/* Form section */}
-        <div className="content-div">
+        <div className="flex flex-col">
+          {/* Form section */}
           <Card
             className={`shadow-md ${
               submitting && "blur-sm" //blurs the form while submitting
@@ -281,108 +278,107 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
               <CardTitle className="text-2xl">Volunteer Form</CardTitle>
             </CardHeader>
             <CardContent>
-              {loading ? ( //Loading spinner before form completely loads
-                <LoadingSpinner />
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      {/* First Name Input */}
-                      <Label htmlFor="firstName">First Name*</Label>
-                      <Input
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                      />
-                      {errors.firstName && (
-                        <p className="text-red-500 text-sm">
-                          {errors.firstName}
-                        </p>
-                      )}
-                    </div>
-                    <div className="space-y-2">
-                      {/* First Name Input */}
-                      <Label htmlFor="lastName">Last Name*</Label>
-                      <Input
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-2 gap-4">
+                  {/* First Name Input */}
                   <div className="space-y-2">
-                    {/* Email Input */}
-                    <Label className="text-gray-600" htmlFor="email">
-                      Email
-                    </Label>
+                    <Label htmlFor="firstName">First Name*</Label>
                     <Input
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      onBlur={(e) => {
-                        //TODO: convert this to function???
-                        //check if the value in the form is a valid email
-                        if (!validateEmail(e.target.value)) {
-                          setErrors({
-                            ...errors,
-                            email: "Please enter a valid email", //set an error for invalid emails
-                          });
-                        } else {
-                          const { email, ...restErrors } = errors;
-                          setErrors(restErrors); //set the original state of the error without the email error
-                        }
-                      }}
-                    />
-                    {errors.email && (
-                      <p className="text-red-500 text-sm">{errors.email}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    {/* Phone Number Input */}
-                    <Label htmlFor="phone">Phone Number*</Label>
-                    <Input
-                      id="phone"
-                      name="phone"
-                      type="tel"
-                      value={formData.phone}
+                      id="firstName"
+                      name="firstName"
+                      value={formData.firstName}
                       onChange={handleInputChange}
                     />
-                    {errors.phone && (
-                      <p className="text-red-500 text-sm">{errors.phone}</p>
+                    {errors.firstName && (
+                      <p className="text-red-500 text-sm">{errors.firstName}</p>
                     )}
                   </div>
 
+                  {/* Last Name Input */}
                   <div className="space-y-2">
-                    {/* Volunteer Interests */}
-                    <Label>Volunteer opportunities you're interested in</Label>
-                    {errors.interests && (
-                      <p className="text-red-500 text-sm">{errors.interests}</p>
-                    )}
-                    <div className="relative">
-                      <div className="flex items-center p-2 border rounded-md">
-                        <Collapsible
-                          open={isInterestsOpen}
-                          onOpenChange={setIsInterestsOpen}
-                        >
-                          <CollapsibleTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 px-2"
-                            >
-                              {formData.interests.length === 0
-                                ? "Select opportunities"
-                                : "Add more"}
-                              <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
-                            </Button>
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                            {activities.map(
+                    <Label htmlFor="lastName">Last Name*</Label>
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+
+                {/* Email Input */}
+                <div className="space-y-2">
+                  <Label className="text-gray-600" htmlFor="email">
+                    Email
+                  </Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    onBlur={(e) => {
+                      //TODO: convert this to function???
+                      //check if the value in the form is a valid email
+                      if (!validateEmail(e.target.value)) {
+                        setErrors({
+                          ...errors,
+                          email: "Please enter a valid email", //set an error for invalid emails
+                        });
+                      } else {
+                        const { email, ...restErrors } = errors;
+                        setErrors(restErrors); //set the original state of the error without the email error
+                      }
+                    }}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm">{errors.email}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  {/* Phone Number Input */}
+                  <Label htmlFor="phone">Phone Number*</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm">{errors.phone}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  {/* Volunteer Interests */}
+                  <Label>Volunteer opportunities you're interested in</Label>
+                  {errors.interests && (
+                    <p className="text-red-500 text-sm">{errors.interests}</p>
+                  )}
+                  <div className="relative">
+                    <div className="flex items-center p-2 border rounded-md">
+                      <Collapsible
+                        open={isInterestsOpen}
+                        onOpenChange={setIsInterestsOpen}
+                      >
+                        <CollapsibleTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 px-2"
+                          >
+                            {formData.interests.length === 0
+                              ? "Select opportunities"
+                              : "Add more"}
+                            <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
+                          {loading ? (
+                            <LoadingSpinner />
+                          ) : (
+                            activities.map(
                               (
                                 option //maps all the activities as checkboxes
                               ) => (
@@ -404,149 +400,144 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
                                   </Label>
                                 </div>
                               )
-                            )}
-                          </CollapsibleContent>
-                        </Collapsible>
+                            )
+                          )}
+                        </CollapsibleContent>
+                      </Collapsible>
+                      {/* renders all the selected activities as pills */}
+                      <div className="flex flex-wrap gap-2 ml-2">
+                        {renderPills(
+                          activities,
+                          formData.interests,
+                          toggleInterest
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Days Available */}
+                <div className="space-y-2">
+                  <Label>Available Days</Label>
+                  {errors.availableDays && (
+                    <p className="text-red-500 text-sm">
+                      {errors.availableDays}
+                    </p>
+                  )}
+                  <div className="relative">
+                    <div className="flex items-center p-2 border rounded-md">
+                      <Collapsible
+                        open={isDaysOpen}
+                        onOpenChange={setIsDaysOpen}
+                      >
+                        <CollapsibleTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 px-2"
+                          >
+                            {formData.availableDays.length === 0
+                              ? "Select days"
+                              : "Add more"}
+                            <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
+                          </Button>
+                        </CollapsibleTrigger>
+                        <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
+                          {daysOfWeek.map(
+                            (
+                              day //maps all the days of the week as selectable options in the dropdown
+                            ) => (
+                              <div
+                                key={day.value}
+                                className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
+                              >
+                                <Checkbox // checkbox with each day
+                                  id={day.value}
+                                  checked={formData.availableDays.includes(
+                                    day.value
+                                  )}
+                                  onCheckedChange={() => toggleDay(day.value)}
+                                />
+                                <Label htmlFor={day.value}>{day.label}</Label>
+                              </div>
+                            )
+                          )}
+                        </CollapsibleContent>
+                      </Collapsible>
+                      <div className="flex flex-wrap gap-2 ml-2">
                         {/* renders all the selected activities as pills */}
-                        <div className="flex flex-wrap gap-2 ml-2">
-                          {renderPills(
-                            activities,
-                            formData.interests,
-                            toggleInterest
-                          )}
-                        </div>
+                        {renderPills(
+                          daysOfWeek,
+                          formData.availableDays,
+                          toggleDay
+                        )}
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  <div className="space-y-2">
-                    {/* Days Available */}
-                    <Label>Available Days</Label>
-                    {errors.availableDays && (
-                      <p className="text-red-500 text-sm">
-                        {errors.availableDays}
-                      </p>
-                    )}
-                    <div className="relative">
-                      <div className="flex items-center p-2 border rounded-md">
-                        <Collapsible
-                          open={isDaysOpen}
-                          onOpenChange={setIsDaysOpen}
-                        >
-                          <CollapsibleTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-8 px-2"
-                            >
-                              {formData.availableDays.length === 0
-                                ? "Select days"
-                                : "Add more"}
-                              <ChevronsUpDown className="h-4 w-4 ml-1 opacity-50" />
-                            </Button>
-                          </CollapsibleTrigger>
-                          <CollapsibleContent className="absolute z-10 w-full left-0 bg-white border rounded-md mt-1 p-2 shadow-lg">
-                            {daysOfWeek.map(
-                              (
-                                day //maps all the days of the week as selectable options in the dropdown
-                              ) => (
-                                <div
-                                  key={day.value}
-                                  className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded"
-                                >
-                                  <Checkbox // checkbox with each day
-                                    id={day.value}
-                                    checked={formData.availableDays.includes(
-                                      day.value
-                                    )}
-                                    onCheckedChange={() => toggleDay(day.value)}
-                                  />
-                                  <Label htmlFor={day.value}>{day.label}</Label>
-                                </div>
-                              )
-                            )}
-                          </CollapsibleContent>
-                        </Collapsible>
-                        <div className="flex flex-wrap gap-2 ml-2">
-                          {/* renders all the selected activities as pills */}
-                          {renderPills(
-                            daysOfWeek,
-                            formData.availableDays,
-                            toggleDay
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                {/* Additional Comments */}
+                <div className="space-y-2">
+                  <Label htmlFor="comments">Additional Comments (If any)</Label>
+                  <Textarea
+                    id="comments"
+                    name="comments"
+                    value={formData.comments}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="focus-visible:ring-blue-500"
+                  />
+                </div>
 
-                  <div className="space-y-2">
-                    {/* Additional Comments */}
-                    <Label htmlFor="comments">
-                      Additional Comments (If any)
-                    </Label>
-                    <Textarea
-                      id="comments"
-                      name="comments"
-                      value={formData.comments}
-                      onChange={handleInputChange}
-                      rows={4}
-                      className="focus-visible:ring-blue-500"
-                    />
-                  </div>
-
-                  <div className="flex items-center space-x-2">
-                    {/* Receive newsletter checkbox */}
-                    <Checkbox
-                      id="newsletter"
-                      checked={formData.newsletter}
-                      onCheckedChange={(checked) =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          newsletter: checked,
-                        }))
-                      }
-                    />
-                    <Label htmlFor="newsletter" className="text-sm">
-                      Receive updates/notifications about dbf
-                    </Label>
-                  </div>
-
-                  {/* Submit Button */}
-                  <Button
-                    type="submit"
-                    disabled={
-                      !formData.firstName ||
-                      !formData.lastName ||
-                      !formData.phone ||
-                      !formData.email ||
-                      !formData.availableDays.length ||
-                      !formData.interests.length ||
-                      !validateEmail(formData.email) ||
-                      submitting
+                {/* Receive newsletter checkbox */}
+                <div className="flex items-center space-x-2 relative">
+                  <Checkbox
+                    id="newsletter"
+                    checked={formData.newsletter}
+                    onCheckedChange={(checked) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        newsletter: checked,
+                      }))
                     }
-                    className="w-full bg-blue-500 hover:bg-blue-700"
-                  >
-                    Submit
-                  </Button>
-                </form>
-              )}
+                  />
+                  <Label htmlFor="newsletter" className="text-sm">
+                    Receive updates/notifications about dbf
+                  </Label>
+                </div>
+
+                {/* Submit Button */}
+                <Button
+                  type="submit"
+                  disabled={
+                    !formData.firstName ||
+                    !formData.lastName ||
+                    !formData.phone ||
+                    !formData.email ||
+                    !formData.availableDays.length ||
+                    !formData.interests.length ||
+                    !validateEmail(formData.email) ||
+                    submitting
+                  }
+                  className="w-full bg-blue-500 hover:bg-blue-700"
+                >
+                  Submit
+                </Button>
+              </form>
             </CardContent>
           </Card>
         </div>
       </div>
       {showThankYou && ( //Thank you Card after submission
-        <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
-          <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
-            <div className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center">
-              <h2 className="text-2xl font-semibold text-white">
-                Thank you for your volunteering
-              </h2>
-              <p className="text-gray-900">
-                Your support helps us make a difference.
-              </p>
-            </div>
-          </Card>
-        </div>
+        <ThankYouMessageOnFormSuccess
+          showThankYou={showThankYou}
+          // Sends a function to set show thank you back to false)
+          closeThankYou={() => {
+            setShowThankYou(false);
+          }}
+          message={"Thank you for volunteering!"}
+          extraMessage={"Your support helps us make a difference."}
+        />
       )}
     </div>
   );

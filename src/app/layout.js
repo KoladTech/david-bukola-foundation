@@ -187,7 +187,7 @@ export default function RootLayout({ children }) {
         )}
         <ApiStatsProvider>{children}</ApiStatsProvider>
         {/* Default Footer Section */}
-        <div className="relative mt-auto full-width-div">
+        <div className="relative mt-auto">
           <div
             className="absolute bottom-0 left-0 right-0 h-[calc(100%+2rem)] bg-cover bg-center w-full"
             style={{

@@ -185,18 +185,15 @@ export default function Page() {
         )}
         {/* Thank you message */}
         {showThankYou && (
-          <div className="fixed inset-0 flex justify-center items-center z-50 bg-white">
-            <Card className="relative bg-white rounded-lg p-8 w-full max-w-md mx-4 animate-in fade-in zoom-in duration-300">
-              <div className=" bg-sky-500 rounded-lg p-6 w-full max-w-md shadow-lg text-center">
-                <h2 className="text-2xl font-semibold text-white">
-                  Thank you for volunteering!
-                </h2>
-                <p className="text-gray-900">
-                  Your support helps us make a difference.
-                </p>
-              </div>
-            </Card>
-          </div>
+          <ThankYouMessageOnFormSuccess
+            showThankYou={showThankYou}
+            // Sends a function to set show thank you back to false)
+            closeThankYou={() => {
+              setShowThankYou(false);
+            }}
+            message={"Thank you for volunteering!"}
+            extraMessage={"Your support helps us make a difference."}
+          />
         )}
       </div>
     </>
