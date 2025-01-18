@@ -43,7 +43,7 @@ export default function AboutPage() {
         <HeroSection
           title={"ABOUT US"}
           description={"Learn about the Foundation"}
-          imageUrl={`${mediaBaseUrl}/images/about-us-image.jpg`}
+          imageUrl={`${mediaBaseUrl}/images/dbf-about-us-image.jpg`}
           alt={"about foundation image"}
         />
       </section>
