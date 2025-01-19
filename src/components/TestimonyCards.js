@@ -58,7 +58,7 @@ export default function ScrollableCardRow() {
     loadTestimonials();
   }, []);
   return (
-    <section className="py-12 px-4 bg-gray-50">
+    <section className="py-12 px-4 bg-gray-50 full-width-div">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row gap-8 items-center">
           {/* Testimonies Section */}
@@ -139,15 +139,20 @@ export default function ScrollableCardRow() {
                         height={60}
                         className="rounded-full"
                       /> */}
-                        <div>
-                          {/* Testifiers Name */}
-                          <h3 className="text-xl font-semibold">
-                            {testimonial.firstName}
-                          </h3>
-                          {/* Testifiers Occupation/Role */}
-                          <p className="text-gray-500">
-                            {testimonial.occupation}
-                          </p>
+                        <div className="flex space-x-2">
+                          {/* Circle with Initial */}
+                          <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 text-gray-800 font-semibold text-lg">
+                            {testimonial.firstName?.[0]?.toUpperCase() || "?"}
+                          </div>
+                          {/* Testifiers Name and Occupation */}
+                          <div>
+                            <h3 className="text-xl font-semibold">
+                              {testimonial.firstName}
+                            </h3>
+                            <p className="text-gray-500">
+                              {testimonial.occupation}
+                            </p>
+                          </div>
                         </div>
                       </div>
                       {/* Testimony */}

@@ -148,18 +148,28 @@ export default function TestimonialsPage() {
                           className="rounded-full"
                         /> */}
                       <div>
-                        {/* Testifiers Name */}
-                        <h3 className="font-semibold">
-                          {testimonial.firstName}
-                        </h3>
-                        {/* Testifiers Occupation/Role */}
-                        <p
-                          className={`text-sm ${
-                            index % 2 === 1 ? "text-blue-100" : "text-gray-500"
-                          } mb-2`}
-                        >
-                          {testimonial.occupation}
-                        </p>
+                        <div className="flex space-x-2">
+                          {/* Circle with Initial */}
+                          <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 text-gray-800 font-semibold text-lg">
+                            {testimonial.firstName?.[0]?.toUpperCase() || "?"}
+                          </div>
+                          {/* Testifiers Name and Occupation */}
+                          <div>
+                            <h3 className="font-semibold">
+                              {testimonial.firstName}
+                            </h3>
+                            <p
+                              className={`text-sm ${
+                                index % 2 === 1
+                                  ? "text-blue-100"
+                                  : "text-gray-500"
+                              } mb-2`}
+                            >
+                              {testimonial.occupation}
+                            </p>
+                          </div>
+                        </div>
+
                         {/* Testimony */}
                         <p className="text-sm">{testimonial.testimonial}</p>
                       </div>

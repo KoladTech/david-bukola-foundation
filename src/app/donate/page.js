@@ -446,6 +446,8 @@ export default function DonatePage() {
                         {/* Other amount  */}
                         <div>
                           <input
+                            step="1000"
+                            min="1000"
                             className="input-field"
                             type="number"
                             id="amount"

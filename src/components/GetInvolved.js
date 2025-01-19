@@ -5,7 +5,7 @@ import { mediaBaseUrl } from "@/constants";
 
 export default function GetInvolved() {
   return (
-    <section className="py-2 px-2 my-8">
+    <section className="py-2 bg-gray-50  px-2 my-8 full-width-div">
       <div className="max-w-6xl mx-auto my-4">
         <h2 className="text-4xl font-semibold mb-6 text-center">
           Get Involved

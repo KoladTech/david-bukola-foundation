@@ -218,14 +218,14 @@ export default function RootLayout({ children }) {
                       >
                         <GrInstagram className="w-6 h-6" />
                       </a>
-                      {/* <a
-                        href="#"
+                      <a
+                        href="https://www.facebook.com/profile.php?id=61567075205637&mibextid=ZbWKwL"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
-                      > */}
-                      <RiFacebookBoxFill className="w-6 h-6" />
-                      {/* </a> */}
+                      >
+                        <RiFacebookBoxFill className="w-6 h-6" />
+                      </a>
                       {/* <a
                         href="#"
                         target="_blank"

@@ -38,7 +38,7 @@ export default function MeetOurTeam() {
         <div></div>
       ) : (
         <div>
-          <section className="py-4 px-4 my-4 bg-gray-50 items-center justify-center text-center">
+          <section className="py-4 px-4 my-4 items-center justify-center text-center">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-4xl font-semibold mb-4 text-center">
                 Meet Our Team
