@@ -156,15 +156,21 @@ export default function RootLayout({ children }) {
             <div className="mt-auto mb-24 space-x-4 flex justify-center">
               <Link
                 href="/donate"
-                className="block bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 text-center text-xl"
                 onClick={toggleMenu}
+                className={`text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ${
+                  isActive("/donate") ? "bg-blue-600" : "bg-blue-400"
+                }`}
               >
                 Donate
               </Link>
               <Link
                 href="/get-involved"
-                className="block border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-300 transition duration-300 text-center text-xl"
                 onClick={toggleMenu}
+                className={`border border-blue-500 px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 ${
+                  isActive("/get-involved")
+                    ? "bg-blue-600 text-white"
+                    : "bg-blue-50 text-blue-500"
+                }`}
               >
                 Get Involved
               </Link>
