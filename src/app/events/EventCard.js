@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
+import { mediaBaseUrl } from "@/constants";
 
 export default function EventCard({
   event,
@@ -25,10 +26,10 @@ export default function EventCard({
           className={`relative aspect-[4/5] md:aspect-auto md:${
             isImageFirst ? "order-2" : ""
           }`}
-          onClick={() => onImageClick(`${event.image}`)} //Sets image to full screen
+          onClick={() => onImageClick(`${mediaBaseUrl}${event.image}`)} //Sets image to full screen
         >
           <Image
-            src={event.image}
+            src={`${mediaBaseUrl}${event.image}`}
             alt={event.title}
             fill
             style={{ objectFit: "contain" }}

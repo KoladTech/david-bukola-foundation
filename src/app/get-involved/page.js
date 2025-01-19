@@ -23,7 +23,7 @@ Together, we can make a world of difference. Get involved today!
         alt="Get Involved image"
       />
       {/* Content Sections */}
-      <div>
+      <div className="">
         <div className="flex flex-col space-y-10 mb-24 content-div mx-auto p-4">
           <div className="my-8">
             {/* <ContentCard content={content} /> */}
@@ -37,8 +37,8 @@ Together, we can make a world of difference. Get involved today!
             <div className="relative aspect-[4/3] w-full">
               <PictureCard
                 className=""
-                imageSrc={`${mediaBaseUrl}/images/get_involved_volunteer_image.png`}
-                altText=""
+                imageSrc={`${mediaBaseUrl}/images/dbf-volunteer-image.jpg`}
+                altText="Get Involved volunteer image"
               />
             </div>
             <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center gap-4">
@@ -60,7 +60,7 @@ Together, we can make a world of difference. Get involved today!
               <PictureCard
                 className=""
                 imageSrc={`${mediaBaseUrl}/images/get_involved_careers_image.png`}
-                altText=""
+                altText="Get Involved careers image"
               />
             </div>
           </div>
@@ -70,7 +70,7 @@ Together, we can make a world of difference. Get involved today!
               <PictureCard
                 className=""
                 imageSrc={`${mediaBaseUrl}/images/get_involved_events_image.png`}
-                altText=""
+                altText="Get Involved events Image"
               />
             </div>
             <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center gap-4 mb-20">

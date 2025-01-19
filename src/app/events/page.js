@@ -9,7 +9,7 @@ import LoadingSpinner from "@/components/loadingSpinner";
 import ImageModal from "@/components/ImageModal";
 import EventCard from "./EventCard";
 import VolunteerForm from "./VolunteerForm";
-import { Card } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Page() {
   // variables to store and set states for data and errors asynchronously
@@ -71,10 +71,10 @@ export default function Page() {
           title={`Events`}
         />
       </div>
-      <div className="content-div p-4">
-        <div className="flex flex-col space-y-10 mb-8">
-          <div className="mb-8">
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+      <div className="">
+        <div className="flex flex-col space-y-10 mb-8 p-4">
+          <div className="mb-8 content-div">
+            <p className="text-lg text-gray-600 mx-auto">
               At DavidBukola Development Foundation, we believe in the power of
               community and shared purpose. Our events are designed to bring
               people together, raise awareness, and make a lasting impact on the
@@ -82,7 +82,7 @@ export default function Page() {
               positive change.
             </p>
             <br />
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 mx-auto">
               Join us as we work hand in hand to build a brighter future.
               Explore our upcoming events, and discover how you can be part of
               our mission to make a difference. Together, we can transform
@@ -106,63 +106,74 @@ export default function Page() {
           </div>
         ) : (
           <div className="bg-gray-50">
-            <div className="container mx-auto px-4 py-12 mb-20">
+            {/* // <div className=""> */}
+            <div className="container mx-auto px-4 py-12 mb-20 content-div p-4">
               {/* TODO: More events ish */}
               {/* Upcoming Events Section */}
-              <h1 className="text-4xl md:text-5xl font-bold mb-14 text-center">
+              {/* <h1 className="text-4xl md:text-5xl font-bold mb-14 text-center">
                 Upcoming Events
               </h1>
               <p className=" text-center text-2xl mb-14">
                 More events coming soon!
-              </p>
-
-              {upcomingEvents.length > 0 && (
-                <section>
-                  {/* <h2 className="text-3xl font-bold mb-8">Upcoming Events</h2> */}
-                  <div className="space-y-8">
-                    {upcomingEvents.map((event, index) => (
-                      <EventCard
-                        key={index}
-                        event={event}
-                        isImageFirst={index % 2 === 0}
-                        onImageClick={setSelectedImage} // Shows the image full screen
-                        onVolunteer={setVolunteerEvent} // Displays Volunteer form
-                      />
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Past Events Section */}
-              {pastEvents.length > 0 && (
-                <section>
-                  {/* <h2 className="text-3xl font-bold mb-8">Past Events</h2> */}
-                  <h1 className="text-4xl md:text-5xl font-bold mb-14 text-center">
+              </p> */}
+              <Tabs defaultValue="upcoming" className="w-full">
+                <TabsList className="mb-4">
+                  <TabsTrigger value="upcoming" className="text-lg">
+                    Upcoming Events
+                  </TabsTrigger>
+                  <TabsTrigger value="past" className="text-lg">
                     Past Events
-                  </h1>
-
-                  <div className="space-y-8">
-                    {pastEvents.map((event, index) => (
-                      <EventCard
-                        key={index}
-                        event={event}
-                        isImageFirst={index % 2 === 0} // Swaps Poster display
-                        onImageClick={setSelectedImage} // Shows the image full screen
-                        onVolunteer={setVolunteerEvent} // Displays Volunteer form
-                      />
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* No Events Message */}
-              {upcomingEvents.length === 0 && pastEvents.length === 0 && (
-                <div className="text-center py-12">
-                  <p className="text-xl text-gray-600">
-                    No events scheduled at this time. Check back soon!
-                  </p>
-                </div>
-              )}
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="upcoming">
+                  {upcomingEvents.length > 0 ? (
+                    <section>
+                      {/* <h2 className="text-3xl font-bold mb-8">Upcoming Events</h2> */}
+                      <div className="space-y-8">
+                        {upcomingEvents.map((event, index) => (
+                          <EventCard
+                            key={index}
+                            event={event}
+                            isImageFirst={index % 2 === 0}
+                            onImageClick={setSelectedImage} // Shows the image full screen
+                            onVolunteer={setVolunteerEvent} // Displays Volunteer form
+                          />
+                        ))}
+                      </div>
+                    </section>
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-xl text-gray-600 mb-32">
+                        No events scheduled at this time. Check back soon!
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+                <TabsContent value="past">
+                  {pastEvents.length > 0 ? (
+                    <section>
+                      <div className="space-y-8">
+                        {pastEvents.map((event, index) => (
+                          <EventCard
+                            key={index}
+                            event={event}
+                            isImageFirst={index % 2 === 0} // Swaps Poster display
+                            onImageClick={setSelectedImage} // Shows the image full screen
+                            onVolunteer={setVolunteerEvent} // Displays Volunteer form
+                          />
+                        ))}
+                      </div>
+                    </section>
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-xl text-gray-600">
+                        No events have been concluded at this time. Check back
+                        soon!
+                      </p>
+                    </div>
+                  )}
+                </TabsContent>
+              </Tabs>
             </div>
           </div>
         )}
