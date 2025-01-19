@@ -123,16 +123,25 @@ export default function EventCard({
               {event.eventsType === "giveaway" ? "Join Giveaway" : "Learn More"}
             </Link>
           )}
-          {event.requiresVolunteers && (
-            <Button
-              onClick={() => {
-                onVolunteer(event); //displays event volunteer form
-              }}
-              className="inline-flex items-center justify-center w-full px-6 py-3 mt-auto text-white font-medium bg-blue-500 rounded-full hover:bg-blue-600 transition-colors"
-            >
-              Volunteer
-            </Button>
-          )}
+          <div className="flex gap-4 mt-4">
+            {/* if the event requires volunteers */}
+            {event.canVolunteer && (
+              <Button
+                onClick={() => {
+                  onVolunteer(event); //displays event volunteer form
+                }}
+                className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors"
+              >
+                Volunteer
+              </Button>
+            )}
+            {/* if the event requires donations */}
+            {event.canDonate && (
+              <Button className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors">
+                Donate
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>

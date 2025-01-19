@@ -1,5 +1,6 @@
 "use client";
 import "./globals.css";
+import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
 import { TbMenuDeep } from "react-icons/tb";
@@ -30,6 +31,10 @@ export default function RootLayout({ children }) {
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
   }
+
+  // const router = useRouter();
+  const pathname = usePathname();
+  const isActive = (path) => pathname === path;
 
   return (
     <html lang="en">
@@ -66,47 +71,44 @@ export default function RootLayout({ children }) {
               </span>
             </Link>
             <nav className="hidden md:flex space-x-6 md-lg:space-x-0 md-lg:text-xs sticky top-0">
-              <Link
-                href="/"
-                className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
-              >
-                Home
-              </Link>
-              <Link
-                href="/about"
-                className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
-              >
-                About Us
-              </Link>
-              <Link
-                href="/testimonials"
-                className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
-              >
-                Testimonials
-              </Link>
-              <Link
-                href="/achievements"
-                className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
-              >
-                Achievements
-              </Link>
-              <Link
-                href="/projects"
-                className="text-gray-600 hover:text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
-              >
-                Projects
-              </Link>
+              {[
+                //an object with all the different routes for the header
+                { href: "/", label: "Home" },
+                { href: "/about", label: "About Us" },
+                { href: "/testimonials", label: "Testimonials" },
+                { href: "/achievements", label: "Achievements" },
+                { href: "/projects", label: "Projects" },
+              ].map(({ href, label }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`px-4 py-2 rounded-full transition duration-300 ${
+                    //isActive sets the color of the route in the header to blue if that is the route we are in
+                    isActive(href)
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-600 hover:text-white hover:bg-blue-600"
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
             </nav>
             <div className="hidden md:flex md-lg:text-xs items-center space-x-4">
               <Link
                 href="/donate"
-                className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300"
+                className={`text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ${
+                  isActive("/donate") ? "bg-blue-600" : "bg-blue-400"
+                }`}
               >
                 Donate
               </Link>
               <Link
                 href="/get-involved"
-                className="border border-blue-500 text-blue-500 px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300"
+                className={`border border-blue-500 px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 ${
+                  isActive("/get-involved")
+                    ? "bg-blue-600 text-white"
+                    : "bg-blue-50 text-blue-500"
+                }`}
               >
                 Get Involved
               </Link>
@@ -116,75 +118,59 @@ export default function RootLayout({ children }) {
             </button>
           </div>
         </header>
-        {isMenuOpen && (
-          <div
-            className={`fixed inset-0 bg-white z-50 md:hidden transition-transform duration-300 ease-in-out ${
-              isMenuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
-            // This transition does not work yet
-          >
-            <div className="container mx-auto px-6 py-8 flex flex-col h-full gap-12">
-              <div className="flex justify-end py-8">
-                <button onClick={toggleMenu}>
-                  <FaX className="h-8 w-8 text-gray-500" />
-                </button>
-              </div>
-              <nav className="flex flex-col space-y-6 mt-12 ps-5">
+        {/* Mobile Menu - Always in DOM but transforms control visibility */}
+        <div
+          className={`fixed inset-0 bg-white z-50 md:hidden transition-transform duration-300 ease-in-out ${
+            isMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+          // This transition does not work yet
+        >
+          <div className="container mx-auto px-6 py-8 flex flex-col h-full gap-12">
+            <div className="flex justify-end py-8">
+              <button onClick={toggleMenu}>
+                <FaX className="h-8 w-8 text-gray-500" />
+              </button>
+            </div>
+            <nav className="flex flex-col space-y-6 mt-12 ps-5">
+              {[
+                { href: "/", label: "Home" },
+                { href: "/about", label: "About Us" },
+                { href: "/testimonials", label: "Testimonials" },
+                { href: "/achievements", label: "Achievements" },
+                { href: "/projects", label: "Projects" },
+              ].map(({ href, label }) => (
                 <Link
-                  href="/"
-                  className="text-blue-500 font-semibold text-2xl"
+                  key={href}
+                  href={href}
                   onClick={toggleMenu}
+                  className={`font-semibold text-2xl transition-all duration-300 ${
+                    isActive(href)
+                      ? "text-blue-500"
+                      : "text-gray-600 hover:bg-blue-500"
+                  }`}
                 >
-                  Home
+                  {label}
                 </Link>
-                <Link
-                  href="/about"
-                  className="text-gray-600 hover:text-gray-900 text-2xl"
-                  onClick={toggleMenu}
-                >
-                  About Us
-                </Link>
-                <Link
-                  href="/testimonials"
-                  className="text-gray-600 hover:text-gray-900 text-2xl"
-                  onClick={toggleMenu}
-                >
-                  Testimonials
-                </Link>
-                <Link
-                  href="/achievements"
-                  className="text-gray-600 hover:text-gray-900 text-2xl"
-                  onClick={toggleMenu}
-                >
-                  Achievements
-                </Link>
-                <Link
-                  href="/projects"
-                  className="text-gray-600 hover:text-gray-900 text-2xl"
-                  onClick={toggleMenu}
-                >
-                  Projects
-                </Link>
-              </nav>
-              <div className="mt-auto mb-24 space-x-4 flex justify-center">
-                <Link
-                  href="/donate"
-                  className="block bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 text-center text-xl"
-                  onClick={toggleMenu}
-                >
-                  Donate
-                </Link>
-                <Link
-                  href="/get-involved"
-                  className="block border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 text-center text-xl"
-                  onClick={toggleMenu}
-                >
-                  Get Involved
-                </Link>
-              </div>
+              ))}
+            </nav>
+            <div className="mt-auto mb-24 space-x-4 flex justify-center">
+              <Link
+                href="/donate"
+                className="block bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition duration-300 text-center text-xl"
+                onClick={toggleMenu}
+              >
+                Donate
+              </Link>
+              <Link
+                href="/get-involved"
+                className="block border border-blue-500 text-blue-500 px-4 py-2 rounded-full hover:bg-blue-300 transition duration-300 text-center text-xl"
+                onClick={toggleMenu}
+              >
+                Get Involved
+              </Link>
             </div>
           </div>
-        )}
+        </div>
         <ApiStatsProvider>{children}</ApiStatsProvider>
         {/* Default Footer Section */}
         <div className="relative mt-auto">
@@ -254,7 +240,7 @@ export default function RootLayout({ children }) {
                           +234 706 528 6910
                         </p>
                       </div>
-                      {/* Buisiness address */}
+                      {/* Business address */}
                       <div className="flex gap-2">
                         <MapPin className="h-5 w-5" />
                         <p className="text-sm text-gray-600">
@@ -269,42 +255,23 @@ export default function RootLayout({ children }) {
                   <div className="flex flex-col space-y-8 md:text-left md:flex-grow md:items-end items-start md-lg:text-sm">
                     {/* First Row - Navigation Links */}
                     <nav className="flex flex-col md:flex-row gap-4 md:gap-8 md:justify-start font-bold lg:gap-2 md-lg:gap-2 md-lg:text-xs">
-                      <Link
-                        href="/"
-                        className="text-black hover:font-bold hover:scale-105 transition-transform"
-                      >
-                        Home
-                      </Link>
-                      <Link
-                        href="/about"
-                        className="text-black hover:font-bold hover:scale-105 transition-transform"
-                      >
-                        About Us
-                      </Link>
-                      <Link
-                        href="/achievements"
-                        className="text-black hover:font-bold hover:scale-105 transition-transform"
-                      >
-                        Achievements
-                      </Link>
-                      <Link
-                        href="/testimonials"
-                        className="text-black hover:font-bold hover:scale-105 transition-transform"
-                      >
-                        Testimonials
-                      </Link>
-                      <Link
-                        href="/projects"
-                        className="text-black hover:font-bold hover:scale-105 transition-transform"
-                      >
-                        Projects
-                      </Link>
-                      <Link
-                        href="/donate"
-                        className="text-black hover:font-bold hover:scale-105 transition-transform"
-                      >
-                        Donate
-                      </Link>
+                      {[
+                        { href: "/", label: "Home" },
+                        { href: "/about", label: "About Us" },
+                        { href: "/testimonials", label: "Testimonials" },
+                        { href: "/achievements", label: "Achievements" },
+                        { href: "/projects", label: "Projects" },
+                        { href: "/donate", label: "Donate" },
+                      ].map(({ href, label }) => (
+                        <Link
+                          key={href}
+                          href={href}
+                          onClick={toggleMenu}
+                          className="text-black hover:font-bold hover:scale-105 transition-transform"
+                        >
+                          {label}
+                        </Link>
+                      ))}
                     </nav>
 
                     {/* Second Row - Copyright Text */}
