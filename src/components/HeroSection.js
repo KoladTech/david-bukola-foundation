@@ -45,7 +45,6 @@ const AnimatedCounter = ({ targetValue, statsLoading }) => {
 
 export default function HeroSection({
   title,
-  title2,
   description,
   imageUrl,
   alt,
@@ -103,14 +102,12 @@ export default function HeroSection({
               </div>
             </div>
           )}
-          <div className="absolute top-0 left-0 w-full p-6 md:p-8 bg-gradient-to-b from-black/50 via-black/30 to-transparent">
+          <div className="absolute top-0 left-0 w-full pt-5 px-5 md:p-8 bg-gradient-to-b from-black/50 via-black/30 to-transparent">
             {/* This styling will darken the top so that the white text looks better */}
             {/* <div className="flex flex-col md:flex-row justify-between items-start"> */}
-            <div className="flex flex-col justify-start items-center">
+            <div className="flex flex-col justify-center items-center text-center">
               <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold text-white">
                 {title}
-                <br />
-                {title2}
               </h1>
               <p className="text-lg md:text-xl text-white align-middle">
                 {description}
