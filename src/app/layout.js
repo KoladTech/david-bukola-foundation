@@ -2,7 +2,7 @@
 import "./globals.css";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { TbMenuDeep } from "react-icons/tb";
 import { FaX } from "react-icons/fa6";
 import localFont from "next/font/local";
@@ -27,6 +27,36 @@ const geistMono = localFont({
 
 export default function RootLayout({ children }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(0); // Store header height dynamically
+  const headerRef = useRef(null); // Reference to the header element
+
+  useEffect(() => {
+    // Measure header height and update state
+    if (headerRef.current) {
+      setHeaderHeight(headerRef.current.offsetHeight);
+    }
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > headerHeight) {
+        // Scrolling down
+        setShowHeader(false);
+      } else {
+        // Scrolling up
+        setShowHeader(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup event listener on unmount
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY, headerHeight]);
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
@@ -49,7 +79,28 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <header className="bg-white sticky top-0 z-50 shadow-sm">
+        {/* <header className="bg-white sticky top-0 z-50 shadow-sm"> */}
+        {/* <header
+          className={`
+        fixed top-0 left-0 right-0 
+        transform transition-transform duration-300 ease-in-out 
+        bg-white shadow-sm z-50
+        ${isVisible ? "translate-y-0" : "-translate-y-full"}
+        `}
+          ref={headerRef}
+        > */}
+        <header
+          ref={headerRef} // Attach the reference
+          style={{
+            position: "fixed",
+            top: showHeader ? "0" : `-${headerHeight}px`, // Dynamically slide based on height
+            transition: "top 0.3s ease-in-out",
+            width: "100%",
+            backgroundColor: "#fff",
+            zIndex: 1000,
+            boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
+          }}
+        >
           <div className="container mx-auto my-8 px-4 py-4 flex items-center justify-between text-sm lg:text-base">
             <Link href="/" className="flex items-center space-x-2">
               <Image
@@ -96,15 +147,19 @@ export default function RootLayout({ children }) {
             <div className="hidden md:flex md-lg:text-xs items-center space-x-4">
               <Link
                 href="/donate"
-                className={`text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ${
-                  isActive("/donate") ? "bg-blue-600" : "bg-blue-400"
+                onClick={toggleMenu}
+                className={`px-4 py-2 rounded-full hover:bg-blue-500 transition duration-300 ${
+                  !isActive("/get-involved")
+                    ? "bg-blue-600 text-white"
+                    : "bg-blue-50 text-blue-600"
                 }`}
               >
                 Donate
               </Link>
               <Link
                 href="/get-involved"
-                className={`border border-blue-500 px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 ${
+                onClick={toggleMenu}
+                className={`px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 ${
                   isActive("/get-involved")
                     ? "bg-blue-600 text-white"
                     : "bg-blue-50 text-blue-500"
@@ -123,7 +178,6 @@ export default function RootLayout({ children }) {
           className={`fixed inset-0 bg-white z-50 md:hidden transition-transform duration-300 ease-in-out ${
             isMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
-          // This transition does not work yet
         >
           <div className="container mx-auto px-6 py-8 flex flex-col h-full gap-12">
             <div className="flex justify-end py-8">
@@ -157,8 +211,10 @@ export default function RootLayout({ children }) {
               <Link
                 href="/donate"
                 onClick={toggleMenu}
-                className={`text-white px-4 py-2 rounded-full hover:bg-blue-600 transition duration-300 ${
-                  isActive("/donate") ? "bg-blue-600" : "bg-blue-400"
+                className={`px-4 py-2 rounded-full hover:bg-blue-500 transition duration-300 ${
+                  !isActive("/get-involved")
+                    ? "bg-blue-600 text-white"
+                    : "bg-blue-50 text-blue-600"
                 }`}
               >
                 Donate
@@ -166,7 +222,7 @@ export default function RootLayout({ children }) {
               <Link
                 href="/get-involved"
                 onClick={toggleMenu}
-                className={`border border-blue-500 px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 ${
+                className={`px-2 lg:px-4 py-2 rounded-full hover:bg-blue-50 transition duration-300 ${
                   isActive("/get-involved")
                     ? "bg-blue-600 text-white"
                     : "bg-blue-50 text-blue-500"
@@ -177,7 +233,9 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </div>
-        <ApiStatsProvider>{children}</ApiStatsProvider>
+        <main className={`mt-[${headerHeight}px]`}>
+          <ApiStatsProvider>{children}</ApiStatsProvider>
+        </main>
         {/* Default Footer Section */}
         <div className="relative mt-auto">
           <div
