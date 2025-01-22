@@ -13,7 +13,7 @@ Together, we can make a world of difference. Get involved today!
   let careers_content = `Turn your passion for giving back into a fulfilling career. Explore opportunities to join our dedicated team and create a lasting impact.`;
   let events_content = `Be a part of the action! Join us at our upcoming events and experience the joy of helping our community thrive.`;
   return (
-    <div className="flex flex-col gap-2 my-4">
+    <div className="flex flex-col gap-2 mb-4">
       {/* Hero Section */}
       <HeroSection
         className="object-[50%_20%]" //This positions the images 50 percent from the x-axis, and 20 percent from the y-axis
