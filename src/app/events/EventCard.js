@@ -1,3 +1,4 @@
+"use client";
 import {
   CalendarDays,
   MapPin,
@@ -11,6 +12,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
 import { mediaBaseUrl } from "@/constants";
+import { useRouter } from "next/navigation";
 
 export default function EventCard({
   event,
@@ -18,6 +20,14 @@ export default function EventCard({
   onImageClick,
   onVolunteer,
 }) {
+  const router = useRouter();
+
+  const donateToEvent = () => {
+    const eventData = { eventName: event.title, eventId: event.id };
+    const queryString = new URLSearchParams(eventData).toString();
+    router.push(`/donate?${queryString}`);
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-14">
       <div className="grid md:grid-cols-2 gap-6">
@@ -137,7 +147,10 @@ export default function EventCard({
             )}
             {/* if the event requires donations */}
             {event.canDonate && (
-              <Button className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors">
+              <Button
+                onClick={donateToEvent}
+                className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors"
+              >
                 Donate
               </Button>
             )}
