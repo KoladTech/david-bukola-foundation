@@ -8,6 +8,8 @@ import MeetOurTeam from "@/components/MeetOurTeam";
 import ProjectCard from "@/components/ProjectCard";
 import Achievement from "@/components/Achievement";
 import { mediaBaseUrl } from "@/constants";
+import handleEmailValidation from "@/lib/emailVerification";
+import Newsletter from "@/components/NewsLetter";
 
 // Imports for testing Firebase analytics using a custom event
 // import { logEvent } from "firebase/analytics";
@@ -22,7 +24,7 @@ export default function Home() {
   // }
 
   return (
-    <main>
+    <>
       {/* Main home page div */}
       <div className="space-y-4">
         <HeroSection
@@ -57,12 +59,19 @@ export default function Home() {
 
           {/* Meet our team section */}
           <MeetOurTeam />
+        </div>
 
+        {/* Newsletter */}
+        <div>
+          <Newsletter />
+        </div>
+
+        <div className="content-div">
           {/* Frequently asked questions section */}
           <FAQ />
         </div>
         {/* Main div closing tag */}
       </div>
-    </main>
+    </>
   );
 }

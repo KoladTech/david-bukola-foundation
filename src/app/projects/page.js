@@ -61,7 +61,7 @@ export default function ProjectsPage() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 my-4 ">
+    <div className="flex flex-col gap-2 mb-10">
       {/* Hero Section */}
       <div className="flex flex-col mb-14">
         <HeroSection
@@ -69,7 +69,7 @@ export default function ProjectsPage() {
           title="PROJECTS"
           description=""
           imageUrl={`${mediaBaseUrl}/images/project-page-image.png`}
-          alt=""
+          alt="projects hero image"
         />
       </div>
       {/* {loading ? (

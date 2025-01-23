@@ -37,7 +37,7 @@ export default function CareersPage() {
       <HeroSection
         title={"Careers"}
         //   imageUrl={`https://media.istockphoto.com/id/1278834781/photo/group-of-happy-african-children-orphanage-in-nairobi-kenya-east-africa.jpg?s=612x612&w=0&k=20&c=CN_l88pra-m9Q0h8Gzwpv1TTCFwxVqPmarOSt8OlVtk=`}
-        imageUrl={`/images/careers_page_hero_section_image.png`}
+        imageUrl={`${mediaBaseUrl}/images/careers_page_hero_section_image.png`}
       />
       <div className="container mx-auto px-4 py-12">
         {/* Introduction */}

@@ -1,3 +1,4 @@
+"use client";
 import {
   CalendarDays,
   MapPin,
@@ -10,6 +11,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
+import { mediaBaseUrl } from "@/constants";
+import { useRouter } from "next/navigation";
 
 export default function EventCard({
   event,
@@ -17,6 +20,14 @@ export default function EventCard({
   onImageClick,
   onVolunteer,
 }) {
+  const router = useRouter();
+
+  const donateToEvent = () => {
+    const eventData = { eventName: event.title, eventId: event.id };
+    const queryString = new URLSearchParams(eventData).toString();
+    router.push(`/donate?${queryString}`);
+  };
+
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-14">
       <div className="grid md:grid-cols-2 gap-6">
@@ -25,10 +36,10 @@ export default function EventCard({
           className={`relative aspect-[4/5] md:aspect-auto md:${
             isImageFirst ? "order-2" : ""
           }`}
-          onClick={() => onImageClick(`${event.image}`)} //Sets image to full screen
+          onClick={() => onImageClick(`${mediaBaseUrl}${event.image}`)} //Sets image to full screen
         >
           <Image
-            src={event.image}
+            src={`${mediaBaseUrl}${event.image}`}
             alt={event.title}
             fill
             style={{ objectFit: "contain" }}
@@ -122,16 +133,28 @@ export default function EventCard({
               {event.eventsType === "giveaway" ? "Join Giveaway" : "Learn More"}
             </Link>
           )}
-          {event.requiresVolunteers && (
-            <Button
-              onClick={() => {
-                onVolunteer(event); //displays event volunteer form
-              }}
-              className="inline-flex items-center justify-center w-full px-6 py-3 mt-auto text-white font-medium bg-blue-500 rounded-full hover:bg-blue-600 transition-colors"
-            >
-              Volunteer
-            </Button>
-          )}
+          <div className="flex gap-4 mt-4">
+            {/* if the event requires volunteers */}
+            {event.canVolunteer && (
+              <Button
+                onClick={() => {
+                  onVolunteer(event); //displays event volunteer form
+                }}
+                className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors"
+              >
+                Volunteer
+              </Button>
+            )}
+            {/* if the event requires donations */}
+            {event.canDonate && (
+              <Button
+                onClick={donateToEvent}
+                className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors"
+              >
+                Donate
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </div>
