@@ -54,8 +54,8 @@ export default function NewsletterSection() {
     }, 1500);
   };
 
+  // Cleanup timeout on component unmount to avoid memory leaks
   useEffect(() => {
-    // Cleanup timeout on component unmount to avoid memory leaks
     return () => {
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
@@ -63,6 +63,7 @@ export default function NewsletterSection() {
     };
   }, []);
 
+  // Function that handles submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -89,8 +90,8 @@ export default function NewsletterSection() {
 
       // Add the user document (if applicable)
       await addUserDocument({
-        firstName: "K",
-        lastName: "K",
+        firstName: "N/A",
+        lastName: "N/A",
         email,
         newsletter: true,
         roles: ["subscriber"],

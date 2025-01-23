@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import db from "@/firebase/firebaseConfig";
@@ -15,23 +15,14 @@ export default function TestimonyForm({
   clickCloseForm,
   closeForm,
   setShowThankYou,
+  testimonyData,
+  setTestimonyData,
 }) {
   const [testimonial, setTestimonial] = useState("");
   const [submissionError, setSubmissionError] = useState("");
   const [emailErrorMessage, setEmailErrorMessage] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [testimonyData, setTestimonyData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    occupation: "",
-    testimonial: "",
-    type: "text",
-    newsletter: false,
-    approved: false,
-    date: serverTimestamp(),
-  });
 
   const maxLength = 300; // Set the character limit
 
@@ -54,10 +45,22 @@ export default function TestimonyForm({
       [name]: value,
     }));
   };
+  useEffect(() => console.log(testimonyData)); // Load data from localStorage on component mount
+  // useEffect(() => {
+  //   console.log(testimonyData);
+  //   const savedData = JSON.parse(localStorage.getItem("testimonyData"));
+  //   if (savedData) {
+  //     setTestimonyData(savedData);
+  //   }
+  // }, []);
 
-  // Reset Testimony data.
+  // // Save data to localStorage whenever testimonyData changes
+  // useEffect(() => {
+  //   localStorage.setItem("testimonyData", JSON.stringify(testimonyData));
+  // }, [testimonyData]);
+
   const resetFormData = () => {
-    setTestimonyData({
+    const defaultData = {
       firstName: "",
       lastName: "",
       email: "",
@@ -67,7 +70,9 @@ export default function TestimonyForm({
       newsletter: false,
       approved: false,
       date: serverTimestamp(),
-    });
+    };
+    setTestimonyData(defaultData);
+    localStorage.removeItem("testimonyData");
   };
 
   // Handles form submission on clicking share button
@@ -178,7 +183,7 @@ export default function TestimonyForm({
                     id="testimonial"
                     name="testimonial"
                     maxLength={maxLength}
-                    value={testimonyData.testimony}
+                    value={testimonyData.testimonial}
                     ref={(el) => (formDataRefs.current.testimonial = el)}
                     placeholder={`Write your testimonial here... \n(Maximum of 300 characters)`}
                     required
@@ -211,13 +216,13 @@ export default function TestimonyForm({
                   <Button
                     onClick={handleSubmit}
                     disabled={
-                      !formDataRefs.current.firstName?.value ||
-                      !formDataRefs.current.lastName?.value ||
-                      !formDataRefs.current.email?.value ||
-                      !emailValid ||
-                      !formDataRefs.current.occupation?.value ||
-                      !formDataRefs.current.testimonial?.value ||
+                      !testimonyData.firstName ||
+                      !testimonyData.lastName ||
+                      !testimonyData.email ||
+                      // !emailValid ||
                       emailErrorMessage ||
+                      !testimonyData.occupation ||
+                      !testimonyData.testimonial ||
                       isSubmitting
                     }
                   >

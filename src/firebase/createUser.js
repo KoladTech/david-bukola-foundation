@@ -11,8 +11,13 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 const addUserDocument = async (data) => {
   console.log(data);
   // Ensure required fields are present
-  const { firstName, lastName, email, newsletter, roles } = data;
-  if (!firstName || !lastName || !email || newsletter === undefined) {
+  const { donateAnonymously, firstName, lastName, email, newsletter, roles } =
+    data;
+  // Runs the validation Checks only if it's NOT an anonymous donation.
+  if (
+    !donateAnonymously &&
+    (!firstName || !lastName || !email || newsletter === undefined)
+  ) {
     throw new Error(
       "Missing required fields: firstName, lastName, email, or newsletter."
     );
@@ -23,9 +28,9 @@ const addUserDocument = async (data) => {
   try {
     //Create a userData here to add a timestamp for when the document was created
     const userData = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
+      firstName: donateAnonymously ? "Anonymous" : firstName, //Puts anonymous as first name if it's an anonymous donation
+      lastName: donateAnonymously ? "N/A" : lastName,
+      email: donateAnonymously ? "N/A" : email,
       newsletter: newsletter,
       roles: roles,
       createdAt: serverTimestamp(),

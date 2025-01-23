@@ -11,6 +11,7 @@ import TestimonyForm from "@/app/testimonials/TestimonyForm";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 import { mediaBaseUrl } from "@/constants";
+import { serverTimestamp } from "firebase/firestore";
 
 function SkeletonProject() {
   return (
@@ -32,6 +33,17 @@ export default function TestimonialsPage() {
   const [showTestimonyForm, setShowTestimonyForm] = useState(false);
   const [showThankYou, setShowThankYou] = useState(false);
   const formRef = useRef(null);
+  const [testimonyData, setTestimonyData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    occupation: "",
+    testimonial: "",
+    type: "text",
+    newsletter: false,
+    approved: false,
+    date: serverTimestamp(),
+  });
 
   // Fetch Testimonials on component mount (Using a variable (loadTestimonials) to store the function)
   useEffect(() => {
@@ -148,7 +160,7 @@ export default function TestimonialsPage() {
                           className="rounded-full"
                         /> */}
                       <div>
-                        <div className="flex space-x-2">
+                        <div className="-ml-2 flex space-x-2">
                           {/* Circle with Initial */}
                           <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 text-gray-800 font-semibold text-lg">
                             {testimonial.firstName?.[0]?.toUpperCase() || "?"}
@@ -224,6 +236,9 @@ export default function TestimonialsPage() {
               setShowTestimonyForm(false);
             }}
             setShowThankYou={setShowThankYou}
+            // Pass in testimony data so the data is available to the fonr and the data persists on closing the form and reopening it.
+            testimonyData={testimonyData}
+            setTestimonyData={setTestimonyData}
           />
         </div>
       )}

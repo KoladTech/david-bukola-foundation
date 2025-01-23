@@ -35,7 +35,8 @@ export async function POST(req) {
         "event_name",
         "event_id",
       ],
-      donateForm: [
+      anonymousDonationForm: ["paymentMethod", "amount"],
+      donationForm: [
         "firstName",
         "lastName",
         "email",
@@ -75,6 +76,8 @@ export async function POST(req) {
       );
     }
 
+    // const donateAnonymously = ["firstName", "lastName", "email", "country"];
+
     // Validate the form data
     const missingFields = requiredFields.filter((field) => !formData[field]);
 
@@ -99,29 +102,6 @@ export async function POST(req) {
 
     // Generate dynamic email content
     const emailSubject = `New ${formatObjectKeyToTitle(formType)} Submission`;
-    // const emailBody = `
-    //   <html>
-    //     <body>
-    //       <h2>${formatObjectKeyToTitle(formType)} Submission</h2>
-    //       <ul>
-    //         ${Object.entries(formData)
-    //           .map(([key, value]) => {
-    //             const formattedValue =
-    //               typeof value === "object" ? formatTimestamp(value) : value;
-    //             return `
-    //               <li>
-    //                 <strong>${formatObjectKeyToTitle(key)}:</strong> ${
-    //               Array.isArray(formattedValue)
-    //                 ? formattedValue.join(", ")
-    //                 : formattedValue
-    //             }
-    //               </li>`;
-    //           })
-    //           .join("")}
-    //       </ul>
-    //     </body>
-    //   </html>
-    // `;
     const emailBody = `
   <html>
     <body>
