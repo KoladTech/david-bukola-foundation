@@ -58,6 +58,7 @@ export default function RootLayout({ children }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, headerHeight]);
 
+  console.log(headerHeight);
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
   }
@@ -233,7 +234,8 @@ export default function RootLayout({ children }) {
             </div>
           </div>
         </div>
-        <main className={`mt-[${headerHeight}px]`}>
+        <main style={{ marginTop: `${headerHeight}px` }}>
+          {/* <main className={`mt-[${headerHeight}px]`}> */}
           <ApiStatsProvider>{children}</ApiStatsProvider>
         </main>
         {/* Default Footer Section */}
