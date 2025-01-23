@@ -8,9 +8,9 @@ export async function POST(req) {
 
     // Extract form type and form data
     const { formType, formData } = body;
-    console.log(body);
+    // console.log(body);
     if (!formType || !formData) {
-      console.log("Form type and data are required");
+      console.error("Form type and data are required");
       return new Response(
         JSON.stringify({ message: "Form type and data are required" }),
         { status: 400 }
@@ -69,7 +69,7 @@ export async function POST(req) {
     // const requiredFields = validateForm();
 
     if (!requiredFields) {
-      console.log("Invalid form type provided");
+      console.error("Invalid form type provided");
       return new Response(
         JSON.stringify({ message: "Invalid form type provided" }),
         { status: 400 }
