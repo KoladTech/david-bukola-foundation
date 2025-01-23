@@ -7,7 +7,7 @@ body {
   /* max-width: 1140px; */
   height: 100%; /* Make sure the html and body elements take the full height */
   margin: auto;
-  overflow: auto;
+  /* overflow: auto; */
   /* this allowed the sticky behaviour to work. Don't really understand why */
 }
 

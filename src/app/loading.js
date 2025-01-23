@@ -16,7 +16,7 @@ export default function Loading() {
       setProgress((oldProgress) => {
         if (oldProgress === 100) {
           // Clear the interval when progress reaches 100%.
-          clearInterval(timer);
+          clearInterval(timerRef.current);
           return 100;
         }
         // Increment progress by 1 and ensure it does not exceed 100.

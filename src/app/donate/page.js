@@ -1,8 +1,7 @@
 "use client";
 import { mediaBaseUrl } from "@/constants";
 import React, { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -75,6 +74,20 @@ export default function DonatePage() {
   const searchParams = useSearchParams();
   // routing states
   const returnTo = searchParams.get("returnTo");
+  const eventName = searchParams.get("eventName") || null;
+  const eventId = searchParams.get("eventId") || null;
+
+  useEffect(() => {
+    if (eventId && eventName) {
+      setDonateFormData((prev) => ({
+        ...prev,
+        eventName: eventName,
+        eventId: eventId,
+      }));
+    }
+  }, [eventId, eventName]);
+  console.log(donateFormData);
+
   const [previousPage, setPreviousPage] = useState("/");
 
   // Getting bank details
@@ -348,6 +361,7 @@ export default function DonatePage() {
       {/* Hero Section */}
       <div className="relative w-full overflow-hidden">
         <HeroSection
+          alt={"Donate Hero Section"}
           imageUrl={`${mediaBaseUrl}/images/donate-image.jpg`}
           bottomRightWidget={false}
         />
@@ -408,7 +422,9 @@ export default function DonatePage() {
                         {/* Text section for donate card */}
                         <div className="space-y-2">
                           <h2 className="text-xl font-semibold">
-                            Choose how much you'd like to give
+                            {eventName
+                              ? `Choose how much you'd like to give to ${eventName}`
+                              : "Choose how much you'd like to give"}
                           </h2>
                           <p className="text-gray-900">
                             Your donation will help us create positive change

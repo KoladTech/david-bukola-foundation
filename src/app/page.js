@@ -24,7 +24,7 @@ export default function Home() {
   // }
 
   return (
-    <main>
+    <>
       {/* Main home page div */}
       <div className="space-y-4">
         <HeroSection
@@ -72,6 +72,6 @@ export default function Home() {
         </div>
         {/* Main div closing tag */}
       </div>
-    </main>
+    </>
   );
 }

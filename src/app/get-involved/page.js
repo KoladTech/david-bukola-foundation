@@ -13,7 +13,7 @@ Together, we can make a world of difference. Get involved today!
   let careers_content = `Turn your passion for giving back into a fulfilling career. Explore opportunities to join our dedicated team and create a lasting impact.`;
   let events_content = `Be a part of the action! Join us at our upcoming events and experience the joy of helping our community thrive.`;
   return (
-    <div className="flex flex-col gap-2 my-4">
+    <div className="flex flex-col gap-2 mb-4">
       {/* Hero Section */}
       <HeroSection
         className="object-[60%_80%]" //This positions the images 50 percent from the x-axis, and 20 percent from the y-axis
@@ -23,8 +23,8 @@ Together, we can make a world of difference. Get involved today!
         alt="Get Involved image"
       />
       {/* Content Sections */}
-      <div>
-        <div className="flex flex-col space-y-10 mb-24 content-div mx-auto p-4">
+      <div className="p-4">
+        <div className="flex flex-col space-y-10 mb-24 content-div mx-auto">
           <div className="my-8">
             {/* <ContentCard content={content} /> */}
             <p className="text-base md:text-lg text-gray-600 mx-auto">
@@ -38,7 +38,8 @@ Together, we can make a world of difference. Get involved today!
               <PictureCard
                 className=""
                 imageSrc={`${mediaBaseUrl}/images/dbf-volunteer-image.jpg`}
-                altText=""
+                altText="Get Involved volunteer image"
+
               />
             </div>
             <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center gap-4">
@@ -60,7 +61,7 @@ Together, we can make a world of difference. Get involved today!
               <PictureCard
                 className=""
                 imageSrc={`${mediaBaseUrl}/images/get_involved_careers_image.png`}
-                altText=""
+                altText="Get Involved careers image"
               />
             </div>
           </div>
@@ -70,7 +71,7 @@ Together, we can make a world of difference. Get involved today!
               <PictureCard
                 className=""
                 imageSrc={`${mediaBaseUrl}/images/get_involved_events_image.png`}
-                altText=""
+                altText="Get Involved events Image"
               />
             </div>
             <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center gap-4 mb-20">
