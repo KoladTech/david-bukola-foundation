@@ -11,6 +11,7 @@ import { mediaBaseUrl } from "@/constants";
 import { formatCurrency, formatObjectKeyToTitle } from "@/lib/utils";
 import { fetchedData } from "@/firebase/fetchFirebaseData";
 import VideoPlayer from "@/components/VideoPlayer";
+import { object } from "zod";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -46,6 +47,7 @@ export default function Page() {
             <HeroSection
               title="ACHIEVEMENTS"
               imageUrl={`${mediaBaseUrl}/images/dbf-achievement-page-image1.jpg`}
+              alt={`achievements hero section image`}
               darkenImage="absolute inset-0 bg-black bg-opacity-40"
               showStats={true}
               stats={stats}
@@ -105,10 +107,9 @@ export default function Page() {
                       <SchoolsList schools={achievement.details.schools} />
                     )}
                   </div>
-
-                  {(achievement.details?.images || []).length > 0 && (
+                  {(achievement.media?.images || []).length > 0 && (
                     <div className="mt-6 grid grid-cols-2 gap-2">
-                      {achievement.details.images.map((image, idx) => (
+                      {achievement.media.images.map((image, idx) => (
                         <div
                           key={idx}
                           className="relative aspect-[4/3] cursor-pointer"
@@ -119,32 +120,40 @@ export default function Page() {
                           <Image
                             src={`${mediaBaseUrl}${image}`}
                             alt={`Image ${idx + 1} for ${achievement.title}`}
-                            fill
+                            layout="fill"
+                            objectFit="cover"
                             className="rounded-lg"
                           />
                         </div>
                       ))}
                     </div>
                   )}
-                  {(achievement.details?.videos || []).length > 0 && (
-                    <div className="mt-6 grid grid-cols-2 gap-2">
-                      {achievement.details.videos.map((video, idx) => (
+                  {(achievement.media?.videos || []).length > 0 && (
+                    <div
+                      className={`mt-6 ${
+                        achievement.media.videos.length === 1
+                          ? ""
+                          : "grid grid-cols-2 gap-2"
+                      }`}
+                    >
+                      {achievement.media.videos.map((video, idx) => (
                         <div
                           key={idx}
-                          className="relative aspect-[4/3] cursor-pointer"
-                          onClick={() =>
-                            setSelectedImage(`${mediaBaseUrl}${image}`)
-                          }
+                          className={`relative aspect-[4/3] cursor-pointer ${
+                            achievement.media.videos.length === 1
+                              ? "w-full"
+                              : ""
+                          }`}
                         >
                           <VideoPlayer
-                            src={`${mediaBaseUrl}${video.videoUrl}`}
+                            src={`${mediaBaseUrl}${video}`}
                             poster={video.image}
                             className="w-full h-full"
                           />
                         </div>
                       ))}
                     </div>
-                  )}
+                  )}{" "}
                 </div>
               ))}
             </div>
