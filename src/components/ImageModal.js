@@ -5,7 +5,7 @@ export default function ImageModal({ src, alt, onClose }) {
   return (
     // Full screen image modal
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[2000]"
       onClick={onClose}
     >
       {/* Image section */}
