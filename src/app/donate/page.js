@@ -332,7 +332,7 @@ export default function DonatePage() {
         : "donationForm",
       // formType: "donateForm",
       formData: donateFormData,
-      yourCollection: "TestCollection",
+      yourCollection: "Donations",
       userRole: "donor",
       setSubmissionError,
       setIsSubmitting,
