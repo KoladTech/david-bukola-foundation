@@ -45,7 +45,6 @@ export default function TestimonyForm({
       [name]: value,
     }));
   };
-  useEffect(() => console.log(testimonyData)); // Load data from localStorage on component mount
   // useEffect(() => {
   //   console.log(testimonyData);
   //   const savedData = JSON.parse(localStorage.getItem("testimonyData"));

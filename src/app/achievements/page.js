@@ -39,7 +39,11 @@ export default function Page() {
   return (
     <>
       {loading ? (
-        <LoadingSpinner />
+        <div className="flex flex-col content-center justify-center m-auto">
+          <div className=" align-middle self-center mt-20">
+            <LoadingSpinner />
+          </div>
+        </div>
       ) : (
         <div className="flex flex-col gap-10 mb-16">
           {/* Hero Section */}

@@ -86,8 +86,7 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
 
         // If the mail did not send succesfully
         if (!response.ok) {
-          console.log(response.json());
-          console.log("Error while sending email");
+          console.error("Error while sending email");
           return;
         }
 
@@ -105,7 +104,7 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
           thankYou(false);
         }, 3000);
       } catch (error) {
-        console.log("Error adding volunteer: ", error);
+        console.error("Error adding volunteer: ", error);
       } finally {
         setFormData({
           firstName: "",

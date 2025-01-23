@@ -163,8 +163,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
 
         // If the mail did not send successfully
         if (!response.ok) {
-          console.log(JSON.stringify(response.json));
-          console.log("Error while sending email");
+          console.error("Error while sending email");
           return;
         }
 
@@ -182,7 +181,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
           setShowThankYou(false);
         }, 3000);
       } catch (error) {
-        console.log("Error adding volunteer: ", error);
+        console.error("Error adding volunteer: ", error);
       } finally {
         setFormData({
           firstName: "",
