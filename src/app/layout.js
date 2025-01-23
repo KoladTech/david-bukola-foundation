@@ -58,7 +58,6 @@ export default function RootLayout({ children }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, headerHeight]);
 
-  console.log(headerHeight);
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
   }
