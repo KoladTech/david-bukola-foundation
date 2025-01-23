@@ -202,10 +202,12 @@ export default function RootLayout({ children }) {
                 <div className="flex flex-col md:flex-row md:justify-between md:items-end md:space-x-8">
                   {/* Left Section */}
                   <div className="mb-8 md:mb-0 flex flex-col items-start">
-                    <img
+                    <Image
+                      className="mb-2"
                       src={`${mediaBaseUrl}/images/dbf-full-logo.svg`}
                       alt="Foundation Logo"
-                      className="w-48 h-36 md-lg:w-40 md-lg:h-32"
+                      width={140}
+                      height={110}
                     />
                     {/* Contact Us  */}
                     <p className="text-black font-bold mb-4">Contact Us</p>
@@ -218,14 +220,14 @@ export default function RootLayout({ children }) {
                       >
                         <GrInstagram className="w-6 h-6" />
                       </a>
-                      {/* <a
-                        href="#"
+                      <a
+                        href="https://www.facebook.com/profile.php?id=61567075205637&mibextid=ZbWKwL"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-black transition-colors"
-                      > */}
-                      <RiFacebookBoxFill className="w-6 h-6" />
-                      {/* </a> */}
+                      >
+                        <RiFacebookBoxFill className="w-6 h-6" />
+                      </a>
                       {/* <a
                         href="#"
                         target="_blank"

@@ -69,7 +69,7 @@ export default function ProjectsPage() {
           title="PROJECTS"
           description=""
           imageUrl={`${mediaBaseUrl}/images/project-page-image.png`}
-          alt=""
+          alt="projects hero image"
         />
       </div>
       {/* {loading ? (

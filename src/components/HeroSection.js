@@ -74,6 +74,7 @@ export default function HeroSection({
             alt={alt}
             className={`${className}`}
             fill
+            sizes="100vw" //Since the Herosection spans full width on all devices
             // style={{ objectFit: "cover", objectPosition: "50% 30%" }}
             style={{ objectFit: "cover" }}
           />
