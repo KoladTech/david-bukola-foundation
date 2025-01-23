@@ -8,8 +8,9 @@ export async function POST(req) {
 
     // Extract form type and form data
     const { formType, formData } = body;
-
+    console.log(body);
     if (!formType || !formData) {
+      console.log("Form type and data are required");
       return new Response(
         JSON.stringify({ message: "Form type and data are required" }),
         { status: 400 }
@@ -34,7 +35,8 @@ export async function POST(req) {
         "event_name",
         "event_id",
       ],
-      donateForm: [
+      anonymousDonationForm: ["paymentMethod", "amount"],
+      donationForm: [
         "firstName",
         "lastName",
         "email",
@@ -49,6 +51,7 @@ export async function POST(req) {
         "occupation",
         "testimonial",
       ],
+      newsletterForm: ["email"],
       // Add more forms here
     };
 
@@ -66,16 +69,20 @@ export async function POST(req) {
     // const requiredFields = validateForm();
 
     if (!requiredFields) {
+      console.log("Invalid form type provided");
       return new Response(
         JSON.stringify({ message: "Invalid form type provided" }),
         { status: 400 }
       );
     }
 
+    // const donateAnonymously = ["firstName", "lastName", "email", "country"];
+
     // Validate the form data
     const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
+      console.log(`Missing required fields: ${missingFields.join(", ")}`);
       return new Response(
         JSON.stringify({
           message: `Missing required fields: ${missingFields.join(", ")}`,
@@ -95,29 +102,6 @@ export async function POST(req) {
 
     // Generate dynamic email content
     const emailSubject = `New ${formatObjectKeyToTitle(formType)} Submission`;
-    // const emailBody = `
-    //   <html>
-    //     <body>
-    //       <h2>${formatObjectKeyToTitle(formType)} Submission</h2>
-    //       <ul>
-    //         ${Object.entries(formData)
-    //           .map(([key, value]) => {
-    //             const formattedValue =
-    //               typeof value === "object" ? formatTimestamp(value) : value;
-    //             return `
-    //               <li>
-    //                 <strong>${formatObjectKeyToTitle(key)}:</strong> ${
-    //               Array.isArray(formattedValue)
-    //                 ? formattedValue.join(", ")
-    //                 : formattedValue
-    //             }
-    //               </li>`;
-    //           })
-    //           .join("")}
-    //       </ul>
-    //     </body>
-    //   </html>
-    // `;
     const emailBody = `
   <html>
     <body>

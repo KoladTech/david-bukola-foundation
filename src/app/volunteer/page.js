@@ -240,10 +240,10 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     <div className="mb-20">
       <div className="flex flex-col mb-10">
         <HeroSection
-          className="object-[50%_20%]"
+          className="object-[50%_75%]"
           title="Volunteer"
           description=""
-          imageUrl={`${mediaBaseUrl}/images/get_involved_hero_section_image.jpeg`}
+          imageUrl={`${mediaBaseUrl}/images/dbf-volunteer-herosection-image.jpg`}
           alt="Get Involved image"
         />
       </div>

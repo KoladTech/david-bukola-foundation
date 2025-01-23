@@ -157,10 +157,10 @@ footer {
 
 @keyframes slideRightToLeft {
   0% {
-    transform: translateX(360%); /* Start from right side */
+    transform: translateX(280%); /* Start from right side */
   }
   100% {
-    transform: translateX(-360%); /* Move to the left side */
+    transform: translateX(-280%); /* Move to the left side */
   }
 }
 

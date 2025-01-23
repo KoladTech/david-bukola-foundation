@@ -16,10 +16,10 @@ Together, we can make a world of difference. Get involved today!
     <div className="flex flex-col gap-2 mb-4">
       {/* Hero Section */}
       <HeroSection
-        className="object-[50%_20%]" //This positions the images 50 percent from the x-axis, and 20 percent from the y-axis
+        className="object-[60%_80%]" //This positions the images 50 percent from the x-axis, and 20 percent from the y-axis
         title="Get Involved"
         description=""
-        imageUrl={`${mediaBaseUrl}/images/get_involved_hero_section_image.jpeg`}
+        imageUrl={`${mediaBaseUrl}/images/dbf-get-involved-image.jpg`}
         alt="Get Involved image"
       />
       {/* Content Sections */}
@@ -39,6 +39,7 @@ Together, we can make a world of difference. Get involved today!
                 className=""
                 imageSrc={`${mediaBaseUrl}/images/dbf-volunteer-image.jpg`}
                 altText="Get Involved volunteer image"
+
               />
             </div>
             <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center gap-4">

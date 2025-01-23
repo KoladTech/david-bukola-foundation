@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function PictureCard({ imageSrc, altText }) {
+export default function PictureCard({ imageSrc, altText, imageSizes }) {
   return (
     <>
       {/* Right Side - Image  */}
@@ -9,6 +9,7 @@ export default function PictureCard({ imageSrc, altText }) {
           src={imageSrc} // Path to your image
           alt={altText} // Images alt text
           fill
+          sizes={imageSizes}
           className="object-cover rounded-lg"
         />
       </div>

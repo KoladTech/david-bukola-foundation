@@ -15,6 +15,7 @@ export default function ProjectCard() {
             <PictureCard
               imageSrc={`${mediaBaseUrl}/images/project-page-image.png`}
               altText="DBF Projects"
+              imageSizes="(min-width: 768px) 50vw, 100vw"
             />
           </div>
           {/* Project Contents */}

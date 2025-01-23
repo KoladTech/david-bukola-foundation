@@ -56,6 +56,7 @@ export default function DonatePage() {
     country: "",
     newsletter: false,
     approved: false,
+    donateAnonymously: false,
     date: serverTimestamp(),
   });
 
@@ -330,6 +331,7 @@ export default function DonatePage() {
       country: "",
       newsletter: false,
       approved: false,
+      donateAnonymously: false,
       date: serverTimestamp(),
     });
   };
@@ -338,7 +340,10 @@ export default function DonatePage() {
   const handleSubmit = (e) => {
     handleFormSubmit({
       e,
-      formType: "donateForm",
+      formType: donateFormData.donateAnonymously
+        ? "anonymousDonationForm"
+        : "donationForm",
+      // formType: "donateForm",
       formData: donateFormData,
       yourCollection: "Donations",
       userRole: "donor",
@@ -462,6 +467,8 @@ export default function DonatePage() {
                         {/* Other amount  */}
                         <div>
                           <input
+                            step="1000"
+                            min="1000"
                             className="input-field"
                             type="number"
                             id="amount"
@@ -496,34 +503,65 @@ export default function DonatePage() {
                         <h2 className="text-xl font-semibold">
                           Your Information
                         </h2>
+                        {/* Donate Anonymously */}
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="donateAnonymously"
+                            checked={donateFormData.donateAnonymously || false}
+                            onCheckedChange={(checked) => {
+                              setDonateFormData((prev) => ({
+                                ...prev,
+                                donateAnonymously: checked,
+                                ...(checked && {
+                                  firstName: "Anonymous",
+                                  lastName: "",
+                                  email: "",
+                                }),
+                              }));
+                            }}
+                          />
+                          <Label
+                            htmlFor="donateAnonymously"
+                            className="text-sm"
+                          >
+                            Donate Anonymously
+                            <span className="text-gray-400 font-normal text-sm mb-2 ml-2">
+                              (If you don't mind, let us know your country.)
+                            </span>{" "}
+                          </Label>
+                        </div>
                         <div className="space-y-8">
                           <div className="flex gap-4">
+                            {/* FirstName */}
                             <div className="flex w-full">
                               <input
                                 type="text"
                                 id="firstName"
                                 name="firstName"
-                                value={FormData.firstName}
+                                value={donateFormData.firstName}
                                 onChange={handleInputChange}
-                                required
                                 placeholder="First Name * "
                                 className="input-field"
+                                required={!donateFormData.donateAnonymously}
+                                disabled={donateFormData.donateAnonymously}
                               />
                             </div>
+                            {/* lastName */}
                             <div className="flex w-full">
                               <input
                                 type="text"
                                 id="lastName"
                                 name="lastName"
-                                value={FormData.lastName}
+                                value={donateFormData.lastName}
                                 onChange={handleInputChange}
-                                required
                                 placeholder="Last Name * "
                                 className="input-field"
+                                required={!donateFormData.donateAnonymously}
+                                disabled={donateFormData.donateAnonymously}
                               />
                             </div>
                           </div>
-
+                          {/* Email */}
                           <div>
                             <input
                               type="email"
@@ -532,20 +570,26 @@ export default function DonatePage() {
                               value={FormData.email}
                               onChange={handleInputChange}
                               onBlur={(e) =>
-                                setEmailErrorMessage(handleEmailValidation(e))
+                                setEmailErrorMessage(
+                                  !donateFormData.donateAnonymously
+                                    ? handleEmailValidation(e)
+                                    : ""
+                                )
                               }
-                              required
                               placeholder="Email * "
                               className="input-field"
+                              required={!donateFormData.donateAnonymously}
+                              disabled={donateFormData.donateAnonymously}
                             />
-                            {emailErrorMessage && (
-                              <div>
-                                <p className="text-red-500 text-md mt-2">
-                                  Please enter a valid email address{" "}
-                                  <p>e.g example@domain.com</p>
-                                </p>
-                              </div>
-                            )}
+                            {!donateFormData.donateAnonymously &&
+                              emailErrorMessage && (
+                                <div>
+                                  <p className="text-red-500 text-md mt-2">
+                                    Please enter a valid email address{" "}
+                                    <p>e.g example@domain.com</p>
+                                  </p>
+                                </div>
+                              )}
                           </div>
                           {/* City */}
                           <div>
@@ -618,6 +662,8 @@ export default function DonatePage() {
                                 id="phoneCode"
                                 name="phoneCode"
                                 value={selectedPhoneCode}
+                                required={!donateFormData.donateAnonymously}
+                                disabled={donateFormData.donateAnonymously}
                                 onChange={(e) => {
                                   const newPhoneCode = e.target.value;
                                   setSelectedPhoneCode(newPhoneCode);
@@ -649,6 +695,8 @@ export default function DonatePage() {
                                 onChange={handleInputChange}
                                 placeholder="Enter phone number"
                                 className="input-field"
+                                required={!donateFormData.donateAnonymously}
+                                disabled={donateFormData.donateAnonymously}
                               />
                             </div>
                           </div>
@@ -686,12 +734,13 @@ export default function DonatePage() {
                             className="flex-1 h-12 bg-[#20426b] hover:bg-sky-700"
                             onClick={handleNext}
                             disabled={
-                              !donateFormData.firstName ||
-                              !donateFormData.lastName ||
-                              !donateFormData.email ||
-                              !donateFormData.country ||
-                              emailErrorMessage ||
-                              !emailValid
+                              !donateFormData.donateAnonymously &&
+                              (!donateFormData.firstName ||
+                                !donateFormData.lastName ||
+                                !donateFormData.email ||
+                                emailErrorMessage ||
+                                !donateFormData.country ||
+                                !emailValid)
                             }
                           >
                             Next
