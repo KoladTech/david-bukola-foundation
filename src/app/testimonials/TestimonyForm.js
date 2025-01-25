@@ -4,11 +4,11 @@ import { X } from "lucide-react";
 import { useRef, useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import db from "@/firebase/firebaseConfig";
+import db from "@/lib/firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import handleEmailValidation from "@/lib/emailVerification";
-import addUserDocument from "@/firebase/createUser";
-import { handleFormSubmit } from "@/firebase/handleFormSubmission";
+import addUserDocument from "@/lib/firebase/createUser";
+import { handleFormSubmit } from "@/lib/firebase/handleFormSubmission";
 import React from "react";
 
 export default function TestimonyForm({

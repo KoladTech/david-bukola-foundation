@@ -1,5 +1,5 @@
-import db from "@/firebase/firebaseConfig";
-import addUserDocument from "@/firebase/createUser";
+import db from "@/lib/firebase/firebaseConfig";
+import addUserDocument from "@/lib/firebase/createUser";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export const handleFormSubmit = async ({

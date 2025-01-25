@@ -1,6 +1,6 @@
 import HeroSection from "./HeroSection";
 import { useApiData } from "@/context/ApiStatsContext";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 export default function Achievement() {
   const { stats, loading_stats, error } = useApiData();

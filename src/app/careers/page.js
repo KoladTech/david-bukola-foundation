@@ -5,10 +5,10 @@ import Link from "next/link";
 import { LuArrowRight } from "react-icons/lu";
 import HeroSection from "@/components/HeroSection";
 import { collection, getDocs } from "firebase/firestore";
-import db from "@/firebase/firebaseConfig";
+import db from "@/lib/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
-import { mediaBaseUrl } from "@/constants";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { mediaBaseUrl } from "@/lib/constants";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 
 export default function CareersPage() {
   const [loading, setLoading] = useState(true);

@@ -7,7 +7,7 @@ import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
 import ProjectCard from "@/components/ProjectCard";
 import Achievement from "@/components/Achievement";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import handleEmailValidation from "@/lib/emailVerification";
 import Newsletter from "@/components/NewsLetter";
 

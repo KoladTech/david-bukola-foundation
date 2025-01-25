@@ -1,5 +1,5 @@
 "use client";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -10,9 +10,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import HeroSection from "@/components/HeroSection";
 import handleEmailValidation from "@/lib/emailVerification";
-import db from "@/firebase/firebaseConfig";
-import addUserDocument from "@/firebase/createUser";
-import { handleFormSubmit } from "@/firebase/handleFormSubmission";
+import db from "@/lib/firebase/firebaseConfig";
+import addUserDocument from "@/lib/firebase/createUser";
+import { handleFormSubmit } from "@/lib/firebase/handleFormSubmission";
 import {
   collection,
   addDoc,
@@ -20,7 +20,7 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { countries } from "@/constants";
+import { countries } from "@/lib/constants";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 import OtherWaysToGive from "./OtherWaysToGive";
 

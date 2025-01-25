@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 
 export default function EventCard({

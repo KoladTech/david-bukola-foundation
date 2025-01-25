@@ -9,17 +9,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import db from "@/firebase/firebaseConfig";
+import db from "@/lib/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
-import addUserDocument from "@/firebase/createUser";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import addUserDocument from "@/lib/firebase/createUser";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 
 const daysOfWeek = [
