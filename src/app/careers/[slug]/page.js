@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { getDocs, collection, query, where } from "firebase/firestore";
-import db from "@/firebase/firebaseConfig";
+import db from "@/lib/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 
 export default function JobDetailsPage({ params }) {

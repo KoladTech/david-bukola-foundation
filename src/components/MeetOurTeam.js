@@ -1,8 +1,8 @@
 import PictureCard from "@/components/PictureCard";
 import ContentCard from "@/components/ContentCard";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import { useEffect, useState } from "react";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 export default function MeetOurTeam() {
   // variables to store and set states for data and errors asynchronously

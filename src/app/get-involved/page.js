@@ -2,7 +2,7 @@ import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
 import NewPageButton from "@/components/NewPageButton";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 export default function Page() {
   let content = `Join us in making a difference. At DavidBukola Development Foundation, we believe everyone has the power to bring positive change. Whether you are looking to donate, volunteer, explore a meaningful career or participate in our events, there are countless ways to support our mission. 
@@ -39,7 +39,6 @@ Together, we can make a world of difference. Get involved today!
                 className=""
                 imageSrc={`${mediaBaseUrl}/images/dbf-volunteer-image.jpg`}
                 altText="Get Involved volunteer image"
-
               />
             </div>
             <div className="relative aspect-[4/3] w-full flex flex-col items-center justify-center gap-4">

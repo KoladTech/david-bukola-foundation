@@ -1,6 +1,6 @@
 "use client";
-import db from "@/firebase/firebaseConfig";
-import addUserDocument from "@/firebase/createUser";
+import db from "@/lib/firebase/firebaseConfig";
+import addUserDocument from "@/lib/firebase/createUser";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 import { useState, useRef, useEffect } from "react";
@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import handleEmailValidation from "@/lib/emailVerification";
-import { handleFormSubmit } from "@/firebase/handleFormSubmission";
+import { handleFormSubmit } from "@/lib/firebase/handleFormSubmission";
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState("");

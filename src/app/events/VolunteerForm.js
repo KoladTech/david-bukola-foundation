@@ -8,10 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import db from "@/firebase/firebaseConfig";
+import db from "@/lib/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { X } from "lucide-react";
-import addUserDocument from "@/firebase/createUser";
+import addUserDocument from "@/lib/firebase/createUser";
 
 export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
   const [formData, setFormData] = useState({

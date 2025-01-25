@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import PictureCard from "./PictureCard";
 import ContentCard from "./ContentCard";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 export default function ProjectCard() {
   return (

@@ -4,9 +4,9 @@ import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
 import { Calendar, Target, Clock, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 function SkeletonHeroSection() {
   return <div className="h-96 bg-gray-200 animate-pulse rounded-md"></div>;

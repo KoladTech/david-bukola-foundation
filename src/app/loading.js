@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 export default function Loading() {
   // State to track the progress of the loading indicator.

@@ -8,9 +8,9 @@ import { Play, MessageSquarePlus, VideoIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import TestimonyForm from "@/app/testimonials/TestimonyForm";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import { serverTimestamp } from "firebase/firestore";
 
 function SkeletonProject() {

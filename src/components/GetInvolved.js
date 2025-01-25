@@ -1,7 +1,7 @@
 import Link from "next/link";
 import ContentCard from "./ContentCard";
 import PictureCard from "./PictureCard";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 export default function GetInvolved() {
   return (

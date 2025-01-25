@@ -11,7 +11,7 @@ import { RiFacebookBoxFill } from "react-icons/ri";
 import { RiTwitterXLine } from "react-icons/ri";
 import { GrInstagram } from "react-icons/gr";
 import { ApiStatsProvider } from "@/context/ApiStatsContext";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import { Phone, MapPin, Mail } from "lucide-react";
 
 const geistSans = localFont({
