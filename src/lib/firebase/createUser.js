@@ -9,7 +9,6 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 //  */
 
 const addUserDocument = async (data) => {
-  console.log(data);
   // Ensure required fields are present
   const { donateAnonymously, firstName, lastName, email, newsletter, roles } =
     data;

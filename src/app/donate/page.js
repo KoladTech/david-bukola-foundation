@@ -86,7 +86,6 @@ export default function DonatePage() {
       }));
     }
   }, [eventId, eventName]);
-  console.log(donateFormData);
 
   const [previousPage, setPreviousPage] = useState("/");
 
@@ -175,7 +174,6 @@ export default function DonatePage() {
           doc(db, "FoundationInfo", "X4Z4PkcNt2C0L1mFUXdj")
         );
         if (accountDetailsDoc.exists()) {
-          console.log("Exists");
           setBankDetails([accountDetailsDoc.data()]);
         }
         if (!accountDetailsDoc.exists()) {
@@ -224,7 +222,6 @@ export default function DonatePage() {
     if (donateFormData.amount) {
       setCurrentStep(currentStep + 1);
     }
-    console.log("Input change Form Data", donateFormData);
   };
   // Back Navigation on payment flow
   const handleBack = () => {
@@ -248,7 +245,6 @@ export default function DonatePage() {
       [name]: value,
     }));
     // Solely for to the Amount selection part
-    console.log("Input change Form Data", donateFormData);
   };
 
   // references for other amount input field
@@ -449,7 +445,6 @@ export default function DonatePage() {
                               }`}
                               // Oncliking any amount button
                               onClick={() => {
-                                console.log("Button Form Data", donateFormData);
                                 // alert([selectedAmount, otherAmount]);
                                 clearInput(); //Clear the input field
                                 setSelectedAmount(amount.value); //set that buttons amount

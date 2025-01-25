@@ -33,8 +33,6 @@ async function createUser(userData) {
 
     // Add user to the "users" collection
     const docRef = await addDoc(collection(db, "Users"), validatedUser);
-
-    console.log("User added with ID:", docRef.id);
   } catch (error) {
     if (error instanceof z.ZodError) {
       console.error("Validation error:", error.errors);
@@ -121,7 +119,6 @@ data.forEach(async (achievement, index) => {
   try {
     const docRef = doc(db, "Achievements", `Achievement-${index + 1}`);
     await setDoc(docRef, achievement);
-    console.log(`Achievement ${index + 1} added successfully.`);
   } catch (error) {
     console.error(`Error adding achievement ${index + 1}:`, error);
   }

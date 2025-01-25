@@ -31,7 +31,7 @@ export default function JobDetailsPage({ params }) {
           const docData = querySnapshot.docs[0].data();
           setJob(docData);
         } else {
-          console.log("No such job exists");
+          console.error("No such job exists");
           setJob(null);
         }
       } catch (error) {
