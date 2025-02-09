@@ -116,7 +116,10 @@ export async function POST(req) {
       // TODO: donors, volunteers, testimonials, will ideally want to donate more than once
       if (userData.roles && userData.roles.includes(formConfigEntry.role)) {
         return new Response(
-          JSON.stringify({ error: "User already has this role" }),
+          JSON.stringify({
+            error: "User already has this role",
+            message: "You are already registered",
+          }),
           { status: 400 }
         );
       } else {
@@ -193,12 +196,64 @@ export async function POST(req) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error processing form submission:", error);
+    // console.error("Error processing form submission:", error);
+
+    // Handle Zod validation errors
+    if (error.name === "ZodError") {
+      return new Response(
+        JSON.stringify({
+          error: "Validation Error",
+          message: "Invalid form data",
+          details: error.issues.map((issue) => ({
+            field: issue.path.join("."), // Field path (e.g., "phone")
+            message: issue.message, // Error message (e.g., "Please enter a valid Nigerian Phone Number") - You can set specific errors in the schema
+            code: issue.code, // Error code (e.g., "invalid_string")
+          })),
+        }),
+        { status: 400 }
+      );
+    }
+
+    // Handle Firestore errors
+    if (error.code && error.code.startsWith("firestore/")) {
+      return new Response(
+        JSON.stringify({
+          error: "Database Error",
+          message: "An error occurred while accessing the database",
+          details: {
+            code: error.code, // Firestore error code
+            message: error.message, // Firestore error message
+          },
+        }),
+        { status: 500 }
+      );
+    }
+
+    // Handle Nodemailer errors
+    if (error.code && error.code.startsWith("EMAIL_")) {
+      return new Response(
+        JSON.stringify({
+          error: "Email Error",
+          message: "An error occurred while sending the email",
+          details: {
+            code: error.code, // Nodemailer error code
+            message: error.message, // Nodemailer error message
+          },
+        }),
+        { status: 500 }
+      );
+    }
+
+    // Handle generic errors
     return new Response(
-      JSON.stringify({ error: "Internal server error", message: error }),
-      {
-        status: 500,
-      }
+      JSON.stringify({
+        error: "Internal Server Error",
+        message: "An unexpected error occurred",
+        details: {
+          message: error.message, // Generic error message
+        },
+      }),
+      { status: 500 }
     );
   }
 }
