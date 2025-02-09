@@ -60,8 +60,22 @@ export default function Page() {
   }, [volunteerEvent]);
 
   // Separate events into either Upcoming or Pasts
-  const upcomingEvents = events.filter((event) => event.status === "upcoming");
-  const pastEvents = events.filter((event) => event.status === "past");
+  const currentDate = new Date(); // Get the current date and time
+
+  const upcomingEvents = []; // Array for upcoming events
+  const pastEvents = []; // Array for past events
+
+  events.forEach((event) => {
+    const eventStartDate = event.plannedStartDate.toDate(); // Convert Firestore timestamp to JavaScript Date object
+
+    if (eventStartDate > currentDate) {
+      event.status = "upcoming";
+      upcomingEvents.push(event); // Add to upcoming events
+    } else {
+      event.status = "past";
+      pastEvents.push(event); // Add to past events
+    }
+  });
 
   return (
     <>
@@ -69,6 +83,7 @@ export default function Page() {
         <HeroSection
           imageUrl={`${mediaBaseUrl}/images/events_hero_section.jpg`}
           title={`Events`}
+          alt={"Events Page Hero Section"}
         />
       </div>
       <div className="">
