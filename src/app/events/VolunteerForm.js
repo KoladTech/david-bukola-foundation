@@ -157,6 +157,13 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
             </button>
           </CardHeader>
           <CardContent>
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> We currently only accept volunteers
+                located in Nigeria.
+              </p>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
