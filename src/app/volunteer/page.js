@@ -15,10 +15,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import db from "@/lib/firebase/firebaseConfig";
+import { serverTimestamp } from "firebase/firestore";
 import LoadingSpinner from "@/components/loadingSpinner";
-import addUserDocument from "@/lib/firebase/createUser";
 import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 
@@ -149,8 +147,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     if (validateForm()) {
       setSubmitting(true);
       try {
-        // Send a POST request to the api with testimony data object as payload
-        const response = await fetch("api/sendMail", {
+        // Send a POST request to the api with volunteer data object as payload
+        const response = await fetch("api/submitForm", {
           method: "POST",
           headers: {
             "content-Type": "application/json",
@@ -161,18 +159,14 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
           }),
         });
 
+        const data = await response.json(); // get the response as json
+
         // If the mail did not send successfully
         if (!response.ok) {
-          console.error("Error while sending email");
-          return;
+          console.log(JSON.stringify(data.message));
+          console.log(JSON.stringify(data));
+          throw new Error(data.error || "Something went wrong");
         }
-
-        // Add to firestore
-        const collectionRef = collection(db, "Volunteers"); //get the testimonial collection
-        const docRef = await addDoc(collectionRef, formData); //add a new document to the collection
-
-        await addUserDocument({ ...formData, roles: ["volunteer"] });
-        // TODO: check for existence of that volunteer
         // Call a success function
         setShowThankYou(true); // Show thank you message
 
@@ -277,6 +271,13 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
               <CardTitle className="text-2xl">Volunteer Form</CardTitle>
             </CardHeader>
             <CardContent>
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>Note:</strong> We currently only accept volunteers
+                  located in Nigeria.
+                </p>
+              </div>
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   {/* First Name Input */}
