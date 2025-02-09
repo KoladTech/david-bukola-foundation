@@ -110,10 +110,10 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     return emailRegex.test(email);
   };
 
+  // all the errors
+  const newErrors = {};
   // validate the form fields
   const validateForm = () => {
-    const newErrors = {};
-
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required.";
     }
@@ -127,7 +127,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required.";
+      newErrors.phone = "A valid Nigerian phone number is required.";
     }
 
     if (formData.interests.length === 0) {
@@ -163,9 +163,12 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
 
         // If the mail did not send successfully
         if (!response.ok) {
-          console.log(JSON.stringify(data.message));
-          console.log(JSON.stringify(data));
-          throw new Error(data.error || "Something went wrong");
+          // various types of errors will be handled here
+          if (data.error === "Validation Error") {
+            data.details.forEach((issue) => {
+              newErrors[issue.field] = issue.message;
+            });
+          }
         }
         // Call a success function
         setShowThankYou(true); // Show thank you message
