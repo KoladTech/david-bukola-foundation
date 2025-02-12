@@ -23,7 +23,6 @@ export default function EventCard({
   const router = useRouter();
 
   const donateToEvent = () => {
-    const eventData = { eventName: event.title, eventId: event.id };
     const queryString = new URLSearchParams(eventData).toString();
     router.push(`/donate?${queryString}`);
   };
@@ -156,11 +155,10 @@ export default function EventCard({
             )}
             {/* past events can be viewed in achievements */}
             {event.status === "past" && (
-              <Button
-                onClick={donateToEvent}
-                className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors"
-              >
-                View Details in Achievements
+              <Button className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors">
+                <Link href={`/achievements#${event.id}`}>
+                  View Details in Achievements
+                </Link>
               </Button>
             )}
           </div>
