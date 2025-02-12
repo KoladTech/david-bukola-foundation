@@ -10,6 +10,7 @@ import Achievement from "@/components/Achievement";
 import { mediaBaseUrl } from "@/lib/constants";
 import handleEmailValidation from "@/lib/emailVerification";
 import Newsletter from "@/components/NewsLetter";
+import EventsCard from "@/components/EventsCard";
 
 // Imports for testing Firebase analytics using a custom event
 // import { logEvent } from "firebase/analytics";
@@ -53,6 +54,9 @@ export default function Home() {
 
           {/* Projects Section */}
           <ProjectCard />
+
+          {/* Events Section */}
+          <EventsCard />
 
           {/* Get Involved Section */}
           <GetInvolved />
