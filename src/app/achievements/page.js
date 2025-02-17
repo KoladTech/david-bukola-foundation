@@ -72,6 +72,20 @@ export default function Page() {
     // Run on mount and when URL changes
     handleScroll();
   }, [loading]);
+
+  //This use effect disables scrolling when an image is on the screen
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling
+    }
+    // Cleanup function to re-enable scrolling when the component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedImage]);
+
   return (
     <>
       {loading ? (

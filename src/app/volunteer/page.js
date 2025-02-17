@@ -163,12 +163,12 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
 
         // If the mail did not send successfully
         if (!response.ok) {
-          // various types of errors will be handled here
           if (data.error === "Validation Error") {
             data.details.forEach((issue) => {
               newErrors[issue.field] = issue.message;
             });
           }
+          // various types of errors will be handled here
         }
         // Call a success function
         setShowThankYou(true); // Show thank you message

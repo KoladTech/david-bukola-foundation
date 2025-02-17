@@ -54,10 +54,30 @@ export default function Page() {
     // Add event listener for clicks outside the form
     if (volunteerEvent) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
     }
     // Cleanup event listener on unmount
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "auto";
+    };
   }, [volunteerEvent]);
+
+  //This use effect disables scrolling when an image is on the screen
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling
+    }
+
+    // Cleanup function to re-enable scrolling when the component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedImage]);
 
   // Separate events into either Upcoming or Pasts
   const currentDate = new Date(); // Get the current date and time
