@@ -136,7 +136,8 @@ export default function Page() {
                         .map(([key, value], i) => {
                           if (
                             (typeof value === "object" &&
-                              !Array.isArray(value)) ||
+                              !Array.isArray(value) &&
+                              key != "date") ||
                             key === "images"
                           )
                             return null;

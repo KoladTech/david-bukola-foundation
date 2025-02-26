@@ -4,14 +4,15 @@ import { z } from "zod";
 // Validating phone number poses a problem for different countries because not every country might use the same phone number format
 
 export const userFormSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
   email: z.string().email("Invalid email address"),
-  // phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"),
-  phone: z.string().min(1, "Phone number is required"),
-  country: z.string().min(1, "Country is required"),
-  roles: z.array(z.string()).min(1, "At least one role is required"),
-  newsletter: z.boolean().default(false),
+  // not required based on the current scope of what demi wanted
+  // firstName: z.string().min(1, "First name is required"),
+  // lastName: z.string().min(1, "Last name is required"),
+  // phone: z.string().regex(/^\d{10}$/, "Phone number must be 10 digits"), // different country phone number validations
+  // phone: z.string().min(1, "Phone number is required"),
+  // country: z.string().min(1, "Country is required"),
+  // roles: z.array(z.string()).min(1, "At least one role is required"),
+  // newsletter: z.boolean().default(false),
 });
 
 export const volunteerFormSchema = z.object({

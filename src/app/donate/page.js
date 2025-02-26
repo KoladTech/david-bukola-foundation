@@ -109,7 +109,7 @@ export default function DonatePage() {
   const [currentStep, setCurrentStep] = useState(0);
   const [showThankYou, setShowThankYou] = useState(false);
 
-  // Search usefffect to filter by country name, code or phone code
+  // Search useEffect to filter by country name, code or phone code
   useEffect(() => {
     const filtered = countries.filter(
       (country) =>
@@ -120,7 +120,7 @@ export default function DonatePage() {
     setFilteredCountries(filtered);
   }, [searchTerm]);
 
-  // Useffect for For closing the search/select dropdown
+  // usEffect for For closing the search/select dropdown
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

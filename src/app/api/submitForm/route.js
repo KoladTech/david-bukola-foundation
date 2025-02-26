@@ -20,7 +20,7 @@ const formConfig = {
   eventVolunteerForm: {
     collection: "Volunteers",
     schema: eventVolunteerFormSchema,
-    role: "volunteer",
+    role: "eventVolunteer",
   },
   anonymousDonationForm: {
     collection: "Donations",
@@ -69,7 +69,10 @@ export async function POST(req) {
 
     if (!formConfigEntry) {
       return new Response(
-        JSON.stringify({ message: "Invalid form type provided" }),
+        JSON.stringify({
+          error: "Invalid form type provided",
+          message: "Invalid form type provided",
+        }),
         { status: 400 }
       );
     }
@@ -87,71 +90,99 @@ export async function POST(req) {
     const validatedData = formConfigEntry.schema.parse(formData);
 
     // Check if email exists in the database
-    // const usersRef = firestore.collection("Users");
-    const usersRef = firestore.collection("TestCollection");
+    const usersRef = firestore.collection("Users");
+    // const usersRef = firestore.collection("TestCollection");
     const snapshot = await usersRef
       .where("email", "==", validatedData.email)
       .get();
 
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      newsletter,
-      date,
-      ...remainingFormData
-    } = validatedData;
+    // const {
+    //   firstName,
+    //   lastName,
+    //   email,
+    //   phone,
+    //   newsletter,
+    //   ...remainingFormData
+    // } = validatedData;
 
+    const { newsletter, email, ...remainingFormData } = validatedData;
     // initialize a userId variable to be added to the form type
     let userId;
 
     if (!snapshot.empty) {
       // Email already exists
       const userDoc = snapshot.docs[0];
-      const userData = userDoc.data();
       userId = userDoc.id;
 
       // Check if the user already has the incoming role
-      // TODO: donors, volunteers, testimonials, will ideally want to donate more than once
-      if (userData.roles && userData.roles.includes(formConfigEntry.role)) {
+      // donors, volunteers, testimonials, will ideally want to donate more than once.
+      // People can donate multiple times to the same event if they want, and even testify
+      // since testimonials have to be approved but they ideally can't volunteer more than
+      // once for the same event, or as a general volunteer
+
+      if (formConfigEntry.role === "volunteer") {
         return new Response(
           JSON.stringify({
             error: "User already has this role",
-            message: "You are already registered",
+            message: `You are already registered as a ${formConfigEntry.role}`,
           }),
           { status: 400 }
         );
-      } else {
-        // Add the new role to the user
-        await userDoc.ref.update({
-          roles: admin.firestore.FieldValue.arrayUnion(formConfigEntry.role),
-        });
+      } else if (formConfigEntry.role === "eventVolunteer") {
+        const volunteersRef = firestore.collection("Volunteers");
+        const volunteerSnapshot = await volunteersRef
+          .where("eventId", "==", validatedData.eventId)
+          .get();
+        if (!volunteerSnapshot.empty) {
+          return new Response(
+            JSON.stringify({
+              error: "User already has this role",
+              message: `You are already registered as a volunteer for this event!`,
+            }),
+            { status: 400 }
+          );
+        }
       }
+
+      //This is commented out for now because only emails will be added to the users collection
+      //   if (userData.roles && userData.roles.includes(formConfigEntry.role)) {
+      //     return new Response(
+      //       JSON.stringify({
+      //         error: "User already has this role",
+      //         message: `You are already registered as a ${formConfigEntry.role}`,
+      //       }),
+      //       { status: 400 }
+      //     );
+      //   } else {
+      //     // Add the new role to the user
+      //     await userDoc.ref.update({
+      //       roles: admin.firestore.FieldValue.arrayUnion(formConfigEntry.role),
+      //     });
+      //   }
     } else {
       // Create a new user
       const userDocRef = await usersRef.add({
-        firstName,
-        lastName,
         email,
-        phone,
+        date: admin.firestore.FieldValue.serverTimestamp(),
         newsletter,
-        roles: [formConfigEntry.role],
-        date,
+        // firstName,
+        // lastName,
+        // phone,
+        // roles: [formConfigEntry.role],
       });
       userId = userDocRef.id;
     }
 
     // Add form data to the appropriate collection
-    // const collectionRef = firestore.collection(formConfigEntry.collection);
-    const collectionRef = firestore.collection("TestCollection");
+    // const collectionRef = firestore.collection("TestCollection");
+    const collectionRef = firestore.collection(formConfigEntry.collection);
     await collectionRef.add({
-      firstName,
-      lastName,
-      email,
-      phone,
+      // firstName,
+      // lastName,
+      // phone,
       userId,
-      date,
+      email,
+      date: admin.firestore.FieldValue.serverTimestamp(),
       ...remainingFormData,
     });
 

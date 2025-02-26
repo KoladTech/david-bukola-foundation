@@ -3,7 +3,6 @@ import { mediaBaseUrl } from "@/lib/constants";
 import React from "react";
 import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import { useState, useEffect, useRef } from "react";
-import ContentCard from "@/components/ContentCard";
 import HeroSection from "@/components/HeroSection";
 import LoadingSpinner from "@/components/loadingSpinner";
 import ImageModal from "@/components/ImageModal";

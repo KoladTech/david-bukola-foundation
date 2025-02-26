@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
-import { Calendar, Target, Clock, Wallet } from "lucide-react";
+import { Calendar, Target, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
