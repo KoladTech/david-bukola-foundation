@@ -56,6 +56,7 @@ export default function Home() {
           {/* Events Section */}
           {/* <EventsCard /> */}
 
+          {/* Project and Events Section */}
           <ProjectEventsCarousel />
 
           {/* Get Involved Section */}
