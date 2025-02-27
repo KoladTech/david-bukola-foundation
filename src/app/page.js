@@ -5,11 +5,10 @@ import FAQ from "../components/FAQ";
 import HeroSection from "@/components/HeroSection";
 import GetInvolved from "@/components/GetInvolved";
 import MeetOurTeam from "@/components/MeetOurTeam";
-import ProjectCard from "@/components/ProjectCard";
 import Achievement from "@/components/Achievement";
 import { mediaBaseUrl } from "@/lib/constants";
-import handleEmailValidation from "@/lib/emailVerification";
 import Newsletter from "@/components/NewsLetter";
+import ProjectEventsCarousel from "@/components/ProjectEventsCarousel";
 
 // Imports for testing Firebase analytics using a custom event
 // import { logEvent } from "firebase/analytics";
@@ -52,7 +51,13 @@ export default function Home() {
           <TestimonyCards />
 
           {/* Projects Section */}
-          <ProjectCard />
+          {/* <ProjectCard /> */}
+
+          {/* Events Section */}
+          {/* <EventsCard /> */}
+
+          {/* Project and Events Section */}
+          <ProjectEventsCarousel />
 
           {/* Get Involved Section */}
           <GetInvolved />

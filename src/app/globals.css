@@ -28,6 +28,11 @@ body {
   flex: 1;
 }
 
+/* Adds a transition effect to this class */
+.bg-blue-200 {
+  transition: background-color 0.3s ease-in-out;
+}
+
 footer {
   /* margin-top: auto; */
   /* position: fixed; */

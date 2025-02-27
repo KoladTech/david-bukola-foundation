@@ -7,11 +7,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import db from "@/lib/firebase/firebaseConfig";
 import LoadingSpinner from "@/components/loadingSpinner";
 import { X } from "lucide-react";
-import addUserDocument from "@/lib/firebase/createUser";
 
 export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
   const [formData, setFormData] = useState({
@@ -24,7 +21,6 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
     event_id: event.id,
     status: "pending",
     newsletter: false,
-    date: serverTimestamp(),
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -43,10 +39,9 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
     return emailRegex.test(email);
   };
 
+  const newErrors = {};
   // validate the form fields
   const validateForm = () => {
-    const newErrors = {};
-
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required.";
     }
@@ -73,7 +68,7 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
       setSubmitting(true);
       try {
         // Send a POST request to the api with testimony data object as payload
-        const response = await fetch("api/sendMail", {
+        const response = await fetch("api/submitForm", {
           method: "POST",
           headers: {
             "content-Type": "application/json",
@@ -84,24 +79,23 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
           }),
         });
 
-        // If the mail did not send succesfully
+        const data = await response.json(); // get the response as json
+
+        // If the mail did not send successfully
         if (!response.ok) {
-          console.error("Error while sending email");
-          return;
+          if (data.error === "Validation Error") {
+            data.details.forEach((issue) => {
+              newErrors[issue.field] = issue.message;
+            });
+          }
+          // various types of errors will be handled here
         }
-
-        // Add to firestore
-        const collectionRef = collection(db, "Volunteers"); //get the volunteer collection
-        const docRef = await addDoc(collectionRef, formData); //add a new document to the collection
-
-        await addUserDocument({ ...formData, roles: ["volunteer"] });
-        // check for existence of that volunteer
         // Call a success function
-        thankYou(true); // Show thank you message
+        setShowThankYou(true); // Show thank you message
 
         // Set a timeout for thank you message
         setTimeout(() => {
-          thankYou(false);
+          setShowThankYou(false);
         }, 3000);
       } catch (error) {
         console.error("Error adding volunteer: ", error);
@@ -116,26 +110,10 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
           event_id: event.id,
           status: "pending",
           newsletter: false,
-          date: serverTimestamp(),
         });
         setSubmitting(false); //Hide loading indicator
       }
 
-      //   this simulates a form submission by waiting three seconds and setting submit to false
-
-      //   await new Promise((resolve) => setTimeout(resolve, 3000));
-      //   setFormData({
-      //     formType: "eventVolunteerForm",
-      //     firstName: "",
-      //     lastName: "",
-      //     email: "",
-      //     phone: "",
-      //     comments: "",
-      //     event: null,
-      //     status: "pending",
-      //     newsletter: false,
-      //     date: serverTimestamp(),
-      //   });
       onClose();
       setSubmitting(false);
     }
@@ -157,6 +135,13 @@ export default function VolunteerForm({ onClose, event, closeForm, thankYou }) {
             </button>
           </CardHeader>
           <CardContent>
+            <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-sm text-blue-800">
+                <strong>Note:</strong> We currently only accept volunteers
+                located in Nigeria.
+              </p>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
