@@ -1,6 +1,6 @@
 "use client";
 import "./globals.css";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { TbMenuDeep } from "react-icons/tb";
@@ -11,7 +11,7 @@ import { RiFacebookBoxFill } from "react-icons/ri";
 import { RiTwitterXLine } from "react-icons/ri";
 import { GrInstagram } from "react-icons/gr";
 import { ApiStatsProvider } from "@/context/ApiStatsContext";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import { Phone, MapPin, Mail } from "lucide-react";
 
 const geistSans = localFont({
@@ -97,7 +97,7 @@ export default function RootLayout({ children }) {
             transition: "top 0.3s ease-in-out",
             width: "100%",
             backgroundColor: "#fff",
-            zIndex: 1000,
+            zIndex: 25,
             boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.1)",
           }}
         >

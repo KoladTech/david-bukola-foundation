@@ -11,7 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 
 export default function EventCard({
@@ -23,7 +23,6 @@ export default function EventCard({
   const router = useRouter();
 
   const donateToEvent = () => {
-    const eventData = { eventName: event.title, eventId: event.id };
     const queryString = new URLSearchParams(eventData).toString();
     router.push(`/donate?${queryString}`);
   };
@@ -125,7 +124,7 @@ export default function EventCard({
             </div>
           )}
 
-          {event.eventLink && (
+          {event.eventLink && event.status === "upcoming" && (
             <Link
               href={event.eventLink}
               className="inline-flex items-center justify-center w-full px-6 py-3 mt-auto text-white font-medium bg-blue-500 rounded-full hover:bg-blue-600 transition-colors"
@@ -135,7 +134,7 @@ export default function EventCard({
           )}
           <div className="flex gap-4 mt-4">
             {/* if the event requires volunteers */}
-            {event.canVolunteer && (
+            {event.canVolunteer && event.status === "upcoming" && (
               <Button
                 onClick={() => {
                   onVolunteer(event); //displays event volunteer form
@@ -146,12 +145,20 @@ export default function EventCard({
               </Button>
             )}
             {/* if the event requires donations */}
-            {event.canDonate && (
+            {event.canDonate && event.status === "upcoming" && (
               <Button
                 onClick={donateToEvent}
                 className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors"
               >
                 Donate
+              </Button>
+            )}
+            {/* past events can be viewed in achievements */}
+            {event.status === "past" && (
+              <Button className="inline-flex items-center justify-center px-6 py-3 mt-auto text-white font-medium bg-blue-500 hover:bg-blue-400 transition-colors">
+                <Link href={`/achievements#${event.id}`}>
+                  View Details in Achievements
+                </Link>
               </Button>
             )}
           </div>

@@ -1,16 +1,13 @@
 "use client";
 import React, { useRef, useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import HeroSection from "@/components/HeroSection";
 import VideoPlayer from "@/components/VideoPlayer";
-import { Play, MessageSquarePlus, VideoIcon } from "lucide-react";
+import { MessageSquarePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import TestimonyForm from "@/app/testimonials/TestimonyForm";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import { serverTimestamp } from "firebase/firestore";
 
 function SkeletonProject() {
@@ -77,11 +74,15 @@ export default function TestimonialsPage() {
     // Set event to run on show of the form
     if (showTestimonyForm) {
       document.addEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
     }
 
     // useEffect Clean up function (Runs After every render/re-render, mount/removal of the component)
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "auto";
     };
   }, [showTestimonyForm]); //dependencies (list of all reactive code in the effect setup)
 

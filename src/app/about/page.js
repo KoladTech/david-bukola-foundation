@@ -2,11 +2,11 @@
 import GetInvolved from "@/components/GetInvolved";
 import HeroSection from "@/components/HeroSection";
 import MeetOurTeam from "@/components/MeetOurTeam";
-import db from "@/firebase/firebaseConfig";
+import db from "@/lib/firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 import LoadingSpinner from "@/components/loadingSpinner";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 export default function AboutPage() {
   const [statements, setStatements] = useState(null);

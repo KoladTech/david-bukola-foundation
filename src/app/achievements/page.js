@@ -7,11 +7,10 @@ import TruncatedText from "./TruncatedText";
 import SchoolsList from "./SchoolsList";
 import ImageModal from "@/components/ImageModal";
 import { useApiData } from "@/context/ApiStatsContext";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import { formatCurrency, formatObjectKeyToTitle } from "@/lib/utils";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import VideoPlayer from "@/components/VideoPlayer";
-import { object } from "zod";
 
 export default function Page() {
   const [loading, setLoading] = useState(true);
@@ -35,6 +34,57 @@ export default function Page() {
     }
     fetchData();
   }, []);
+
+  // Highlight and scroll logic
+  useEffect(() => {
+    // Wait for the DOM to be ready
+    if (typeof window === "undefined") return;
+
+    const handleScroll = () => {
+      const hash = window.location.hash;
+      if (!hash) return;
+
+      // Wait a bit longer to ensure components are rendered
+      setTimeout(() => {
+        const componentId = hash.replace("#", "");
+        const component = document.getElementById(componentId);
+
+        if (component) {
+          // Scroll into view
+          component.scrollIntoView({ behavior: "smooth" });
+
+          // Add highlight - Using an exclamation mark means it is important
+          component.classList.add(
+            "!bg-blue-200",
+            "transition-all",
+            "duration-500"
+          );
+
+          // Remove highlight after delay
+          setTimeout(() => {
+            component.classList.remove("!bg-blue-200");
+          }, 2000);
+          console.log("Removed highlight classes");
+        }
+      }, 500); // Delay the scroll to ensure component is rendered
+    };
+
+    // Run on mount and when URL changes
+    handleScroll();
+  }, [loading]);
+
+  //This use effect disables scrolling when an image is on the screen
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = "hidden"; // Disable scrolling
+    } else {
+      document.body.style.overflow = "auto"; // Enable scrolling
+    }
+    // Cleanup function to re-enable scrolling when the component unmounts
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [selectedImage]);
 
   return (
     <>
@@ -68,6 +118,7 @@ export default function Page() {
               {achievements.map((achievement, index) => (
                 <div
                   key={index}
+                  id={`${achievement.eventId || achievement.projectId || ""}`}
                   className="bg-white rounded-2xl overflow-hidden shadow-lg flex flex-col"
                 >
                   <div className="p-6 flex-grow">
@@ -85,7 +136,8 @@ export default function Page() {
                         .map(([key, value], i) => {
                           if (
                             (typeof value === "object" &&
-                              !Array.isArray(value)) ||
+                              !Array.isArray(value) &&
+                              key != "date") ||
                             key === "images"
                           )
                             return null;

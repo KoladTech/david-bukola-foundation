@@ -4,9 +4,9 @@ import HeroSection from "@/components/HeroSection";
 import PictureCard from "@/components/PictureCard";
 import { Calendar, Target, Clock, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import { formatTimestamp, formatCurrency } from "@/lib/utils";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 
 function SkeletonHeroSection() {
   return <div className="h-96 bg-gray-200 animate-pulse rounded-md"></div>;
@@ -46,8 +46,33 @@ export default function ProjectsPage() {
         // Get the fetched data
         const fetchedProjects = await fetchedData("Projects");
 
+        if (fetchedProjects?.length > 0) {
+          var sortedProjects = fetchedProjects.sort((a, b) => {
+            const timestampA = a.plannedStartDate?.toDate() || null;
+            const timestampB = b.plannedStartDate?.toDate() || null;
+
+            if (!timestampA || !timestampB) {
+              // Handle cases where timestamps might be missing or null
+              if (!timestampA && !timestampB) return 0; //both missing, consider equal
+              if (!timestampA) return 1; //A missing, B present, B is "greater"
+              if (!timestampB) return -1; //B missing, A present, A is "greater"
+            }
+
+            if (timestampA < timestampB) {
+              return -1; // a comes before b
+            }
+            if (timestampA > timestampB) {
+              return 1; // a comes after b
+            }
+            return 0; // a and b are equal
+          });
+        }
+        console.log("fetched" + JSON.stringify(fetchedProjects));
+        console.log("sorted" + JSON.stringify(sortedProjects));
+        setProjects(sortedProjects);
+
         // Set the fetched data
-        setProjects(fetchedProjects);
+        // setProjects(fetchedProjects);
 
         // log error if failed
       } catch (err) {
@@ -176,22 +201,24 @@ export default function ProjectsPage() {
                 </ul>
 
                 {/* Picture Grid */}
-                <div className="grid grid-cols-2 gap-6">
-                  <div className="relative aspect-[4/3] w-full">
-                    <PictureCard
-                      className=""
-                      imageSrc={`${mediaBaseUrl}${project.images.image1}`}
-                      altText=""
-                    />
+                {project.images && (
+                  <div className="grid grid-cols-2 gap-6">
+                    <div className="relative aspect-[4/3] w-full">
+                      <PictureCard
+                        className=""
+                        imageSrc={`${mediaBaseUrl}${project.images.image1}`}
+                        altText={`${project.images.image1}`}
+                      />
+                    </div>
+                    <div className="relative aspect-[4/3] w-full">
+                      <PictureCard
+                        className=""
+                        imageSrc={`${mediaBaseUrl}${project.images.image2}`}
+                        altText={`${project.images.image2}`}
+                      />
+                    </div>
                   </div>
-                  <div className="relative aspect-[4/3] w-full">
-                    <PictureCard
-                      className=""
-                      imageSrc={`${mediaBaseUrl}${project.images.image2}`}
-                      altText=""
-                    />
-                  </div>
-                </div>
+                )}
               </div>
             ))
           }

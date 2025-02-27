@@ -9,17 +9,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { mediaBaseUrl } from "@/constants";
+import { mediaBaseUrl } from "@/lib/constants";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import db from "@/firebase/firebaseConfig";
+import { serverTimestamp } from "firebase/firestore";
 import LoadingSpinner from "@/components/loadingSpinner";
-import addUserDocument from "@/firebase/createUser";
-import { fetchedData } from "@/firebase/fetchFirebaseData";
+import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
 import ThankYouMessageOnFormSuccess from "@/components/ThankYouMessageOnFormSuccess";
 
 const daysOfWeek = [
@@ -112,10 +110,10 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     return emailRegex.test(email);
   };
 
+  // all the errors
+  const newErrors = {};
   // validate the form fields
   const validateForm = () => {
-    const newErrors = {};
-
     if (!formData.firstName.trim()) {
       newErrors.firstName = "First name is required.";
     }
@@ -129,7 +127,7 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required.";
+      newErrors.phone = "A valid Nigerian phone number is required.";
     }
 
     if (formData.interests.length === 0) {
@@ -149,8 +147,8 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
     if (validateForm()) {
       setSubmitting(true);
       try {
-        // Send a POST request to the api with testimony data object as payload
-        const response = await fetch("api/sendMail", {
+        // Send a POST request to the api with volunteer data object as payload
+        const response = await fetch("api/submitForm", {
           method: "POST",
           headers: {
             "content-Type": "application/json",
@@ -161,18 +159,17 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
           }),
         });
 
+        const data = await response.json(); // get the response as json
+
         // If the mail did not send successfully
         if (!response.ok) {
-          console.error("Error while sending email");
-          return;
+          if (data.error === "Validation Error") {
+            data.details.forEach((issue) => {
+              newErrors[issue.field] = issue.message;
+            });
+          }
+          // various types of errors will be handled here
         }
-
-        // Add to firestore
-        const collectionRef = collection(db, "Volunteers"); //get the testimonial collection
-        const docRef = await addDoc(collectionRef, formData); //add a new document to the collection
-
-        await addUserDocument({ ...formData, roles: ["volunteer"] });
-        // TODO: check for existence of that volunteer
         // Call a success function
         setShowThankYou(true); // Show thank you message
 
@@ -277,6 +274,13 @@ Together, we can create meaningful change. Join our team of dedicated volunteers
               <CardTitle className="text-2xl">Volunteer Form</CardTitle>
             </CardHeader>
             <CardContent>
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-800">
+                  <strong>Note:</strong> We currently only accept volunteers
+                  located in Nigeria.
+                </p>
+              </div>
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   {/* First Name Input */}
