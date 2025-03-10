@@ -5,7 +5,11 @@ import PictureCard from "@/components/PictureCard";
 import { Calendar, Target, Clock, Wallet } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { fetchedData } from "@/lib/firebase/fetchFirebaseData";
-import { formatTimestamp, formatCurrency } from "@/lib/utils";
+import {
+  formatObjectKeyToTitle,
+  formatTimestamp,
+  formatCurrency,
+} from "@/lib/utils";
 import { mediaBaseUrl } from "@/lib/constants";
 
 function SkeletonHeroSection() {
@@ -136,6 +140,29 @@ export default function ProjectsPage() {
                 {/* Description */}
                 <p>{project.description || "No Description Available"}</p>
 
+                {/* General Project details */}
+                <div>
+                  {Object.entries(project.details || {})
+                    .sort(([keyA], [keyB]) => keyA.localeCompare(keyB))
+                    .map(([key, value], i) => {
+                      return (
+                        <div key={i} className="bg-gray-50 p-2 rounded-lg">
+                          <h3 className="text-md text-gray-500 mb-1">
+                            {formatObjectKeyToTitle(key)}
+                          </h3>
+                          {/* Left this incase it may be used in the future */}
+                          <p className="font-semibold">
+                            {key === "totalFinancialSupport"
+                              ? formatCurrency(value)
+                              : Array.isArray(value)
+                              ? value.join(", ")
+                              : value}
+                          </p>
+                        </div>
+                      );
+                    })}
+                </div>
+
                 {/* Details Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
                   {/* Planned Budget */}
@@ -184,7 +211,7 @@ export default function ProjectsPage() {
                       <h1 className="text-blue-500 text-sm font-semibold mt-2 sm:mt-0">
                         Location
                       </h1>
-                      <p className="font-semibold">Kaduna, Nigeria</p>
+                      <p className="font-semibold">{project.location}</p>
                     </div>
                   </Card>
                 </div>
